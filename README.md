@@ -10,7 +10,7 @@ Run the following commands to deploy the django application:
 $ git clone https://github.com/mrpresidentjk/livelobby.git
 $ cd livelobby
 $ mkvirtualenv --python=python3 livelobby
-$ pip install requirements.txt 
+$ pip install -r requirements.txt 
 $ ./manage.py migrate
 $ ./manage.py runserver
 ```
