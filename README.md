@@ -16,4 +16,4 @@ $ ./manage.py runserver
 ```
 
 # Licensing
-This library is MIT licensed and is open source.
+This project is MIT licensed and is open source.
