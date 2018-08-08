@@ -8,8 +8,9 @@ Run the following commands to deploy the django application locally:
 ```sh
 $ git clone https://github.com/mrpresidentjk/livelobby.git
 $ cd livelobby
-$ mkvirtualenv --python=python3 livelobby
-$ pip install -r requirements.txt 
+$ git checkout development
+$ pipenv install --python 3
+$ pipenv shell
 $ ./manage.py migrate
 $ ./manage.py runserver
 ```
