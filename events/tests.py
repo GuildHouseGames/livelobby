@@ -13,7 +13,7 @@ class ParticipantTest(TestCase):
 
     def test_participants_can_join_open_events(self):
         max_size = 5
-        #Participants can join whenever theres a spot free no matter what the initial size is
+        # Participants can join whenever theres a spot free no matter what the initial size is
         for initial_size in range(max_size):
             event = Event.objects.create(initial_size=initial_size, max_size=max_size)
             available_spots = max_size - initial_size
