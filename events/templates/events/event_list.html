@@ -1,0 +1,23 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
+</head>
+<body>
+    <div id="header"> 
+        <a href="http://guild.house"><img id="guild_logo" src="{% static 'events/guild_white.png' %}"></a>
+        <div id="livelobby_text">LiveLobby</div>
+        <input type="button" id="create_event" value="+ Create Event">
+    </div>
+
+    <div class="events-container">
+        {% for event in object_list %}
+            <div class="event">
+                <!-- Place sub div tags for EventView in here -->
+                {{ event.name }} - Add EventView object here
+            </div>
+        {% empty %}
+            <div class="empty_event">There are no events yet... why not make your own?</div>
+        {% endfor %}
+    </div>  
+</body>
