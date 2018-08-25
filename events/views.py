@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
 from events.models import Event, Participant
