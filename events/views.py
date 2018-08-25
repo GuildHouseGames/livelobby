@@ -15,9 +15,7 @@ class JoinView(CreateView):
     template_name = 'events/join_event.html'
     model = Participant
     form_class = JoinForm
-
-    def get_success_url(self):
-        return reverse('event_view', kwargs={'pk':self.kwargs['event_id']})
+    success_url = '/events'
 
     def get_initial(self):
         return {'event': Event.objects.get(pk=self.kwargs['event_id'])}
