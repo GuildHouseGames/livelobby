@@ -16,5 +16,10 @@ class JoinView(CreateView):
     form_class = JoinForm
     success_url = '/events'
 
+    def get_context_data(self, **kwargs):
+        context = super(JoinView, self).get_context_data(**kwargs)
+        context['event'] = Event.objects.get(pk=self.kwargs['event_id'])
+        return context
+
     def get_initial(self):
         return {'event': Event.objects.get(pk=self.kwargs['event_id'])}
