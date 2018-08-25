@@ -1,37 +1,31 @@
-{% load static %}
-<html>
-    <head>
-            <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-            <link rel="stylesheet" type="text/css" href="{% static 'events/events.css' %}">
+{% extends 'base.html' %}
 
-    </head>
-    <body>
-        <div class="card">
-            <div class="card-body">
-                {% if form.errors %}
-                    {% for error in form.name.errors %}
-                            <div class="alert alert-danger">
-                                <strong>{{ error|escape }}</strong>
-                            </div>
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="form-group">
-                            <div class="fieldWrapper">
-                                {{ field }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <button type="submit" class="btn btn-success">Join Event</button>
-                </form>
-            </div>
-        </div>
-    </body>
-</html>
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        {% if form.errors %}
+            {% for error in form.name.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <div class="fieldWrapper">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Join Event</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
