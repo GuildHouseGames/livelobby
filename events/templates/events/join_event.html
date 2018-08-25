@@ -3,12 +3,7 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
-        {% if form.errors %}
-            {% for error in form.name.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-            {% endfor %}
+        {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
                 <div class="alert alert-danger">
                     <strong>{{ error|escape }}</strong>
@@ -17,6 +12,8 @@
         {% endif %}
         <form method="post" novalidate>
             {% csrf_token %}
+            <label for="{{ form.name.id_for_label }}">Player name</label>
+            <!-- For loop used to render both the field name and the required hidden input used to store the event-->
             {% for field in form %}
                 <div class="form-group">
                     <div class="fieldWrapper">
@@ -24,6 +21,11 @@
                     </div>
                 </div>
             {% endfor %}
+            {% if form.name.errors %}
+                {% for error in form.name.errors %}
+                    <p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>
+                {% endfor %}
+            {% endif %}
             <button type="submit" class="btn btn-success">Join Event</button>
         </form>
     </div>
