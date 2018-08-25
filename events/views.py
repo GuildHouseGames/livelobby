@@ -1,6 +1,5 @@
 from events.models import Event, Participant
 from events.forms import JoinForm
-from  django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView
 
 class EventListView(ListView):
