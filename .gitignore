@@ -86,5 +86,7 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+# System link used to switch environment settings
+livelobby/settings/__init__.py
 
 # End of https://www.gitignore.io/api/django,pycharm
