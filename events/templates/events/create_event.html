@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Event {% endblock title %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Event creation form</h2>
+        <div class="card-subtitle mb-2 text-muted"> To create an event, please enter the details below.</div>
+        </br>
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                        <strong>{{ error|escape }}</strong>
+                {% endfor %}
+            {% endif %}
+            {% if not form.non_field_errors %}
+                <strong>There are required fields missing</strong>
+            {% endif %}
+          </div>
+        {% endif %}
+        <form method="post" action="/events/create/" novalidate>
+            {% csrf_token %}
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-12 col-md-4">
+                  <br/>
+                  <!-- Date -->
+                  <label class="font-weight-bold">{{ form.date.label }}</label>
+                  {% if form.date.errors %}{% for error in form.date.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.date }}<br/>{{ form.date.help_text|safe }}
+                  <br/><br/>
+
+                  <!-- Time -->
+                  <label class="font-weight-bold">{{ form.time.label }}</label>
+                  {% if form.time.errors %}{% for error in form.time.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.time }}<br/>{{ form.time.help_text|safe }}
+                  <br/><br/>
+
+                </div>
+                <div class="col-md-4">
+
+                  <!-- Type -->
+                  <label class="font-weight-bold">{{ form.type.label }}</label>
+                  {% if form.type.errors %}{% for error in form.type.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.type }}<br/>{{ form.type.help_text|safe }}
+                  <br/><br/>
+
+                  <!-- Name -->
+                  <label class="font-weight-bold">{{ form.name.label }}</label>
+                  {% if form.name.errors %}{% for error in form.name.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.name }}<br/>{{ form.name.help_text|safe }}
+                  <br/><br/>
+
+                  <!-- Host -->
+                  <label class="font-weight-bold">{{ form.host.label }}</label>
+                  {% if form.host.errors %}{% for error in form.host.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.host }}<br/>{{ form.host.help_text|safe }}
+                  <br/><br/>
+
+                  <!-- Description -->
+                  <label class="font-weight-bold">{{ form.description.label }}</label>
+                  {% if form.description.errors %}{% for error in form.description.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.description }}<br/>{{ form.description.help_text|safe }}
+                  <br/><br/>
+                </div>
+                <div class="col-md-4">
+
+                  <!-- Max Size -->
+                  <label class="font-weight-bold">{{ form.max_size.label }}</label>
+                  {% if form.max_size.errors %}{% for error in form.max_size.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.max_size }}<br/>{{ form.max_size.help_text|safe }}
+                  <br/><br/>
+
+                  <!-- Initial Size -->
+                  <label class="font-weight-bold">{{ form.initial_size.label }}</label>
+                  {% if form.initial_size.errors %}{% for error in form.initial_size.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.initial_size }}<br/>{{ form.initial_size.help_text|safe }}
+                  <br/><br/>
+
+                </div>
+              </div>
+                  <button type="submit" class="btn btn-success btn-block">Create Event</button>
+              </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
