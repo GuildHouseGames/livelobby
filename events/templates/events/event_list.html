@@ -1,48 +1,57 @@
+{% extends 'base.html' %}
 {% load static %}
-<html>
-    <head>
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-        <title>{% block title %}{% endblock %}</title>
-    </head>
-    <body>
-        <!--Header Card-->
-        <div class="card text-white bg-dark border-0 sticky-top" style="">
-            <div class="d-flex flex-row justify-content-center">
-                <div class="card-block d-flex mh-100 my-2 pr-3 justify-content-center">
-                    <a href="http://guild.house">
-                        <img style="height: 40px; width: 120px;" src="{% static 'events/guild_white.png' %}" alt="Guild Logo">
-                    </a>
-                </div>
-                <div class="card-block d-flex mh-100 my-2 justify-content-center">
-                    <h3>LiveLobby</h3>
-                </div>
+
+{% block title %}Guild's LiveLobby{% endblock %}
+
+{% block content %}
+<body class="bg-secondary">
+    
+    <!--Header Card-->
+    <header class="container-fluid text-white bg-dark border-0 rounded-0 h-18 mh-18 px-1 pt-0 pb-2 sticky-top">
+        <!-- Guild LiveLobby Banner -->
+        <div class="row no-gutters justify-content-center mb-1">
+            <div class="col-1 mr-1 align-self-center">
+                <a href="http://guild.house">
+                    <img class="float-right" style="height: 40px; width: 120px;" src="{% static 'events/guild_white.png' %}" alt="Guild Logo">
+                </a>
             </div>
-            <button type="button" class="btn btn-primary btn-lg btn-block">+ Create Event</button>
+            <div class="col-1 ml-1">
+                <p class="text-left" style="font-size: 30px; transform: translateY(15%)">LiveLobby</p>
+            </div>
         </div>
-
-        <!--Events Container Card-->
-        <div class="card-group pt-2">
-            {% for event in object_list %}
-                <div class="card bg-light">
-                    
+    
+        <!-- Create Event Button -->
+        <a href="/events/create">
+            <button type="button" class="btn btn-primary btn-lg btn-block rounded-0 mx-auto">+ Create Event</button>
+        </a>
+    </header>
+    
+    <!--Events Container Card-->
+    <div class="d-flex flex-column w-100 mw-100 px-2 py-2 bg-secondary">
+        {% for event in object_list %}
+            
+            <!-- EventView Card -->
+            <div class="card bg-light my-1">
+                
+                <!-- EventView Components -->
+                <div class="card-body d-flex flex-row justify-content-center">
                     <!-- Place sub div tags for EventView in here -->
-                    <div class="d-flex flex-row justify-content-center">
-                        <div>
-                            | {{ event.time }} |
-                        </div>
-                        <div>
-                            | {{ event.name }} - Add EventView object here |
-                        </div>
-                        <div>
-                            | Player count here |
-                        </div>
+                    <div>
+                        | {{ event.time }}
                     </div>
-
+                    <div>
+                        | {{ event.name }} - Add EventView object here
+                    </div>
+                    <div>
+                        | Player count here |
+                    </div>
                 </div>
-            {% empty %}
-                <!--Shouldn't be seen but just in case, better to show something than not-->
-                <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
-            {% endfor %}
-        </div>  
-    </body>
-</html>
+    
+            </div>
+        {% empty %}
+            <!--Shouldn't be seen but just in case, better to show something than not-->
+            <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}
