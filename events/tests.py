@@ -70,13 +70,3 @@ class EventTest(TestCase):
         name = self.fake.name()
         event = Event.objects.create(name=name)
         self.assertEqual(name,str(event))
-
-class EventType:
-
-    def setUp(self):
-        self.fake = Faker()
-
-    def test_to_str(self):
-        name = self.fake.name()
-        event_type = EventType.objects.create(name=name)
-        self.assertEqual(name,str(event_type))
