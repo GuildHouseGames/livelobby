@@ -53,7 +53,7 @@ class CreateEventView(CreateView):
             host = Participant()
             host.name = request.POST['host']
             host.event = new_event
-            host.hosted_event = new_event
+            host.type = "HOST"
             host.save()
             return HttpResponseRedirect('/events')
         else:

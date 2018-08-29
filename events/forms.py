@@ -20,8 +20,8 @@ class CreateEventForm(forms.ModelForm):
     date = forms.DateField(initial=BOOKING_TOMORROW, widget=forms.SelectDateWidget(), help_text="The date your event will take place")
     max_size = forms.ChoiceField(choices = MAX_SIZE_CHOICES, help_text="The maximum number of players for this event")
     initial_size = forms.ChoiceField(choices = INITIAL_SIZE_CHOICES, help_text="The initial number of players for this event (Including the host, must be below the maximum number of players)")
-    type = forms.CharField(label='Game Name', max_length=75, help_text="The game you will be playing")
-    host = forms.CharField(label='Host Name', max_length=75, help_text="The host of this event")
+    type = forms.CharField(label='Event Name', max_length=75, help_text="The name of the event")
+    host = forms.CharField(label='Host Name', max_length=75, help_text="The name of the host for this event")
     class Meta:
         model = Event
         fields = ('name', 'description', 'date', 'time', 'max_size', 'initial_size', 'type')
