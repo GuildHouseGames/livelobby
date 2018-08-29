@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Guild's LiveLobby{% endblock %}
+
+{% block header_extension %}
+    <a href="/events/create">
+        <button type="button" class="btn btn-primary btn-lg btn-block rounded-0 mx-auto">+ Create Event</button>
+    </a>
+{% endblock %}
+
+{% block content %}
+    
+    <!--Events Container Card-->
+    <div class="d-flex flex-column w-100 mw-100 px-2 py-2 bg-secondary">
+        {% for event in object_list %}
+            
+            <!-- EventView Card -->
+            <div class="card bg-light my-1">
+                
+                <!-- EventView Components -->
+                <div class="card-body d-flex flex-row justify-content-center">
+                    <!-- Place sub div tags for EventView in here -->
+                    <div>
+                        | {{ event.time }}
+                    </div>
+                    <div>
+                        | {{ event.name }} - Add EventView object here
+                    </div>
+                    <div>
+                        | Player count here |
+                    </div>
+                </div>
+    
+            </div>
+        {% empty %}
+            <!--Shouldn't be seen but just in case, better to show something than not-->
+            <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
+        {% endfor %}
+    </div>
+{% endblock %}
