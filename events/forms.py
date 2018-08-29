@@ -1,5 +1,5 @@
 from django import forms
-from events.models import Participant, Event, EventType
+from events.models import Participant, Event
 from django.contrib.admin import widgets
 from datetime import datetime
 from .settings import BOOKING_TOMORROW, BOOKING_TIMES_CHOICES, MAX_SIZE_CHOICES, INITIAL_SIZE_CHOICES
@@ -32,9 +32,7 @@ class CreateEventForm(forms.ModelForm):
                 attrs={ 'class':'form-control',
                         'rows':'5',
                         'placeholder':'Event description...'}),
-            'type': forms.TextInput(
-                attrs={'class': 'form-control',
-                       ' placeholder': 'Event type...'}),
+            'type': forms.Select(attrs={'class': 'bootstrap-select'}),
         }
         help_texts = {
             'name': 'To help other players find the event they\'re looking for',
@@ -42,11 +40,3 @@ class CreateEventForm(forms.ModelForm):
             'type': 'The type of event (i.e Game)',
             'host': 'The name of the host for this event'
         }
-
-    def clean_type(self):
-        data = self.cleaned_data['type']
-        print(data)
-        type, created = EventType.objects.get_or_create(
-            name=data
-        )
-        return type

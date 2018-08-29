@@ -6,13 +6,11 @@ from pytz import timezone
 import sys
 from datetime import date
 
-class EventType(models.Model):
-    name = models.CharField(max_length=75)
-
-    def __str__(self):
-        return self.name
-
 class Event(models.Model):
+    TYPE_CHOICES = (
+        ("GAME", "Game"),
+    )
+
     name = models.CharField(max_length=75, default='Event')
     date = models.DateField(db_index=True, null=True)
     time = models.TimeField(db_index=True, null=True)
@@ -20,7 +18,7 @@ class Event(models.Model):
     description = models.CharField(max_length=300, null=True, blank=True)
     initial_size = models.PositiveSmallIntegerField(default=0)
     max_size = models.PositiveSmallIntegerField(default=4)
-    type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True)
+    type = models.CharField(max_length=25,choices=TYPE_CHOICES,default="GAME")
 
     def clean(self):
         # size validation
