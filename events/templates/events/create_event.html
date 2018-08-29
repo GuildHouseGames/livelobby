@@ -56,7 +56,6 @@
                   <label class="font-weight-bold">{{ form.host.label }}</label>
                   {% if form.host.errors %}{% for error in form.host.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
                   {{ form.host }}<br/>{{ form.host.help_text|safe }}
-                  <br/><br/>
 
                   <!-- Description -->
                   <label class="font-weight-bold">{{ form.description.label }}</label>
@@ -80,8 +79,9 @@
 
                 </div>
               </div>
+                <div>
                   <button type="submit" class="btn btn-success btn-block">Create Event</button>
-              </div>
+                </div>
             </div>
         </form>
     </div>
