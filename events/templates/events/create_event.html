@@ -65,18 +65,17 @@
                 </div>
                 <div class="col-md-4">
 
-                  <!-- Max Size -->
-                  <label class="font-weight-bold">{{ form.max_size.label }}</label>
-                  {% if form.max_size.errors %}{% for error in form.max_size.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
-                  {{ form.max_size }}<br/>{{ form.max_size.help_text|safe }}
-                  <br/><br/>
-
                   <!-- Initial Size -->
                   <label class="font-weight-bold">{{ form.initial_size.label }}</label>
                   {% if form.initial_size.errors %}{% for error in form.initial_size.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
                   {{ form.initial_size }}<br/>{{ form.initial_size.help_text|safe }}
                   <br/><br/>
 
+                    <!-- Max Size -->
+                  <label class="font-weight-bold">{{ form.max_size.label }}</label>
+                  {% if form.max_size.errors %}{% for error in form.max_size.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.max_size }}<br/>{{ form.max_size.help_text|safe }}
+                  <br/><br/>
                 </div>
               </div>
                 <div>
