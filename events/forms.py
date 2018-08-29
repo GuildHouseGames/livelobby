@@ -28,8 +28,9 @@ class CreateEventForm(forms.ModelForm):
             'name': forms.TextInput(
                 attrs={ 'class':'form-control',
                         'placeholder':'Event name...'}),
-            'description': forms.TextInput(
+            'description': forms.Textarea(
                 attrs={ 'class':'form-control',
+                        'rows':'5',
                         'placeholder':'Event description...'}),
             'type': forms.TextInput(
                 attrs={'class': 'form-control',
