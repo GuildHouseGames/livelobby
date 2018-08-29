@@ -50,9 +50,15 @@ class Event(models.Model):
         return self.name
 
 class Participant(models.Model):
+
+    PARTICIPANT_CHOICES = (
+        ("ATTENDEE", "Attendee"),
+        ("HOST","Host"),
+    )
+
     name = models.CharField(max_length=75)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    hosted_event = models.OneToOneField(Event, related_name="+", on_delete=models.CASCADE, null=True, blank=True)
+    type = models.CharField(max_length=8,choices=PARTICIPANT_CHOICES,default="ATTENDEE")
 
     def clean(self):
         joined_players = Participant.objects.filter(event=self.event)
