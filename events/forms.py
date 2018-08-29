@@ -20,8 +20,7 @@ class CreateEventForm(forms.ModelForm):
     date = forms.DateField(initial=BOOKING_TOMORROW, widget=forms.SelectDateWidget(), help_text="The date your event will take place")
     max_size = forms.ChoiceField(choices = MAX_SIZE_CHOICES, help_text="The maximum number of players for this event")
     initial_size = forms.ChoiceField(choices = INITIAL_SIZE_CHOICES, help_text="The initial number of players for this event (Including the host, must be below the maximum number of players)")
-    type = forms.CharField(label='Event Name', max_length=75, help_text="The name of the event")
-    host = forms.CharField(label='Host Name', max_length=75, help_text="The name of the host for this event")
+    host = forms.CharField(label='Host Name', max_length=75, widget=forms.TextInput(attrs={'class': 'form-control',' placeholder': 'Host name...'}))
     class Meta:
         model = Event
         fields = ('name', 'description', 'date', 'time', 'max_size', 'initial_size', 'type')
@@ -32,10 +31,15 @@ class CreateEventForm(forms.ModelForm):
             'description': forms.TextInput(
                 attrs={ 'class':'form-control',
                         'placeholder':'Event description...'}),
+            'type': forms.TextInput(
+                attrs={'class': 'form-control',
+                       ' placeholder': 'Event type...'}),
         }
         help_texts = {
             'name': 'To help other players find the event they\'re looking for',
             'description': 'Additional information to describe your event (how long it might take, where you are in the room etc...)',
+            'type': 'The type of event (i.e Game)',
+            'host': 'The name of the host for this event'
         }
 
     def clean_type(self):
