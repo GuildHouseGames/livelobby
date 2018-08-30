@@ -11,32 +11,58 @@
 {% endblock %}
 
 {% block content %}
-    
+  <head>
+    <!--Only makes use of events-container and event styles-->
+    <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
+  </head>
+
     <!--Events Container Card-->
-    <div class="d-flex flex-column w-100 mw-100 px-2 py-2 bg-secondary">
-        {% for event in object_list %}
-            
-            <!-- EventView Card -->
-            <div class="card bg-light my-1">
-                
-                <!-- EventView Components -->
-                <div class="card-body d-flex flex-row justify-content-center">
-                    <!-- Place sub div tags for EventView in here -->
-                    <div>
-                        | {{ event.time }}
-                    </div>
-                    <div>
-                        | {{ event.name }} - Add EventView object here
-                    </div>
-                    <div>
-                        | Player count here |
-                    </div>
-                </div>
-    
-            </div>
-        {% empty %}
-            <!--Shouldn't be seen but just in case, better to show something than not-->
-            <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
-        {% endfor %}
-    </div>
+    <div class="events-container bg-secondary">
+      {% for event in events %}
+       <div class="event">
+         <div class="card-group">
+           <!--Date/time card-->
+           <div class="card border-left-0 border-top-0 border-bottom-0">
+             <div class="card-block">
+               <h1 class="card-text">{{ event.date.day }}</h1>
+               <h3 class="card-text">{{ event.date.month|month_abbr|upper }}</h3>
+               <p class="card-text">{{ event.time }}</p>
+             </div>
+           </div>
+           <!--Event name, owner, description etc.-->
+           <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
+             <div class="card-block">
+               <h2 class="card-title">{{ event.name|upper }}</h2>
+               <p class="card-text"> {{ event.type }} -
+                 <!--Finds the event host in the list of participants-->
+                 {% for person in participants %}
+                  {% if person.type == "HOST" and person.event == event %}
+                   {{person.name}}
+                  {% endif %}
+                 {% endfor %}
+               </p>
+               <p class="card-text">{{ event.description }}</p>
+             </div>
+           </div>
+           <!--Current/max # of players and join/full button-->
+           <div class="card border-0">
+             <div class="card-block">
+               <h3 class="card-text">{{ groups|get_item:event }}/{{ event.max_size }}</h3>
+               <p class="card-text">Players</p>
+               {% if groups|get_item:event == event.max_size %}
+                <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
+               {% else %}
+               <a href={% url 'join_view' event_id=event.id %}>
+                 <button type="button" class="btn btn-lg btn-primary">Join</button>
+               </a>
+               {% endif %}
+             </div>
+           </div>
+         </div>
+       </div>
+       {% empty %}
+        <!--Shouldn't be seen but just in case, better to show something than not-->
+        <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
+       {% endfor %}
+     </div>
 {% endblock %}

@@ -26,7 +26,7 @@
 #livelobby_text {
     text-transform: capitalize;
     font-size: 15pt;
-    margin: 6px 0px 0px 10px; 
+    margin: 6px 0px 0px 10px;
 }
 
 #guild_logo {
@@ -37,7 +37,7 @@
 }
 
 .events-container {
-    /* 
+    /*
     Defines the container for the grid items (events)
     Opens up the possibility to have multiple types of view later
     */
@@ -55,17 +55,17 @@
 }
 
 .event {
-    /* 
+    /*
     CSS for EventView here
     */
 
     /*Essential style*/
     border-style: outset;
     background-color: white;
-    
+
     /*Rounded corners*/
-    border-radius: 4px 4px 8px 8px;
-    
+    border-radius: 25px;
+
     /*
     Placeholder properties
     When real CSS for EventView is created, remove these properties
