@@ -4,6 +4,9 @@
 
 {% block title %}Guild's LiveLobby - Login{% endblock %}
 
+{% block login_badge %}
+{% endblock %}
+
 {% block content %}
 <div class="container mt-2">
   <div class="row justify-content-center">
@@ -11,21 +14,31 @@
       <div class="card-body">
         <div class="mb-4">
           <h1 class="display-4 text-center">Login to LiveLobby</h1>
+
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">Your username and password didn't match. Please try again.</div>
+          {% endif %}
         </div>
         <div class="row">
           <div class="col">
-            <div class="card-block">
-                <form>
-                  <div class="form-group">
+            <div class="card-block border-right">
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="text-center">
+                    {{ form.as_p }}
+                  </div>
+                  <!-- <div class="form-group">
                     <label for="username" class="lead">Username</label>
                     <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username">
                   </div>
                   <div class="form-group">
                     <label for="password" class="lead">Password</label>
                     <input type="password" class="form-control" id="password" placeholder="Password">
-                  </div>
+                  </div> -->
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Login</button>
+                    <!-- <input type="submit" value="login">
+                    <input type="hidden" name="next" value="{{ next }}"> -->
                   </div>
                 </form>
             </div>
@@ -49,6 +62,9 @@
           {{ form.as_p }}
           <button type="submit">Login</button>
         </form> -->
+      <div class="text-center">
+        <a href="/events">Return to Events</a>
+      </div>
       <div class="text-center alert alert-secondary mt-3" role="alert">
         No login? Sign up <a href="#" class="alert-link">here</a>!
       </div>

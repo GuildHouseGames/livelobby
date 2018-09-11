@@ -5,47 +5,34 @@
             <title>{% block title %}{% endblock %}</title>
     </head>
     <body class="{% block body_class %}bg-secondary{% endblock %}">
-        
-        <!--
-            Header Card
-
-            Content in the header has sticky_top enabled, so it will remain
-            at the top of the screen as you scroll down the page.
-        -->
-        <header class="container-fluid text-white bg-dark border-0 rounded-0 h-18 mh-18 px-1 sticky-top">
-            
-            <!-- Guild LiveLobby Banner -->
-            <div class="row no-gutters justify-content-center">
-                <div class="col-1 mr-1 align-self-center">
-                    <a href="http://guild.house">
-                        <img class="float-right" style="height: 40px; width: 120px;" src="{% static 'events/guild_white.png' %}" alt="Guild Logo">
-                    </a>
-                </div>
-                <div class="col-1 ml-1">
-                    <p class="text-left" style="font-size: 30px; transform: translateY(15%)">LiveLobby</p>
-                </div>
-            </div>
-        
-            <!--
-                Header Extension (optional)
-                
-                Add any header extensions in this block
-                e.g. subtitles, extra navigation etc.
-
-                Empty div tags are automatically hidden,
-                so this will be completely hidden if not implemented.
-
-                Use header_extension_contained to use the provided div tag
-                or header_extension to freely extend.
-            -->
-            {% block header_extension %}
-                <div class="row no-gutters justify-content-center">
-                    {% block header_extension_contained %}
-                    {% endblock %}
+        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand justify-content-center" href="#">
+                <img class="d-inline-block align-top" style="height: 40px; width: 120px;" src="{% static 'events/guild_white.png' %}" alt="Guild Logo">
+                <span class="d-inline h2">LiveLobby</span>
+            </a>
+            {% block login_badge %}
+                <div class="collapse navbar-collapse" id="navbarsExample10">
+                    <ul class="navbar-nav">
+                        {% if user.is_authenticated %}  
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ user.username }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdown10">
+                                    <a class="dropdown-item" href="#">Edit Account</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Logout</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <p>You are not logged in</p>
+                            <a href="{% url 'login' %}">login</a>
+                        {% endif %}
+                    </ul>
                 </div>
             {% endblock %}
-        </header>
-
+        </nav>
+        
         {% block content %}
         {% endblock %}
     </body>
