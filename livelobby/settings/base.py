@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'events.apps.EventsConfig',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,12 @@ ROOT_URLCONF = 'livelobby.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'events/templates'), os.path.join(BASE_DIR, 'registration/templates') ],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'events/templates'),
+            os.path.join(BASE_DIR, 'accounts/templates'),
+            os.path.join(BASE_DIR, 'registration/templates'),
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

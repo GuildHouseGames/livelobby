@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Guild's LiveLobby - Login{% endblock %}
+{% block title %}Guild's LiveLobby - Signup{% endblock %}
 
 {% block login_menu %}
 {% endblock %}
@@ -13,7 +13,7 @@
     <div class="card bg-light w-75">
       <div class="card-body">
         <div class="mb-4">
-          <h1 class="display-4 text-center">Login to LiveLobby</h1>
+          <h1 class="display-4 text-center">Signup to LiveLobby</h1>
 
           {% if form.errors %}
             {% for field, errors in form.errors.items %}
@@ -57,16 +57,13 @@
                     <input type="password" class="form-control" id="password" placeholder="Password">
                   </div> -->
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary">Signup</button>
                     <!-- <input type="submit" value="login">
                     <input type="hidden" name="next" value="{{ next }}"> -->
                   </div>
                 </form>
             </div>
           </div>
-          <!-- <div class="col text-center align-self-center">
-            <h6 class="">OR</h3>
-          </div> -->
           <div class="col">
             <div class="container">
               <div class="row justify-content-center align-items-center">
@@ -76,13 +73,13 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="text-center">
+            <a href="accounts/login">Return to Login</a>
         </div>  
-      <div class="text-center">
-        <a href="/">Return to Events</a>
-      </div>
-      <div class="text-center alert alert-secondary mt-3" role="alert">
-        No login? Sign up <a href="/accounts/signup" class="alert-link">here</a>!
-      </div>
+        <div class="text-center">
+            <a href="/">Return to Events</a>
+        </div>
     </div>
   </div>
 </div>  
