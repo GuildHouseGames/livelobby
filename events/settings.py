@@ -35,4 +35,3 @@ def generate_times():
     return time_list
 
 BOOKING_TIMES_CHOICES = generate_times()
-LOGIN_REDIRECT_URL = 'events'

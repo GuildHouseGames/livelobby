@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %} Create Event {% endblock title %}
+{% block title %}Create Event{% endblock title %}
+
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <button type="button" class="btn btn-danger btn-lg">
+                Cancel
+            </button>
+        </a>
+    </li>
+{% endblock %}
 
 {% block content %}
 <div class="card">

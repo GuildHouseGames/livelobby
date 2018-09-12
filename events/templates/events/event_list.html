@@ -4,10 +4,20 @@
 
 {% block title %}Guild's LiveLobby{% endblock %}
 
-{% block header_extension %}
-    <a href="/events/create">
-        <button type="button" class="btn btn-primary btn-lg btn-block rounded-0 mx-auto">+ Create Event</button>
-    </a>
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="
+            {% if user.is_authenticated %} 
+                /events/create
+            {% else %}
+                {% url 'login' %}
+            {% endif %}
+        ">
+            <button type="button" class="btn btn-primary btn-lg">
+                Create Event
+            </button>
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
