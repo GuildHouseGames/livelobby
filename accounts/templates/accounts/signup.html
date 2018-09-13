@@ -4,13 +4,23 @@
 
 {% block title %}Guild's LiveLobby - Signup{% endblock %}
 
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/accounts/login">
+            <button type="button" class="btn btn-danger btn-lg">
+                Cancel
+            </button>
+        </a>
+    </li>
+{% endblock %}
+
 {% block login_menu %}
 {% endblock %}
 
 {% block content %}
 <div class="container mt-2">
   <div class="row justify-content-center">
-    <div class="card bg-light w-75">
+    <div class="card bg-light w-100">
       <div class="card-body">
         <div class="mb-4">
           <h1 class="display-4 text-center">Signup to LiveLobby</h1>
@@ -28,7 +38,7 @@
             <div class="card-block border-right">
                 <form method="post">
                   {% csrf_token %}
-                  <div class="text-center">
+                  <div class="">
                     {% for field in form %}
                       <div class="fieldWrapper">
                           {% for error in field.errors %}
@@ -37,29 +47,19 @@
                             </div>
                           {% endfor %}
 
-                          <label for="{{ field.html_name }}" class="lead" style="display: inline-block; width: 90px; text-align: right;">
+                          <label for="{{ field.html_name }}" class="lead" style="display: inline-block; width:200px; text-align: right;">
                             {{ field.label }}
                           </label>
 
                           {{ field }}
                           {% if field.help_text %}
-                            <p class="help">{{ field.help_text|safe }}</p>
+                            <p class="help font-weight-light">{{ field.help_text|safe }}</p>
                           {% endif %}
                       </div>
                     {% endfor %}
                   </div>
-                  <!-- <div class="form-group">
-                    <label for="username" class="lead">Username</label>
-                    <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username">
-                  </div>
-                  <div class="form-group">
-                    <label for="password" class="lead">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password">
-                  </div> -->
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Signup</button>
-                    <!-- <input type="submit" value="login">
-                    <input type="hidden" name="next" value="{{ next }}"> -->
                   </div>
                 </form>
             </div>
@@ -73,12 +73,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="text-center">
-            <a href="accounts/login">Return to Login</a>
-        </div>  
-        <div class="text-center">
-            <a href="/">Return to Events</a>
         </div>
     </div>
   </div>

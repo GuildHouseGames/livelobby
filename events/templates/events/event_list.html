@@ -62,7 +62,13 @@
                {% if groups|get_item:event == event.max_size %}
                 <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
                {% else %}
-               <a href={% url 'join_view' event_id=event.id %}>
+               <a href=
+                {% if user.is_authenticated %}
+                    {% url 'join_view' event_id=event.id %}
+                {% else %}
+                    {% url 'login' %}
+                {% endif %}
+               >
                  <button type="button" class="btn btn-lg btn-primary">Join</button>
                </a>
                {% endif %}

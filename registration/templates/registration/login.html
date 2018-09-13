@@ -4,6 +4,16 @@
 
 {% block title %}Guild's LiveLobby - Login{% endblock %}
 
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <button type="button" class="btn btn-danger btn-lg">
+                Cancel
+            </button>
+        </a>
+    </li>
+{% endblock %}
+
 {% block login_menu %}
 {% endblock %}
 
@@ -12,18 +22,15 @@
   <div class="row justify-content-center">
     <div class="card bg-light w-75">
       <div class="card-body">
-        <div class="mb-4">
-          <h1 class="display-4 text-center">Login to LiveLobby</h1>
-
-          {% if form.errors %}
-            {% for field, errors in form.errors.items %}
-            <div class="alert alert-danger" role="alert">
-              {{ errors }}
-            </div>
-            {% endfor %}
-          {% endif %}
-        </div>
-        <div class="row">
+        <h1 class="display-4 text-center">Login to LiveLobby</h1>
+        {% if form.errors %}
+          {% for field, errors in form.errors.items %}
+          <div class="alert alert-danger" role="alert">
+            {{ errors }}
+          </div>
+          {% endfor %}
+        {% endif %}
+        <div class="row my-4">
           <div class="col">
             <div class="card-block border-right">
                 <form method="post">
@@ -48,25 +55,12 @@
                       </div>
                     {% endfor %}
                   </div>
-                  <!-- <div class="form-group">
-                    <label for="username" class="lead">Username</label>
-                    <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username">
-                  </div>
-                  <div class="form-group">
-                    <label for="password" class="lead">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password">
-                  </div> -->
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Login</button>
-                    <!-- <input type="submit" value="login">
-                    <input type="hidden" name="next" value="{{ next }}"> -->
                   </div>
                 </form>
             </div>
           </div>
-          <!-- <div class="col text-center align-self-center">
-            <h6 class="">OR</h3>
-          </div> -->
           <div class="col">
             <div class="container">
               <div class="row justify-content-center align-items-center">
@@ -77,11 +71,10 @@
             </div>
           </div>
         </div>  
-      <div class="text-center">
-        <a href="/">Return to Events</a>
-      </div>
-      <div class="text-center alert alert-secondary mt-3" role="alert">
-        No login? Sign up <a href="/accounts/signup" class="alert-link">here</a>!
+      <div class="card-footer text-center">
+        <a href="/accounts/signup" class="alert-link">
+          <button type="button" class="btn btn-info">Signup</button>
+        </a>
       </div>
     </div>
   </div>
