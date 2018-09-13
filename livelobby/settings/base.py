@@ -38,10 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_django',
+    
+    'django_extensions',
+    'users',
     'events.apps.EventsConfig',
-    'accounts',
 ]
+
+# Use custom user model
+# https://wsvincent.com/django-allauth-tutorial-custom-user-model/
+AUTH_USER_MODEL = 'users.LiveLobbyUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -8,7 +8,7 @@
     <li class="nav-item active">
         <a class="nav-link" href="
             {% if user.is_authenticated %} 
-                /events/create
+                {% url 'create_event_view' %}
             {% else %}
                 {% url 'login' %}
             {% endif %}
