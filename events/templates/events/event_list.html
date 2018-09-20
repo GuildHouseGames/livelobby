@@ -4,10 +4,20 @@
 
 {% block title %}Guild's LiveLobby{% endblock %}
 
-{% block header_extension %}
-    <a href="/events/create">
-        <button type="button" class="btn btn-primary btn-lg btn-block rounded-0 mx-auto">+ Create Event</button>
-    </a>
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="
+            {% if user.is_authenticated %} 
+                {% url 'create_event_view' %}
+            {% else %}
+                {% url 'login' %}
+            {% endif %}
+        ">
+            <button type="button" class="btn btn-primary btn-lg">
+                Create Event
+            </button>
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
@@ -52,7 +62,13 @@
                {% if groups|get_item:event == event.max_size %}
                 <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
                {% else %}
-               <a href={% url 'join_view' event_id=event.id %}>
+               <a href=
+                {% if user.is_authenticated %}
+                    {% url 'join_view' event_id=event.id %}
+                {% else %}
+                    {% url 'login' %}
+                {% endif %}
+               >
                  <button type="button" class="btn btn-lg btn-primary">Join</button>
                </a>
                {% endif %}
@@ -62,7 +78,7 @@
        </div>
        {% empty %}
         <!--Shouldn't be seen but just in case, better to show something than not-->
-        <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
+        <div class="alert alert-info mx-auto" role="alert">There are no current events... why not make your own?</div>
        {% endfor %}
      </div>
 {% endblock %}

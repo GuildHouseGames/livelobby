@@ -7,6 +7,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.shortcuts import render
 from django.template.defaulttags import register
 import calendar
+from django.utils import timezone
 
 class EventListView(ListView):
     template_name = 'events/event_list.html'
@@ -30,7 +31,7 @@ class EventListView(ListView):
             grouped_participants[e] = (e.initial_size +
             len(Participant.objects.filter(event=e))-1)
         context.update({
-            'events': Event.objects.order_by('date', 'time'),
+            'events': Event.objects.filter(date__gte=timezone.now()).order_by('date', 'time'),
             'participants': Participant.objects.all(),
             'groups': grouped_participants
         })

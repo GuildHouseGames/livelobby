@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Guild's LiveLobby - Login{% endblock %}
+
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <button type="button" class="btn btn-danger btn-lg">
+                Cancel
+            </button>
+        </a>
+    </li>
+{% endblock %}
+
+{% block login_menu %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="card bg-light w-75">
+      <div class="card-body">
+        <h1 class="display-4 text-center">Login to LiveLobby</h1>
+        {% if form.errors %}
+          {% for field, errors in form.errors.items %}
+          <div class="alert alert-danger" role="alert">
+            {{ errors }}
+          </div>
+          {% endfor %}
+        {% endif %}
+        <div class="row my-4">
+          <div class="col">
+            <div class="card-block border-right">
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="text-center">
+                    {% for field in form %}
+                      <div class="fieldWrapper">
+                          {% for error in field.errors %}
+                            <div class="alert alert-danger" role="alert">
+                              {{ error }}
+                            </div>
+                          {% endfor %}
+
+                          <label for="{{ field.html_name }}" class="lead" style="display: inline-block; width: 90px; text-align: right;">
+                            {{ field.label }}
+                          </label>
+
+                          {{ field }}
+                          {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                          {% endif %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                  </div>
+                </form>
+            </div>
+          </div>
+          <div class="col">
+            <div class="container">
+              <div class="row justify-content-center align-items-center">
+                <div class="col-6">
+                  <button type="button" class="btn btn-primary">Login with Test</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>  
+      <div class="card-footer text-center">
+        <a href="{% url 'signup' %}" class="alert-link">
+          <button type="button" class="btn btn-info">Signup</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>  
+
+{% endblock %}
