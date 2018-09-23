@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from datetime import datetime
 from pytz import timezone
-import sys
 from datetime import date
 
 class Event(models.Model):
@@ -24,7 +23,7 @@ class Event(models.Model):
         # size validation
         if self.initial_size > self.max_size:
             raise ValidationError("The initial group size cannot be bigger than the max group size")
-        if not self.max_size > self.initial_size:
+        if not self.max_size >= self.initial_size:
             raise ValidationError("The max group size must be larger than the initial group size")
 
         # date and time validation
