@@ -18,12 +18,12 @@ class ParticipantTest(TestCase):
     def test_participants_can_join_open_events(self):
         max_size = 5
         # Participants can join whenever theres a spot free no matter what the initial size is
-        for initial_size in range(max_size):
+        for initial_size in range(1,max_size):
             event = Event.objects.create(initial_size=initial_size, max_size=max_size,time=self.time.time(), date=self.time.date())
             available_spots = max_size - initial_size
             for _ in range(available_spots):
                 Participant.objects.create(event=event)
-            self.assertEqual(available_spots, Participant.objects.filter(event=event).count())
+            self.assertEqual(available_spots, Participant.objects.filter(event=event, type='ATTENDEE').count())
             event.delete()
 
     def test_participants_cannot_join_full_events(self):
