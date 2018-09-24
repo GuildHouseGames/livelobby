@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.urls import reverse_lazy
 
 from events.models import Event, Participant
 from events.forms import JoinForm, CreateEventForm
@@ -45,7 +46,6 @@ class JoinView(CreateView):
     template_name = 'events/join_event.html'
     model = Participant
     form_class = JoinForm
-    success_url = '/events'
 
     def get_context_data(self, **kwargs):
         context = super(JoinView, self).get_context_data(**kwargs)
@@ -60,6 +60,13 @@ class JoinView(CreateView):
         except Event.DoesNotExist:
             raise Http404("The event does not exist")
         return {'event': self.event}
+
+    def get_success_url(self):
+        return reverse_lazy('join_confirmation_view', kwargs={'pk': self.event.pk})
+
+class JoinConfirmationView(DetailView):
+    model = Event
+    template_name = 'events/join_confirmation.html'
 
 class CreateEventView(CreateView):
     template_name = 'events/create_event.html'
