@@ -38,10 +38,15 @@ class CreateEventForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
-    host = forms.CharField(label='Host Name', max_length=75, widget=forms.TextInput(attrs={'class': 'form-control',' placeholder': 'Host name...'}))
+    host_name = forms.CharField(
+        help_text='The name of the host for this event',
+        max_length=75,
+        widget=forms.TextInput(attrs={'class': 'form-control',' placeholder': 'Host name...'})
+    )
+
     class Meta:
         model = Event
-        fields = ('name', 'description', 'date', 'time', 'max_size', 'initial_size', 'type')
+        fields = ('name', 'description', 'date', 'time', 'max_size', 'initial_size','host_name', 'type')
         widgets = {
             'name': forms.TextInput(
                 attrs={ 'class':'form-control',
@@ -56,5 +61,4 @@ class CreateEventForm(forms.ModelForm):
             'name': 'To help other players find the event they\'re looking for',
             'description': 'Additional information to describe your event (how long it might take, where you are in the room etc...)',
             'type': 'The type of event (i.e Game)',
-            'host': 'The name of the host for this event'
         }

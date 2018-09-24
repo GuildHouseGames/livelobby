@@ -74,14 +74,7 @@ class CreateEventView(CreateView):
     def post(self, request):
         form = CreateEventForm(request.POST)
         if (form.is_valid()):
-            new_event = form.save(commit=True)
-
-            # Create a new participant, who will be hosting this event
-            host = Participant()
-            host.name = request.POST['host']
-            host.event = new_event
-            host.type = "HOST"
-            host.save()
+            form.save(commit=True)
             return HttpResponseRedirect('/events')
         else:
             return render(request, 'events/create_event.html', {'form': form})
