@@ -85,18 +85,20 @@ class JoinFormTest(TestCase):
 
     def test_blank_name(self):
         event = Event.objects.create(time=self.time.time(), date=self.time.date())
-        data = {'event': event}
+        data = {'event': event.pk}
         form = JoinForm(data=data)
         self.assertFalse(form.is_valid())
 
     def test_open_event(self):
         event = Event.objects.create(time=self.time.time(), date=self.time.date())
-        data = {'name': self.fake.name(), 'event': event}
+        data = {'name': self.fake.name(), 'event': event.pk}
         form = JoinForm(data=data)
+        if not form.is_valid():
+            print(form.errors)
         self.assertTrue(form.is_valid())
 
     def test_full_event(self):
         event = Event.objects.create(initial_size=1, max_size=1, time=self.time.time(), date=self.time.date())
-        data = {'name': self.fake.name(), 'event': event}
+        data = {'name': self.fake.name(), 'event': event.pk}
         form = JoinForm(data=data)
         self.assertFalse(form.is_valid())

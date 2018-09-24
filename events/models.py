@@ -61,7 +61,7 @@ class Participant(models.Model):
         joined_players = Participant.objects.filter(event=self.event)
         # Compare the players who have joined this event (excluding the host)
         # combined with those who were already in the event, with the max size
-        if (joined_players.count()-1 + self.event.initial_size >= self.event.max_size):
+        if (joined_players.count() + self.event.initial_size >= self.event.max_size):
             raise ValidationError("Unfortunately the event is full")
 
     def save(self,*args,**kwargs):
