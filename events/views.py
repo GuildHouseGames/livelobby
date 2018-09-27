@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 from events.models import Event, Reservation
 from events.forms import CreateEventForm, JoinForm
 from django.views.generic import CreateView, DetailView, ListView
-from django.shortcuts import render, get_object_or_404
 from django.template.defaulttags import register
 import calendar
 from django.utils import timezone
@@ -18,10 +17,6 @@ class EventListView(ListView):
     @register.filter
     def reserved_places(event):
         return event.reserved_places()
-
-    @register.filter
-    def display_name(user):
-        return user.first_name + " " + user.last_name
 
     # Converts a given month number to an abbreviation (eg. 8 = Aug)
     @register.filter
