@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 # from events.forms import JoinForm
+from events.forms import JoinForm
 from events.models import Event, Reservation
 from pytz import timezone
 from faker import Faker
@@ -30,7 +31,7 @@ class ReservationTest(TestCase):
         with self.assertRaises(ValidationError) as e:
             event = Event.objects.create(initial_size=0,max_size=1, time=self.time.time(), date=self.time.date(), host=self.host )
             Reservation.objects.create(event=event, places=3, user=self.host)
-        self.assertEqual(e.exception.message, "Unfortunately the event is full")
+        self.assertEqual(e.exception.messages[0], 'Unfortunately the event is full')
 
 
 class EventTest(TestCase):
@@ -43,7 +44,7 @@ class EventTest(TestCase):
     def test_past_event_date(self):
         with self.assertRaises(ValidationError) as e:
             Event.objects.create(time=datetime.now().time(), date=datetime.now().date() - timedelta(1), host=self.host)
-        self.assertEqual(e.exception.message, "The date must be in the future")
+        self.assertEqual(e.exception.message, 'The date must be in the future')
 
     def test_future_event_date(self):
         event = Event.objects.create(time=datetime.now().time(), date=datetime.now().date() + timedelta(1), host=self.host)
@@ -56,7 +57,8 @@ class EventTest(TestCase):
             initial_size = 2
             max_size = 1
             Event.objects.create(max_size=max_size, initial_size=initial_size, date=time.date(), time=time.time(), host=self.host)
-        self.assertEqual(e.exception.message, "The initial group size cannot be bigger than the max group size")
+        self.assertEqual(e.exception.message, 'The initial group size cannot be bigger than the max group size')
+
 
     def test_valid_initial_and_max_size(self):
         size = 1
@@ -73,28 +75,22 @@ class EventTest(TestCase):
         event = Event.objects.create(name=name, date=time.date(), time=time.time(), host=self.host)
         self.assertEqual(name,str(event))
 
-# class JoinFormTest(TestCase):
-#
-#     def setUp(self):
-#         self.fake = Faker()
-#         self.time = datetime.now() + timedelta(1)
-#
-#     def test_blank_name(self):
-#         event = Event.objects.create(time=self.time.time(), date=self.time.date())
-#         data = {'event': event.pk}
-#         form = JoinForm(data=data)
-#         self.assertFalse(form.is_valid())
-#
-#     def test_open_event(self):
-#         event = Event.objects.create(time=self.time.time(), date=self.time.date())
-#         data = {'name': self.fake.name(), 'event': event.pk}
-#         form = JoinForm(data=data)
-#         if not form.is_valid():
-#             print(form.errors)
-#         self.assertTrue(form.is_valid())
-#
-#     def test_full_event(self):
-#         event = Event.objects.create(initial_size=1, max_size=1, time=self.time.time(), date=self.time.date())
-#         data = {'name': self.fake.name(), 'event': event.pk}
-#         form = JoinForm(data=data)
-#         self.assertFalse(form.is_valid())
+class JoinFormTest(TestCase):
+
+    def setUp(self):
+        self.fake = Faker()
+        self.time = datetime.now() + timedelta(1)
+        self.user = LiveLobbyUser.objects.create_user('testuser@test.pl', 'testpass')
+        self.data = {'places': 2}
+
+    def test_open_event(self):
+        event = Event.objects.create(initial_size=1, max_size=3, time=self.time.time(), date=self.time.date(), host=self.user)
+        instance = Reservation(event=event, user=self.user)
+        form = JoinForm(instance=instance, data=self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_full_event(self):
+        event = Event.objects.create(initial_size=1, max_size=1, time=self.time.time(), date=self.time.date(), host=self.user)
+        instance = Reservation(event=event, user=self.user)
+        form = JoinForm(instance=instance, data=self.data)
+        self.assertFalse(form.is_valid())
