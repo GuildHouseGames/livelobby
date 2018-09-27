@@ -8,6 +8,9 @@ from django.template.defaulttags import register
 import calendar
 from django.utils import timezone
 
+from events.settings import BOOKING_TOMORROW
+
+
 class EventListView(ListView):
     template_name = 'events/event_list.html'
     model = Event
@@ -71,6 +74,7 @@ class CreateEventView(CreateView):
     model = Event
     form_class = CreateEventForm
     success_url = '/events'
+    initial = {'date':BOOKING_TOMORROW}
 
     def get_form_kwargs(self):
         kwargs = super(CreateEventView, self).get_form_kwargs()

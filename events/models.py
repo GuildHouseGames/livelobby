@@ -19,7 +19,7 @@ class Event(models.Model):
     location = models.CharField(max_length=75, default='Guild')
     description = models.CharField(max_length=300, null=True, blank=True)
     initial_size = models.PositiveSmallIntegerField(default=1)
-    max_size = models.PositiveSmallIntegerField(default=4)
+    max_size = models.PositiveSmallIntegerField(default=1)
     type = models.CharField(max_length=25,choices=TYPE_CHOICES,default="GAME")
 
     def clean(self):

@@ -1,6 +1,6 @@
 from django import forms
 from events.models import Event, Reservation
-from .settings import BOOKING_TOMORROW, BOOKING_TIMES_CHOICES, MAX_SIZE_CHOICES, INITIAL_SIZE_CHOICES
+from .settings import BOOKING_TIMES_CHOICES, MAX_SIZE_CHOICES, INITIAL_SIZE_CHOICES
 
 class JoinForm(forms.ModelForm):
     class Meta:
@@ -13,13 +13,12 @@ class JoinForm(forms.ModelForm):
 
 class CreateEventForm(forms.ModelForm):
     time = forms.ChoiceField(
-        choices = BOOKING_TIMES_CHOICES, initial='',
+        choices = BOOKING_TIMES_CHOICES,
         widget=forms.Select(attrs={'class': 'form-control'}), required=True,
         help_text="The time this event will take place"
     )
 
     date = forms.DateField(
-        initial=BOOKING_TOMORROW,
         widget=forms.SelectDateWidget(attrs={'class':'form-control snps-inline-select'}),
         help_text="The date your event will take place"
     )
