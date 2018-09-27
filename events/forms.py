@@ -8,7 +8,7 @@ class JoinForm(forms.ModelForm):
         fields = ('places',)
         widgets = {
             'places': forms.NumberInput(
-                attrs={ 'class':'form-control', 'placeholder':'Number of places'}),
+                attrs={ 'class':'form-control', 'step':"1", 'min':"1", 'value':"1"}),
         }
 
 class CreateEventForm(forms.ModelForm):

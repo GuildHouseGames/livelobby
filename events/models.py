@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from datetime import datetime
 
@@ -58,7 +59,7 @@ class Event(models.Model):
 class Reservation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    places = models.PositiveSmallIntegerField()
+    places = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
     def clean(self):
         if (self.event.reserved_places() + self.places > self.event.max_size):
