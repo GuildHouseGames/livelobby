@@ -43,13 +43,7 @@
            <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
              <div class="card-block">
                <h2 class="card-title">{{ event.name|upper }}</h2>
-               <p class="card-text"> {{ event.type }} -
-                 <!--Finds the event host in the list of participants-->
-                 {% for person in participants %}
-                  {% if person.type == "HOST" and person.event == event %}
-                   {{person.name}}
-                  {% endif %}
-                 {% endfor %}
+               <p class="card-text"> {{ event.type }} - {{event.host | display_name }}
                </p>
                <p class="card-text">{{ event.description }}</p>
              </div>
@@ -57,9 +51,9 @@
            <!--Current/max # of players and join/full button-->
            <div class="card border-0">
              <div class="card-block">
-               <h3 class="card-text">{{ groups|get_item:event }}/{{ event.max_size }}</h3>
+               <h3 class="card-text">{{ event|reserved_places }}/{{ event.max_size }}</h3>
                <p class="card-text">Players</p>
-               {% if groups|get_item:event == event.max_size %}
+               {% if event|reserved_places == event.max_size %}
                 <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
                {% else %}
                <a href=

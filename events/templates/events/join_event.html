@@ -27,7 +27,7 @@
         {% endif %}
         <form method="post" novalidate>
             {% csrf_token %}
-            <label for="{{ form.name.id_for_label }}">Player name</label>
+            <label for="{{ form.name.id_for_label }}">Reserved places</label>
             <!-- For loop used to render both the field name and the required hidden input used to store the event-->
             {% for field in form %}
                 <div class="form-group">
