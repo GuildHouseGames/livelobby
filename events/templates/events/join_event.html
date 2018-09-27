@@ -36,8 +36,8 @@
                     </div>
                 </div>
             {% endfor %}
-            {% if form.name.errors %}
-                {% for error in form.name.errors %}
+            {% if form.places.errors %}
+                {% for error in form.places.errors %}
                     <p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>
                 {% endfor %}
             {% endif %}
