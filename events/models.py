@@ -21,6 +21,7 @@ class Event(models.Model):
     initial_size = models.PositiveSmallIntegerField(default=1)
     max_size = models.PositiveSmallIntegerField(default=1)
     type = models.CharField(max_length=25,choices=TYPE_CHOICES,default="GAME")
+    is_cancelled = models.BooleanField(default=False)
 
     def clean(self):
         # size validation
