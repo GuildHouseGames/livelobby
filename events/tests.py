@@ -31,7 +31,7 @@ class ReservationTest(TestCase):
         with self.assertRaises(ValidationError) as e:
             event = Event.objects.create(initial_size=0,max_size=1, time=self.time.time(), date=self.time.date(), host=self.host )
             Reservation.objects.create(event=event, places=3, user=self.host)
-        self.assertEqual(e.exception.messages[0], 'Unfortunately the event is full')
+        self.assertEqual(e.exception.messages[0], 'The specified number of places exceeds the number of places available')
 
 
 class EventTest(TestCase):

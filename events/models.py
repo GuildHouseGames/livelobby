@@ -64,7 +64,7 @@ class Reservation(models.Model):
 
     def clean(self):
         if (self.event.reserved_places() + self.places > self.event.max_size):
-            raise ValidationError("Unfortunately the event is full")
+            raise ValidationError("The specified number of places exceeds the number of places available")
 
     def save(self, *args, **kwargs):
         self.full_clean()
