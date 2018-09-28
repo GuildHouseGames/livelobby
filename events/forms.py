@@ -1,27 +1,24 @@
 from django import forms
-from events.models import Participant, Event
-from .settings import BOOKING_TOMORROW, BOOKING_TIMES_CHOICES, MAX_SIZE_CHOICES, INITIAL_SIZE_CHOICES
+from events.models import Event, Reservation
+from .settings import BOOKING_TIMES_CHOICES, MAX_SIZE_CHOICES, INITIAL_SIZE_CHOICES
 
 class JoinForm(forms.ModelForm):
     class Meta:
-        model = Participant
-        fields = ('name','event')
+        model = Reservation
+        fields = ('places',)
         widgets = {
-            'name': forms.TextInput(
-                attrs={ 'class':'form-control',
-                        'placeholder':'Player name'}),
-            'event': forms.HiddenInput()
+            'places': forms.NumberInput(
+                attrs={ 'class':'form-control', 'step':"1", 'min':"1", 'value':"1"}),
         }
 
 class CreateEventForm(forms.ModelForm):
     time = forms.ChoiceField(
-        choices = BOOKING_TIMES_CHOICES, initial='',
+        choices = BOOKING_TIMES_CHOICES,
         widget=forms.Select(attrs={'class': 'form-control'}), required=True,
         help_text="The time this event will take place"
     )
 
     date = forms.DateField(
-        initial=BOOKING_TOMORROW,
         widget=forms.SelectDateWidget(attrs={'class':'form-control snps-inline-select'}),
         help_text="The date your event will take place"
     )
@@ -38,15 +35,10 @@ class CreateEventForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
-    host_name = forms.CharField(
-        help_text='The name of the host for this event',
-        max_length=75,
-        widget=forms.TextInput(attrs={'class': 'form-control',' placeholder': 'Host name...'})
-    )
 
     class Meta:
         model = Event
-        fields = ('name', 'description', 'date', 'time', 'max_size', 'initial_size','host_name', 'type')
+        fields = ('name', 'description', 'date', 'time', 'max_size', 'initial_size', 'type')
         widgets = {
             'name': forms.TextInput(
                 attrs={ 'class':'form-control',

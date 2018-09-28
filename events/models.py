@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from datetime import datetime
+
+from django.db.models import Sum
 from pytz import timezone
 from datetime import date
 
@@ -9,16 +12,16 @@ class Event(models.Model):
     TYPE_CHOICES = (
         ("GAME", "Game"),
     )
-
+    host = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=75, default='Event')
     date = models.DateField(db_index=True, null=True)
     time = models.TimeField(db_index=True, null=True)
     location = models.CharField(max_length=75, default='Guild')
     description = models.CharField(max_length=300, null=True, blank=True)
     initial_size = models.PositiveSmallIntegerField(default=1)
-    host_name = models.CharField(max_length=75, default='Participant')
-    max_size = models.PositiveSmallIntegerField(default=4)
+    max_size = models.PositiveSmallIntegerField(default=1)
     type = models.CharField(max_length=25,choices=TYPE_CHOICES,default="GAME")
+    is_cancelled = models.BooleanField(default=False)
 
     def clean(self):
         # size validation
@@ -43,33 +46,26 @@ class Event(models.Model):
     def save(self, *args,**kwargs):
         self.clean()
         super(Event, self).save(*args, **kwargs)
-        # Create the event with a host participant
-        Participant.objects.create(name=self.host_name, event=self,type='HOST')
+        # Create the event with an initial reservation for the host
+        if self.initial_size > 0:
+            Reservation.objects.create(user=self.host, event=self, places=self.initial_size)
+
+    def reserved_places(self):
+        reservations = Reservation.objects.filter(event=self)
+        return reservations.aggregate(Sum('places'))["places__sum"] if reservations else 0
 
     def __str__(self):
         return self.name
 
-class Participant(models.Model):
-
-    PARTICIPANT_CHOICES = (
-        ("ATTENDEE", "Attendee"),
-        ("HOST","Host"),
-    )
-
-    name = models.CharField(max_length=75)
+class Reservation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    type = models.CharField(max_length=8,choices=PARTICIPANT_CHOICES,default="ATTENDEE")
+    places = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
     def clean(self):
-        joined_players = Participant.objects.filter(event=self.event)
-        # Compare the players who have joined this event (excluding the host)
-        # combined with those who were already in the event, with the max size
-        if (joined_players.count() + self.event.initial_size-1 >= self.event.max_size):
-            raise ValidationError("Unfortunately the event is full")
+        if (self.event.reserved_places() + self.places > self.event.max_size):
+            raise ValidationError("The specified number of places exceeds the number of places available")
 
-    def save(self,*args,**kwargs):
-        self.clean()
-        super(Participant, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Reservation, self).save(*args, **kwargs)

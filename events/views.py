@@ -1,23 +1,24 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 
-from events.models import Event, Participant
-from events.forms import JoinForm, CreateEventForm
+from events.models import Event, Reservation
+from events.forms import CreateEventForm, JoinForm
 from django.views.generic import CreateView, DetailView, ListView
-from django.shortcuts import render
 from django.template.defaulttags import register
 import calendar
 from django.utils import timezone
+
+from events.settings import BOOKING_TOMORROW
+
 
 class EventListView(ListView):
     template_name = 'events/event_list.html'
     model = Event
 
-    # Used to get from the 'groups' dictionary
+    # Returns number of spots filled for an event
     @register.filter
-    def get_item(dictionary, key):
-        return dictionary.get(key)
+    def reserved_places(event):
+        return event.reserved_places()
 
     # Converts a given month number to an abbreviation (eg. 8 = Aug)
     @register.filter
@@ -26,15 +27,8 @@ class EventListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        grouped_participants = {}
-        # Count how many users are in each event
-        for e in Event.objects.all():
-            grouped_participants[e] = (e.initial_size +
-            len(Participant.objects.filter(event=e))-1)
         context.update({
             'events': Event.objects.filter(date__gte=timezone.now()).order_by('date', 'time'),
-            'participants': Participant.objects.all(),
-            'groups': grouped_participants
         })
         return context
 
@@ -44,25 +38,32 @@ class EventView(DetailView):
 
 class JoinView(CreateView):
     template_name = 'events/join_event.html'
-    model = Participant
+    model = Reservation
     form_class = JoinForm
 
     def get_context_data(self, **kwargs):
         context = super(JoinView, self).get_context_data(**kwargs)
-        context['event'] = self.event
+        context['event'] = self.get_event()
         return context
 
-    def get_initial(self):
-        # Get initial gets run before get_context_data()
-        # Raise a 404 if it does not exist
-        try:
-            self.event = Event.objects.get(pk=self.kwargs['event_id'])
-        except Event.DoesNotExist:
-            raise Http404("The event does not exist")
-        return {'event': self.event}
+
+    def get_form_kwargs(self):
+        kwargs = super(JoinView, self).get_form_kwargs()
+        if kwargs['instance'] is None:
+            kwargs['instance'] = Reservation()
+        kwargs['instance'].user = self.request.user
+        kwargs['instance'].event = self.get_event()
+        return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('join_confirmation_view', kwargs={'pk': self.event.pk})
+        return reverse_lazy('join_confirmation_view', kwargs={'pk': self.get_event().pk})
+
+    def get_event(self):
+        try:
+            return Event.objects.get(pk=self.kwargs['event_id'])
+        except Event.DoesNotExist:
+            raise Http404("The event does not exist")
+
 
 class JoinConfirmationView(DetailView):
     model = Event
@@ -73,15 +74,11 @@ class CreateEventView(CreateView):
     model = Event
     form_class = CreateEventForm
     success_url = '/events'
+    initial = {'date':BOOKING_TOMORROW}
 
-    def get_context_data(self, **kwargs):
-        context = super(CreateEventView, self).get_context_data(**kwargs)
-        return context
-
-    def post(self, request):
-        form = CreateEventForm(request.POST)
-        if (form.is_valid()):
-            form.save(commit=True)
-            return HttpResponseRedirect('/events')
-        else:
-            return render(request, 'events/create_event.html', {'form': form})
+    def get_form_kwargs(self):
+        kwargs = super(CreateEventView, self).get_form_kwargs()
+        if kwargs['instance'] is None:
+            kwargs['instance'] = Event()
+        kwargs['instance'].host = self.request.user
+        return kwargs
