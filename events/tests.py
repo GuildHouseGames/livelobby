@@ -16,7 +16,8 @@ class ReservationTest(TestCase):
     def setUp(self):
         self.time = datetime.now() + timedelta(1)
         self.fake = Faker()
-        self.host = LiveLobbyUser.objects.create_user('testuser@test.pl', 'testpass')
+        self.host = LiveLobbyUser.objects.create_user('host@test.pl', 'hostpass')
+        self.user = LiveLobbyUser.objects.create_user('user@test.pl', 'userpass')
 
     def test_reservation_for_open_event(self):
         max_size = 5
@@ -24,14 +25,20 @@ class ReservationTest(TestCase):
         for initial_size in range(1,max_size):
             event = Event.objects.create(initial_size=initial_size, max_size=max_size,time=self.time.time(), date=self.time.date(), host=self.host)
             available_spots = max_size - initial_size
-            Reservation.objects.create(event=event, places=available_spots, user=self.host)
+            Reservation.objects.create(event=event, places=available_spots, user=self.user)
             event.delete()
 
     def test_reservation_for_full_event(self):
         with self.assertRaises(ValidationError) as e:
             event = Event.objects.create(initial_size=0,max_size=1, time=self.time.time(), date=self.time.date(), host=self.host )
-            Reservation.objects.create(event=event, places=3, user=self.host)
+            Reservation.objects.create(event=event, places=3, user=self.user)
         self.assertEqual(e.exception.messages[0], 'The specified number of places exceeds the number of places available')
+
+    def test_event_already_joined(self):
+        with self.assertRaises(ValidationError) as e:
+            event = Event.objects.create(initial_size=1,max_size=2, time=self.time.time(), date=self.time.date(), host=self.host )
+            Reservation.objects.create(event=event, places=1, user=self.host)
+        self.assertEqual(e.exception.messages[0], 'This event has already been joined')
 
 
 class EventTest(TestCase):
@@ -80,17 +87,24 @@ class JoinFormTest(TestCase):
     def setUp(self):
         self.fake = Faker()
         self.time = datetime.now() + timedelta(1)
-        self.user = LiveLobbyUser.objects.create_user('testuser@test.pl', 'testpass')
+        self.host = LiveLobbyUser.objects.create_user('host@test.pl', 'hostpass')
+        self.user = LiveLobbyUser.objects.create_user('user@test.pl', 'userpass')
         self.data = {'places': 2}
 
     def test_open_event(self):
-        event = Event.objects.create(initial_size=1, max_size=3, time=self.time.time(), date=self.time.date(), host=self.user)
+        event = Event.objects.create(initial_size=1, max_size=3, time=self.time.time(), date=self.time.date(), host=self.host)
         instance = Reservation(event=event, user=self.user)
         form = JoinForm(instance=instance, data=self.data)
         self.assertTrue(form.is_valid())
 
     def test_full_event(self):
-        event = Event.objects.create(initial_size=1, max_size=1, time=self.time.time(), date=self.time.date(), host=self.user)
+        event = Event.objects.create(initial_size=1, max_size=1, time=self.time.time(), date=self.time.date(), host=self.host)
         instance = Reservation(event=event, user=self.user)
+        form = JoinForm(instance=instance, data=self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_already_joined(self):
+        event = Event.objects.create(initial_size=1, max_size=2, time=self.time.time(), date=self.time.date(), host=self.host)
+        instance = Reservation(event=event, user=self.host)
         form = JoinForm(instance=instance, data=self.data)
         self.assertFalse(form.is_valid())

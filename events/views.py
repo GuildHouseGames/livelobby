@@ -1,9 +1,10 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from events.models import Event, Reservation
 from events.forms import CreateEventForm, JoinForm
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, DeleteView
 from django.template.defaulttags import register
 import calendar
 from django.utils import timezone
@@ -23,7 +24,12 @@ class EventListView(ListView):
     # Checks if an event has been joined by the user
     @register.filter
     def is_joined(event, user):
-        return Reservation.objects.filter(event=event, user=user)
+        return event.is_joined(user)
+
+    # Return the reservation for an event
+    @register.filter
+    def get_reservation_pk(event, user):
+        return get_object_or_404(Reservation, event=event, user=user).pk
 
     # Converts a given month number to an abbreviation (eg. 8 = Aug)
     @register.filter
@@ -74,6 +80,22 @@ class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
 
+class LeaveView(DeleteView):
+    model = Reservation
+    template_name = 'events/leave.html'
+    success_url = '/events'
+
+    def get_context_data(self, **kwargs):
+        context = super(LeaveView, self).get_context_data(**kwargs)
+        context['event'] = self.get_reservation().event
+        return context
+
+    def get_reservation(self):
+        try:
+            return Reservation.objects.get(pk=self.kwargs['pk'])
+        except Event.DoesNotExist:
+            raise Http404("Cannot leave this event. No reservation was found")
+
 class CreateEventView(CreateView):
     template_name = 'events/create_event.html'
     model = Event
@@ -87,3 +109,4 @@ class CreateEventView(CreateView):
             kwargs['instance'] = Event()
         kwargs['instance'].host = self.request.user
         return kwargs
+

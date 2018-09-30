@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <button type="button" class="btn btn-primary btn-lg">
+                Cancel
+            </button>
+        </a>
+    </li>
+{% endblock %}
+
+{% block title %} Leave Event | {{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Leave Event</h2>
+        <div class="card-subtitle mb-2 text-muted"> Leaving event: {{ event.name }}</div>
+        <form method="post">{% csrf_token %}
+             <p>Are you sure you would like to leave this event?</p>
+             <p>Leaving this event will remove all reservations placed by your account.</p>
+            <input type="submit" value="Confirm">
+        </form>
+    </div>
+</div>
+{% endblock %}
