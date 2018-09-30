@@ -11,9 +11,10 @@ gunicorn = "==19.9.0"
 pytz = "==2018.5"
 whitenoise = "==3.3.1"
 Django = "==2.1"
-faker = "*"
-django-extensions = "*"
-social-auth-app-django = "*"
+faker = "==0.9.1"
+django-extensions = "==2.1.3"
+social-auth-app-django = "==2.1.0"
+django-material = "==2.1.3"
 
 [dev-packages]
 
