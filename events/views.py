@@ -20,6 +20,11 @@ class EventListView(ListView):
     def reserved_places(event):
         return event.reserved_places()
 
+    # Checks if an event has been joined by the user
+    @register.filter
+    def is_joined(event, user):
+        return Reservation.objects.filter(event=event, user=user)
+
     # Converts a given month number to an abbreviation (eg. 8 = Aug)
     @register.filter
     def month_abbr(month_num):
