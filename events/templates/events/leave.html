@@ -18,9 +18,9 @@
         <h2 class="card-title">Leave Event</h2>
         <div class="card-subtitle mb-2 text-muted"> Leaving event: {{ event.name }}</div>
         <form method="post">{% csrf_token %}
-             <p>Are you sure you would like to leave this event?</p>
+             <p>Are you sure you want to leave this event?</p>
              <p>Leaving this event will remove all reservations placed by your account.</p>
-            <input type="submit" value="Confirm">
+            <input type="submit" value="Leave" class="btn btn-danger btn-lg">
         </form>
     </div>
 </div>
