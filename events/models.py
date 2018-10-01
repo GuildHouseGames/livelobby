@@ -63,7 +63,9 @@ class Reservation(models.Model):
     places = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
     def clean(self):
-        if (self.event.reserved_places() + self.places > self.event.max_size):
+        if self.event.is_cancelled:
+            raise ValidationError("This event has been cancelled.")
+        elif self.event.reserved_places() + self.places > self.event.max_size:
             raise ValidationError("The specified number of places exceeds the number of places available")
 
     def save(self, *args, **kwargs):
