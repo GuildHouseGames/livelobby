@@ -15,12 +15,12 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
-        <h2 class="card-title">Leave Event</h2>
-        <div class="card-subtitle mb-2 text-muted"> Leaving event: {{ event.name }}</div>
+        <h2 class="card-title">Leave "{{ event.name }}"</h2>
+        <div class="card-subtitle mb-2 text-muted">To leave the event, please confirm the following.</div>
         <form method="post">{% csrf_token %}
              <p>Are you sure you want to leave this event?</p>
              <p>Leaving this event will remove all reservations placed by your account.</p>
-            <input type="submit" value="Leave" class="btn btn-danger btn-lg">
+            <input type="submit" value="Leave" class="btn btn-success btn-lg">
         </form>
     </div>
 </div>

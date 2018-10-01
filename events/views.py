@@ -82,7 +82,7 @@ class JoinConfirmationView(DetailView):
 
 class LeaveView(DeleteView):
     model = Reservation
-    template_name = 'events/leave.html'
+    template_name = 'events/leave_event.html'
     success_url = '/events'
 
     def get_context_data(self, **kwargs):
