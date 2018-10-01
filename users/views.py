@@ -1,9 +1,9 @@
-from django.shortcuts import render
 
 from django.urls import reverse_lazy
 from django.views import generic
 
 from users.forms import LiveLobbyUserCreationForm
+
 
 class SignUpView(generic.CreateView):
     form_class = LiveLobbyUserCreationForm
