@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load socialaccount %}
 
 {% block title %}Guild's LiveLobby - Login{% endblock %}
 
@@ -65,7 +66,9 @@
             <div class="container">
               <div class="row justify-content-center align-items-center">
                 <div class="col-6">
-                  <button type="button" class="btn btn-primary">Login with Test</button>
+                  <a class="nav-link" href="{% provider_login_url 'google' %}">
+                    <button type="button" class="btn btn-danger">Login with Gmail</button>
+                  </a>                  
                 </div>
               </div>
             </div>
