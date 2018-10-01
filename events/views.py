@@ -30,7 +30,7 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'events': Event.objects.filter(date__gte=timezone.now()).order_by('date', 'time'),
+            'events': Event.objects.filter(date__gte=timezone.now(), is_cancelled=False).order_by('date', 'time'),
         })
         return context
 
