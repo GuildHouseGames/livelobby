@@ -54,7 +54,8 @@ class ReservationTest(TestCase):
 
         self.assertEqual(
             e.exception.messages[0],
-            'The specified number of places exceeds the number of places available')
+            'The specified number of places '
+            'exceeds the number of places available')
 
 
 class EventTest(TestCase):
