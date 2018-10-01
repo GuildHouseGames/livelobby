@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <button type="button" class="btn btn-primary btn-lg">
+                Cancel
+            </button>
+        </a>
+    </li>
+{% endblock %}
+
+{% block title %} Cancel Event | {{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Cancellation for "{{ event.name }}"</h2>
+        <div class="card-subtitle mb-2 text-muted">To cancel the event, please confirm the following.</div>
+        <form method="post">{% csrf_token %}
+             <p>Are you sure you want to cancel this event?</p>
+             <p>Cancelling this event will prevent further players from joining.</p>
+            <input type="submit" value="Continue" class="btn btn-success btn-lg">
+        </form>
+    </div>
+</div>
+{% endblock %}

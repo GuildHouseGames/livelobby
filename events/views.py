@@ -1,9 +1,10 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
+from django.views.generic.detail import SingleObjectMixin
 
 from events.models import Event, Reservation
 from events.forms import CreateEventForm, JoinForm
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from django.template.defaulttags import register
 import calendar
 from django.utils import timezone
@@ -68,6 +69,25 @@ class JoinView(CreateView):
 class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
+
+class CancelView(SingleObjectMixin, TemplateView):
+    model = Event
+    template_name = 'events/cancel_event.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event'] = self.object
+        return context
+
+    def post(self, *args, **kwargs):
+        event = Event.objects.filter(pk=self.get_object().pk)
+        event.update(is_cancelled=True)
+        return HttpResponseRedirect('/events')
+
 
 class CreateEventView(CreateView):
     template_name = 'events/create_event.html'
