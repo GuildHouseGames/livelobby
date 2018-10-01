@@ -94,9 +94,6 @@ class LeaveView(LoginRequiredMixin, DeleteView):
         event = get_object_or_404(Event, pk=self.kwargs['pk'])
         return get_object_or_404(Reservation, event=event, user=self.request.user)
 
-    def test_func(self):
-        return self.request.user.is_authenticated
-
 
 class CreateEventView(CreateView):
     template_name = 'events/create_event.html'
