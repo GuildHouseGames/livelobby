@@ -14,7 +14,7 @@ Django = "==2.1"
 faker = "*"
 django-extensions = "*"
 social-auth-app-django = "*"
-pycodestyle = "2.4.0"
+flake8 = "3.5.0"
 
 [dev-packages]
 
