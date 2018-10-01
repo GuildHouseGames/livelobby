@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 
@@ -29,14 +29,16 @@ class EventListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            'events': Event.objects.filter(date__gte=timezone.now(), is_cancelled=False).order_by('date', 'time'),
-        })
+        context.update({'events': Event.objects.filter(
+            date__gte=timezone.now(),
+            is_cancelled=False).order_by('date', 'time'), })
         return context
+
 
 class EventView(DetailView):
     template_name = 'events/event.html'
     model = Event
+
 
 class JoinView(CreateView):
     template_name = 'events/join_event.html'
@@ -48,7 +50,6 @@ class JoinView(CreateView):
         context['event'] = self.get_event()
         return context
 
-
     def get_form_kwargs(self):
         kwargs = super(JoinView, self).get_form_kwargs()
         if kwargs['instance'] is None:
@@ -58,7 +59,9 @@ class JoinView(CreateView):
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('join_confirmation_view', kwargs={'pk': self.get_event().pk})
+        return reverse_lazy(
+            'join_confirmation_view', kwargs={
+                'pk': self.get_event().pk})
 
     def get_event(self):
         try:
@@ -70,6 +73,7 @@ class JoinView(CreateView):
 class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
+
 
 class CancelView(UserPassesTestMixin, SingleObjectMixin, TemplateView):
     model = Event
@@ -100,7 +104,7 @@ class CreateEventView(CreateView):
     model = Event
     form_class = CreateEventForm
     success_url = '/events'
-    initial = {'date':BOOKING_TOMORROW}
+    initial = {'date': BOOKING_TOMORROW}
 
     def get_form_kwargs(self):
         kwargs = super(CreateEventView, self).get_form_kwargs()

@@ -9,21 +9,24 @@ from pytz import timezone
 from faker import Faker
 from users.models import LiveLobbyUser
 
+
 class ReservationTest(TestCase):
 
     def setUp(self):
         self.time = datetime.now() + timedelta(1)
         self.fake = Faker()
-        self.host = LiveLobbyUser.objects.create_user('testuser@test.pl', 'testpass')
+        self.host = LiveLobbyUser.objects.create_user(
+            'testuser@test.pl', 'testpass')
 
     def test_reservation_for_open_event(self):
         max_size = 5
-        # Participants can join whenever theres a spot free no matter what the initial size is
+        # Participants can join whenever theres a spot free no matter what the
+        # initial size is
         for initial_size in range(1, max_size):
 
             event = Event.objects.create(
                 initial_size=initial_size,
-                max_size=max_size,time=self.time.time(),
+                max_size=max_size, time=self.time.time(),
                 date=self.time.date(),
                 host=self.host
             )
@@ -41,7 +44,7 @@ class ReservationTest(TestCase):
         with self.assertRaises(ValidationError) as e:
 
             event = Event.objects.create(
-                initial_size=0,max_size=1,
+                initial_size=0, max_size=1,
                 time=self.time.time(),
                 date=self.time.date(),
                 host=self.host
@@ -49,21 +52,10 @@ class ReservationTest(TestCase):
 
             Reservation.objects.create(event=event, places=3, user=self.host)
 
-        self.assertEqual(e.exception.messages[0],
-                         'The specified number of places exceeds the number of places available')
-
-    def test_reservation_for_cancelled_event(self):
-        with self.assertRaises(ValidationError) as e:
-
-            event = Event.objects.create(
-                initial_size=0,max_size=1,
-                time=self.time.time(),
-                date=self.time.date(),
-                host=self.host
-            )
-
-        Reservation.objects.create(event=event, places=1, user=self.host)
-        self.assertEqual(e.exception.messages[0], 'This event has been cancelled.')
+        self.assertEqual(
+            e.exception.messages[0],
+            'The specified number of places '
+            'exceeds the number of places available')
 
 
 class EventTest(TestCase):
@@ -71,7 +63,8 @@ class EventTest(TestCase):
     def setUp(self):
         self.fake = Faker()
         self.tz = timezone(getattr(settings, "TIME_ZONE", "UTC"))
-        self.host = LiveLobbyUser.objects.create_user('testuser@test.pl', 'testpass')
+        self.host = LiveLobbyUser.objects.create_user(
+            'testuser@test.pl', 'testpass')
 
     def test_past_event_date(self):
         with self.assertRaises(ValidationError) as e:
@@ -109,7 +102,9 @@ class EventTest(TestCase):
                 host=self.host
             )
 
-        self.assertEqual(e.exception.message, 'The initial group size cannot be bigger than the max group size')
+        self.assertEqual(
+            e.exception.message,
+            'The initial group size cannot be bigger than the max group size')
 
     def test_valid_initial_and_max_size(self):
         size = 1
@@ -125,7 +120,7 @@ class EventTest(TestCase):
 
         b = Event.objects.create(
             initial_size=size,
-            max_size=size+1,
+            max_size=size + 1,
             date=time.date(),
             time=time.time(),
             host=self.host
@@ -138,15 +133,21 @@ class EventTest(TestCase):
     def test_to_str(self):
         name = self.fake.name()
         time = datetime.now() + timedelta(1)
-        event = Event.objects.create(name=name, date=time.date(), time=time.time(), host=self.host)
-        self.assertEqual(name,str(event))
+        event = Event.objects.create(
+            name=name,
+            date=time.date(),
+            time=time.time(),
+            host=self.host)
+        self.assertEqual(name, str(event))
+
 
 class JoinFormTest(TestCase):
 
     def setUp(self):
         self.fake = Faker()
         self.time = datetime.now() + timedelta(1)
-        self.user = LiveLobbyUser.objects.create_user('testuser@test.pl', 'testpass')
+        self.user = LiveLobbyUser.objects.create_user(
+            'testuser@test.pl', 'testpass')
         self.data = {'places': 2}
 
     def test_open_event(self):
