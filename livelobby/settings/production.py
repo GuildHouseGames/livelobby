@@ -1,7 +1,7 @@
 import dj_database_url
 import django_heroku
 
-from livelobby.settings.base import * # NOQA
+from livelobby.settings.base import *  # NOQA
 
 DEBUG = False
 
