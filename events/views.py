@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -84,7 +84,7 @@ class JoinConfirmationView(DetailView):
     template_name = 'events/join_confirmation.html'
 
 
-class LeaveView(LoginRequiredMixin, DeleteView):
+class LeaveView(UserPassesTestMixin, DeleteView):
     template_name = 'events/leave_event.html'
     success_url = '/events'
 
@@ -94,8 +94,15 @@ class LeaveView(LoginRequiredMixin, DeleteView):
         return context
 
     def get_object(self):
+        user = self.request.user
         event = get_object_or_404(Event, pk=self.kwargs['pk'])
-        return get_object_or_404(Reservation, event=event, user=self.request.user)
+        return get_object_or_404(Reservation, event=event, user=user)
+
+    # Prevent the host from removing his initial reservation
+    def test_func(self):
+        if self.request.user.is_authenticated:
+            return self.request.user != self.get_object().event.host
+        return False
 
 
 class CreateEventView(CreateView):
