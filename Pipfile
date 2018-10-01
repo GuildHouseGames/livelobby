@@ -1,9 +1,7 @@
 [[source]]
-
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
-
 
 [packages]
 
@@ -13,11 +11,11 @@ gunicorn = "==19.9.0"
 "psycopg2" = "==2.7.5"
 pytz = "==2018.5"
 whitenoise = "==3.3.1"
-django = "==2.1"
+Django = "==2.1"
 faker = "*"
 django-allauth = "*"
 django-extensions = "*"
-
+flake8 = "3.5.0"
 
 [dev-packages]
 

@@ -27,7 +27,7 @@
         {% endif %}
         <form method="post" novalidate>
             {% csrf_token %}
-            <label for="{{ form.name.id_for_label }}">Player name</label>
+            <label>{{ form.places.label }}</label>
             <!-- For loop used to render both the field name and the required hidden input used to store the event-->
             {% for field in form %}
                 <div class="form-group">
@@ -36,8 +36,8 @@
                     </div>
                 </div>
             {% endfor %}
-            {% if form.name.errors %}
-                {% for error in form.name.errors %}
+            {% if form.places.errors %}
+                {% for error in form.places.errors %}
                     <p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>
                 {% endfor %}
             {% endif %}

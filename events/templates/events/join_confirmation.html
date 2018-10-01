@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block navbar_links %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <button type="button" class="btn btn-primary btn-lg">
+                Home
+            </button>
+        </a>
+    </li>
+{% endblock %}
+
+{% block title %} Event Confirmation | {{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Event Confirmation</h2>
+        <div class="card-subtitle mb-2 text-muted"> The event has been joined successfully.</div>
+        <p>Name: {{event.name}}</p>
+        <p>Date: {{event.date}}</p>
+        <p>Time: {{event.time}}</p>
+        <p>Location: {{event.location}}</p>
+        <p>Description: {{event.description}}</p>
+    </div>
+</div>
+{% endblock %}
