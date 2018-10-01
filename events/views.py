@@ -1,5 +1,5 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
@@ -81,7 +81,7 @@ class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
 
-class LeaveView(UserPassesTestMixin, DeleteView):
+class LeaveView(LoginRequiredMixin, DeleteView):
     template_name = 'events/leave_event.html'
     success_url = '/events'
 
