@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
@@ -70,7 +71,7 @@ class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
 
-class CancelView(SingleObjectMixin, TemplateView):
+class CancelView(UserPassesTestMixin, SingleObjectMixin, TemplateView):
     model = Event
     template_name = 'events/cancel_event.html'
 
@@ -87,6 +88,11 @@ class CancelView(SingleObjectMixin, TemplateView):
         event = Event.objects.filter(pk=self.get_object().pk)
         event.update(is_cancelled=True)
         return HttpResponseRedirect('/events')
+
+    def test_func(self):
+        if self.request.user.is_authenticated:
+            return self.request.user.pk == self.get_object().host.pk
+        return False
 
 
 class CreateEventView(CreateView):
