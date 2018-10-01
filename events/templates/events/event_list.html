@@ -55,7 +55,7 @@
                <p class="card-text">Players</p>
                  {% if user.is_authenticated %}
                     {% if event|is_joined:user%}
-                        <a class="btn btn-lg btn-primary"  href="{% url 'leave_view' pk=event|get_reservation_pk:user %}">Leave</a>
+                        <a class="btn btn-lg btn-primary"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
                     {% else %}
                         {% if event|reserved_places < event.max_size %}
                             <a class="btn btn-lg btn-primary" href="{% url 'join_view' event_id=event.id %}">Join</a>

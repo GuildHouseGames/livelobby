@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -80,21 +81,22 @@ class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
 
-class LeaveView(DeleteView):
-    model = Reservation
+class LeaveView(UserPassesTestMixin, DeleteView):
     template_name = 'events/leave_event.html'
     success_url = '/events'
 
     def get_context_data(self, **kwargs):
         context = super(LeaveView, self).get_context_data(**kwargs)
-        context['event'] = self.get_reservation().event
+        context['event'] = self.get_object().event
         return context
 
-    def get_reservation(self):
-        try:
-            return Reservation.objects.get(pk=self.kwargs['pk'])
-        except Event.DoesNotExist:
-            raise Http404("Cannot leave this event. No reservation was found")
+    def get_object(self):
+        event = get_object_or_404(Event, pk=self.kwargs['pk'])
+        return get_object_or_404(Reservation, event=event, user=self.request.user)
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
 
 class CreateEventView(CreateView):
     template_name = 'events/create_event.html'
