@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 
@@ -36,7 +37,7 @@ class EventView(DetailView):
     template_name = 'events/event.html'
     model = Event
 
-class JoinView(CreateView):
+class JoinView(LoginRequiredMixin, CreateView):
     template_name = 'events/join_event.html'
     model = Reservation
     form_class = JoinForm
@@ -69,7 +70,7 @@ class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
 
-class CreateEventView(CreateView):
+class CreateEventView(LoginRequiredMixin, CreateView):
     template_name = 'events/create_event.html'
     model = Event
     form_class = CreateEventForm
