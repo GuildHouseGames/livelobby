@@ -102,6 +102,8 @@ class Reservation(models.Model):
                 "number of places available")
         if Reservation.objects.filter(event=self.event, user=self.user):
             raise ValidationError("This event has already been joined")
+        if self.event.is_cancelled:
+            raise ValidationError("This event has been cancelled.")
 
     def save(self, *args, **kwargs):
         self.full_clean()

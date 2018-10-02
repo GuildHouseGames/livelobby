@@ -195,6 +195,21 @@ class JoinFormTest(TestCase):
         form = JoinForm(instance=instance, data=self.data)
         self.assertFalse(form.is_valid())
 
+    def test_cancelled_event(self):
+
+        event = Event.objects.create(
+            initial_size=0,
+            max_size=2,
+            time=self.time.time(),
+            date=self.time.date(),
+            host=self.user,
+            is_cancelled=True
+        )
+
+        instance = Reservation(event=event, user=self.user)
+        form = JoinForm(instance=instance, data=self.data)
+        self.assertFalse(form.is_valid())
+
     def test_already_joined(self):
         event = Event.objects.create(
             initial_size=1,
