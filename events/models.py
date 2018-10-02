@@ -73,6 +73,10 @@ class Event(models.Model):
         return reservations.aggregate(
             Sum('places'))["places__sum"] if reservations else 0
 
+    def is_joined(self, user):
+        reservations = Reservation.objects.filter(event=self, user=user)
+        return reservations is not None and reservations.count() > 0
+
     def __str__(self):
         return self.name
 
@@ -92,11 +96,14 @@ class Reservation(models.Model):
     )
 
     def clean(self):
+        if (self.event.reserved_places() + self.places > self.event.max_size):
+            raise ValidationError(
+                "The specified number of places exceeds the "
+                "number of places available")
+        if Reservation.objects.filter(event=self.event, user=self.user):
+            raise ValidationError("This event has already been joined")
         if self.event.is_cancelled:
             raise ValidationError("This event has been cancelled.")
-        elif self.event.reserved_places() + self.places > self.event.max_size:
-            raise ValidationError("The specified number of places exceeds the "
-                                  "number of places available")
 
     def save(self, *args, **kwargs):
         self.full_clean()
