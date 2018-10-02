@@ -1,6 +1,5 @@
 import dj_database_url
 import django_heroku
-
 from livelobby.settings.base import *
 
 DEBUG = False
