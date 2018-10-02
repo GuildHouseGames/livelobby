@@ -53,19 +53,23 @@
              <div class="card-block">
                <h3 class="card-text">{{ event|reserved_places }}/{{ event.max_size }}</h3>
                <p class="card-text">Players</p>
-               {% if event|reserved_places == event.max_size %}
-                <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
-               {% else %}
-               <a href=
-                {% if user.is_authenticated %}
-                    {% url 'join_view' event_id=event.id %}
+                 {% if user.is_authenticated %}
+                    {% if event|is_joined:user%}
+                        <a class="btn btn-lg btn-primary"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% else %}
+                        {% if event|reserved_places < event.max_size %}
+                            <a class="btn btn-lg btn-primary" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                        {% else %}
+                            <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
+                        {% endif %}
+                    {% endif %}
                 {% else %}
-                    {% url 'login' %}
+                    {% if event|reserved_places < event.max_size %}
+                        <a class="btn btn-lg btn-primary" href="{% url 'login' %}">Join</a>
+                    {% else %}
+                        <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
+                    {% endif %}
                 {% endif %}
-               >
-                 <button type="button" class="btn btn-lg btn-primary">Join</button>
-               </a>
-               {% endif %}
              </div>
            </div>
          </div>

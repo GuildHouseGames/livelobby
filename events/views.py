@@ -1,9 +1,11 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from events.models import Event, Reservation
 from events.forms import CreateEventForm, JoinForm
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, DeleteView
 from django.template.defaulttags import register
 import calendar
 from django.utils import timezone
@@ -19,6 +21,16 @@ class EventListView(ListView):
     @register.filter
     def reserved_places(event):
         return event.reserved_places()
+
+    # Checks if an event has been joined by the user
+    @register.filter
+    def is_joined(event, user):
+        return event.is_joined(user)
+
+    # Return the reservation for an event
+    @register.filter
+    def get_reservation_pk(event, user):
+        return get_object_or_404(Reservation, event=event, user=user).pk
 
     # Converts a given month number to an abbreviation (eg. 8 = Aug)
     @register.filter
@@ -70,6 +82,27 @@ class JoinView(CreateView):
 class JoinConfirmationView(DetailView):
     model = Event
     template_name = 'events/join_confirmation.html'
+
+
+class LeaveView(UserPassesTestMixin, DeleteView):
+    template_name = 'events/leave_event.html'
+    success_url = '/events'
+
+    def get_context_data(self, **kwargs):
+        context = super(LeaveView, self).get_context_data(**kwargs)
+        context['event'] = self.get_object().event
+        return context
+
+    def get_object(self):
+        user = self.request.user
+        event = get_object_or_404(Event, pk=self.kwargs['pk'])
+        return get_object_or_404(Reservation, event=event, user=user)
+
+    # Prevent the host from removing his initial reservation
+    def test_func(self):
+        if self.request.user.is_authenticated:
+            return self.request.user != self.get_object().event.host
+        return False
 
 
 class CreateEventView(CreateView):
