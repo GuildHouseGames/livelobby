@@ -18,7 +18,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='participant',
             name='type',
-            field=models.CharField(choices=[('ATTENDEE', 'Attendee'), ('HOST', 'Host')], default='ATTENDEE', max_length=8),
+            field=models.CharField(
+                choices=[('ATTENDEE', 'Attendee'),
+                         ('HOST', 'Host')],
+                default='ATTENDEE', max_length=8),
         ),
         migrations.AlterField(
             model_name='event',

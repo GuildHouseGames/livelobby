@@ -1,5 +1,5 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+# from django.core.exceptions import ObjectDoesNotExist  # Unused
+from django.http import Http404, HttpResponseRedirect  # , HttpResponse
 
 from events.models import Event, Participant
 from events.forms import JoinForm, CreateEventForm
@@ -7,6 +7,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.shortcuts import render
 from django.template.defaulttags import register
 import calendar
+
 
 class EventListView(ListView):
     template_name = 'events/event_list.html'
@@ -27,8 +28,8 @@ class EventListView(ListView):
         grouped_participants = {}
         # Count how many users are in each event
         for e in Event.objects.all():
-            grouped_participants[e] = (e.initial_size +
-            len(Participant.objects.filter(event=e))-1)
+            grouped_participants[e] = e.initial_size +\
+                    len(Participant.objects.filter(event=e)) - 1
         context.update({
             'events': Event.objects.order_by('date', 'time'),
             'participants': Participant.objects.all(),
@@ -36,9 +37,11 @@ class EventListView(ListView):
         })
         return context
 
+
 class EventView(DetailView):
     template_name = 'events/event.html'
     model = Event
+
 
 class JoinView(CreateView):
     template_name = 'events/join_event.html'
@@ -59,6 +62,7 @@ class JoinView(CreateView):
         except Event.DoesNotExist:
             raise Http404("The event does not exist")
         return {'event': self.event}
+
 
 class CreateEventView(CreateView):
     template_name = 'events/create_event.html'

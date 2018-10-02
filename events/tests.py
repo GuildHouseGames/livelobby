@@ -6,6 +6,7 @@ from events.models import Event, Participant
 from pytz import timezone
 from faker import Faker
 
+
 class ParticipantTest(TestCase):
 
     def setUp(self):
@@ -13,13 +14,17 @@ class ParticipantTest(TestCase):
 
     def test_participants_can_join_open_events(self):
         max_size = 5
-        # Participants can join whenever theres a spot free no matter what the initial size is
+        # Participants can join whenever there's a spot free
+        # no matter what the initial size is
         for initial_size in range(max_size):
-            event = Event.objects.create(initial_size=initial_size, max_size=max_size)
+            event = Event.objects.create(
+                initial_size=initial_size, max_size=max_size)
             available_spots = max_size - initial_size
             for _ in range(available_spots):
                 Participant.objects.create(event=event)
-            self.assertEqual(available_spots, Participant.objects.filter(event=event).count())
+            self.assertEqual(
+                available_spots,
+                Participant.objects.filter(event=event).count())
             event.delete()
 
     def test_participants_cannot_join_full_events(self):
@@ -34,6 +39,7 @@ class ParticipantTest(TestCase):
         participant = Participant(name=name)
         self.assertEqual(name, str(participant))
 
+
 class EventTest(TestCase):
 
     def setUp(self):
@@ -43,7 +49,8 @@ class EventTest(TestCase):
     def test_past_event_date(self):
         with self.assertRaises(ValidationError) as e:
             Event.objects.create(time=(datetime.now(self.tz) + timedelta(-1)))
-        self.assertEqual(e.exception.message, "The event time must be in the future")
+        self.assertEqual(
+            e.exception.message, "The event time must be in the future")
 
     def test_future_event_date(self):
         time = datetime.now(self.tz) + timedelta(1)
@@ -56,7 +63,9 @@ class EventTest(TestCase):
             initial_size = 2
             max_size = 1
             Event.objects.create(max_size=max_size, initial_size=initial_size)
-        self.assertEqual(e.exception.message, "The initial group size cannot be bigger than the max group size")
+        self.assertEqual(
+            e.exception.message,
+            "The initial group size cannot be bigger than the max group size")
 
     def test_valid_initial_and_max_size(self):
         size = 1
@@ -69,4 +78,4 @@ class EventTest(TestCase):
     def test_to_str(self):
         name = self.fake.name()
         event = Event.objects.create(name=name)
-        self.assertEqual(name,str(event))
+        self.assertEqual(name, str(event))

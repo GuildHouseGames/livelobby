@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='event',
             name='type',
-            field=models.CharField(choices=[('GAME', 'Game')], default='GAME', max_length=25),
+            field=models.CharField(
+                choices=[('GAME', 'Game')], default='GAME', max_length=25),
         ),
     ]

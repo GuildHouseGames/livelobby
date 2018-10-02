@@ -1,4 +1,6 @@
 from livelobby.settings.base import *
+import os
+
 DEBUG = True
 
 # Database
