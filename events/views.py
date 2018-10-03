@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponseRedirect
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
@@ -52,7 +52,7 @@ class EventView(DetailView):
     model = Event
 
 
-class JoinView(CreateView):
+class JoinView(CreateView, LoginRequiredMixin):
     template_name = 'events/join_event.html'
     model = Reservation
     form_class = JoinForm
@@ -132,7 +132,7 @@ class LeaveView(UserPassesTestMixin, DeleteView):
         return False
 
 
-class CreateEventView(CreateView):
+class CreateEventView(LoginRequiredMixin, CreateView):
     template_name = 'events/create_event.html'
     model = Event
     form_class = CreateEventForm
