@@ -4,17 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+Django = "==2.1"
 dj-database-url = "==0.5.0"
 django-heroku = "==0.3.1"
+django-extensions = "==2.1.3"
+django-material = "==2.1.3"
+faker = "==0.9.1"
+flake8 = "3.5.0"
 gunicorn = "==19.9.0"
+social-auth-app-django = "==2.1.0"
 "psycopg2" = "==2.7.5"
 pytz = "==2018.5"
 whitenoise = "==3.3.1"
-Django = "==2.1"
-faker = "*"
-django-extensions = "*"
-social-auth-app-django = "*"
-flake8 = "3.5.0"
 
 [dev-packages]
 
