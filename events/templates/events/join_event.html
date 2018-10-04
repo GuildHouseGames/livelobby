@@ -26,6 +26,8 @@
             {% endfor %}
         {% endif %}
         <form method="post" novalidate>
+          <!-- If the user is the host of this event, they won't be able to join it. -->
+          {% if event.host == user %}<fieldset disabled><p class="font-italic text-danger"><strong>Cannot join this event as you are the host.</strong></p>{% endif %}
             {% csrf_token %}
             <label>{{ form.places.label }}</label>
             <!-- For loop used to render both the field name and the required hidden input used to store the event-->
@@ -42,6 +44,7 @@
                 {% endfor %}
             {% endif %}
             <button type="submit" class="btn btn-success">Join Event</button>
+          {% if form.instance.host == user %}</fieldset>{% endif %}
         </form>
     </div>
 </div>
