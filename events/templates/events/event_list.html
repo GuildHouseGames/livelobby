@@ -21,14 +21,6 @@
   </li>
 {% endblock %}
 
-{% block login_button %}
-  {% if not user.is_authenticated %}
-    <a class="waves-effect waves-light hoverable" href="{% url 'login' %}">
-        Login
-    </a>
-  {% endif %}
-{% endblock %}
-
 {% block side_menu_button %}
   <a href="#" data-target="mobile-nav" class="right sidenav-trigger show-on-large">
       <i class="material-icons">menu</i>
@@ -36,9 +28,10 @@
 {% endblock %}
 
 {% block side_menu_content %}
-  <!-- Top Account bit -->
   {% if user.is_authenticated %}
-    <li><div class="user-view">
+    <!--Show login details-->
+    <li>
+      <div class="user-view">
         <div class="background">
           <img style="opacity: 0.3;" src="{% static 'events/pizza.jpg' %}">
         </div>
@@ -49,35 +42,37 @@
       </div>
     </li>
 
+    <!--Menu items (for logged in users)-->
     <li>
       <a href="
         {% if user.is_authenticated %} 
             {% url 'create_event_view' %}
-        {% endif %}
-      ">
+        {% endif %}">
         Create Event <i class="material-icons">add</i>
       </a>
     </li>
     <li>
-        <a href="{% url 'logout' %}">
-            Logout <i class="material-icons">exit_to_app</i>
-        </a>
+      <a href="{% url 'logout' %}">
+        Logout <i class="material-icons">exit_to_app</i>
+      </a>
     </li>
   {% else %}
-    <a href="{% url 'login' %}">
-      <div class="card-panel blue white-text" style="text-align: center">
-          Join in on the fun and create your own events when you login!
-      </div>
-    </a>
+    <!--Show login links-->
     <li>
       <a href="{% url 'login' %}">
-        Login <i class="material-icons">account_box</i>
+        Login with Social Media <i class="material-icons">account_box</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'login' %}">
+        Login with LiveLobby <i class="material-icons">account_box</i>
       </a>
     </li>
   {% endif %}
 {% endblock %}
 
 {% block js_scripts %}
+  <!--Activates sidenav-->
   <script>
       $(document).ready(function(){
           $('.sidenav').sidenav({'edge': 'right'});
@@ -86,6 +81,7 @@
 {% endblock %}
 
 {% block content %}
+  <!--Old cards, but keep the floating button at the bottom-->
   <head>
     <!--Only makes use of events-container and event styles-->
     <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
@@ -136,10 +132,14 @@
         </div>
       </div>
       {% empty %}
-      <!--Shouldn't be seen but just in case, better to show something than not-->
-      <div class="alert alert-info mx-auto" role="alert">There are no current events... why not make your own?</div>
+        <div class="card-panel blue white-text center-align">
+          There are no current events... why not make your own?
+        </div>
       {% endfor %}
     </div>
+
+
+
 
     <!-- Floating button -->
     {% if user.is_authenticated %}

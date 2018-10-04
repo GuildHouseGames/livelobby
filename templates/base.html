@@ -7,6 +7,7 @@
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}"  media="screen,projection"/>
 
+        <!--Import home-rolled CSS-->
         <link type="text/css" rel="stylesheet" href="{% static 'custom/guild_theming.css' %}"/>
 
         <!--Let browser know website is optimized for mobile-->
@@ -18,9 +19,9 @@
         <div class="navbar">
             <nav class="nav black">
                 <div class="nav-wrapper">
-                    <!-- LiveLobby Banner (desktop) -->
+                    <!-- LiveLobby Banner -->
                     <a class="brand-logo center show-on-medium-and-up" style="display: inline-block; height: 100%;" href="/">
-                        <img class="" style="height: 60%; margin: 12px 0px 6px 0px" src="{% static 'events/GuildLiveLobby.png' %}" alt="Guild Logo">
+                        <img style="height: 60%; margin: 12px 0px 6px 0px" src="{% static 'events/GuildLiveLobby.png' %}" alt="Guild Logo">
                     </a>
     
                     <!-- Side Menu button (hamburger) -->
@@ -49,6 +50,7 @@
         {% block content %}
         {% endblock %}
 
+        <!-- Javascript imports -->
         <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
         <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
         
