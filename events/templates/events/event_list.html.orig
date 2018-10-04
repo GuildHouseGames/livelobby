@@ -91,6 +91,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
   </head>
 
+<<<<<<< HEAD
   <!--Events Container Card-->
   <div class="events-container bg-secondary">
     {% for event in events %}
@@ -149,5 +150,64 @@
           </a>
       </div>
     {% endif %}
+    
+      
 
+=======
+    <!--Events Container Card-->
+    <div class="events-container bg-secondary">
+      {% for event in events %}
+       <div class="event">
+         <div class="card-group">
+           <!--Date/time card-->
+           <div class="card border-left-0 border-top-0 border-bottom-0">
+             <div class="card-block">
+               <h1 class="card-text">{{ event.date.day }}</h1>
+               <h3 class="card-text">{{ event.date.month|month_abbr|upper }}</h3>
+               <p class="card-text">{{ event.time }}</p>
+             </div>
+           </div>
+           <!--Event name, owner, description etc.-->
+           <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
+             <div class="card-block">
+               <h2 class="card-title">{{ event.name|upper }}</h2>
+               <p class="card-text"> {{ event.type }} - {{event.host.display_name }}
+               </p>
+               <p class="card-text">{{ event.description }}</p>
+             </div>
+           </div>
+           <!--Current/max # of players and join/full button-->
+           <div class="card border-0">
+             <div class="card-block">
+               <h3 class="card-text">{{ event|reserved_places }}/{{ event.max_size }}</h3>
+               <p class="card-text">Players</p>
+                 {% if user.is_authenticated %}
+                    {% if event.host == user%}
+                        <a class="btn btn-lg btn-danger"  href="{% url 'cancel_view' pk=event.pk %}">Cancel</a>
+                    {% elif event|is_joined:user%}
+                        <a class="btn btn-lg btn-primary"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% else %}
+                        {% if event|reserved_places < event.max_size %}
+                            <a class="btn btn-lg btn-primary" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                        {% else %}
+                            <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% if event|reserved_places < event.max_size %}
+                        <a class="btn btn-lg btn-primary" href="{% url 'login' %}">Join</a>
+                    {% else %}
+                        <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
+                    {% endif %}
+                {% endif %}
+             </div>
+           </div>
+         </div>
+       </div>
+       {% empty %}
+        <!--Shouldn't be seen but just in case, better to show something than not-->
+        <div class="alert alert-info mx-auto" role="alert">There are no current events... why not make your own?</div>
+       {% endfor %}
+     </div>
+>>>>>>> fe3dda2208cf6e60f9905fafdacd276d46478ef0
 {% endblock %}
