@@ -2,14 +2,10 @@
 
 {% block title %}Create Event{% endblock title %}
 
-{% block navbar_links %}
-    <li class="nav-item active">
-        <a class="nav-link" href="/">
-            <button type="button" class="btn btn-danger btn-lg">
-                Cancel
-            </button>
-        </a>
-    </li>
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
 {% endblock %}
 
 {% block content %}
