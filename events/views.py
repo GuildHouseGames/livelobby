@@ -1,13 +1,13 @@
 from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 
 from events.models import Event, Reservation
 from events.forms import CreateEventForm, JoinForm
 from django.views.generic import CreateView, DetailView, \
-    ListView, DeleteView, TemplateView
+    ListView, DeleteView, TemplateView, UpdateView
 from django.template.defaulttags import register
 from django.utils import timezone
 
@@ -175,3 +175,9 @@ class CreateEventView(LoginRequiredMixin, CreateView):
             kwargs['instance'] = Event()
         kwargs['instance'].host = self.request.user
         return kwargs
+
+class EditView(LoginRequiredMixin, UpdateView):
+    template_name = 'events/create_event.html'
+    model = Event
+    form_class = CreateEventForm
+    success_url = '/events'

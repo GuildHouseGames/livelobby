@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
-
-{% block title %}Create Event{% endblock title %}
+{% block title %}
+{% if form.instance.pk is None %}
+  Create Event
+{% else %}
+  {% if form.instance.host == user %}
+    Edit Event
+  {% else %}
+    Event details
+  {% endif %}
+{% endif %}
+{% endblock title %}
 
 {% block back_button %}
     <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
@@ -11,8 +20,17 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
-        <h2 class="card-title">Event creation form</h2>
-        <div class="card-subtitle mb-2 text-muted"> To create an event, please enter the details below.</div>
+        {% if form.instance.pk is None %}
+          <h2 class="card-title">Event creation form</h2>
+          <div class="card-subtitle mb-2 text-muted"> To create an event, please enter the details below.</div>
+        {% else %}
+          {% if form.instance.host == user %}
+            <h2 class="card-title">Event edit form</h2>
+            <div class="card-subtitle mb-2 text-muted"> To edit this event, please update the details below.</div>
+          {% else %}
+            <h2 class="card-title">Event details form</h2>
+          {% endif %}
+        {% endif %}
         </br>
         {% if form.errors %}
           <div class="alert alert-danger">
@@ -26,9 +44,11 @@
             {% endif %}
           </div>
         {% endif %}
-        <form method="post" action="/events/create/" novalidate>
+        <!-- If the user is not hosting this event, they won't be able to edit it.-->
+        {% if form.instance.host == user %}<form method="post" novalidate>{% endif %}
             {% csrf_token %}
             <div class="container-fluid">
+              {% if not form.instance.host == user %}<fieldset disabled>{% endif %}
               <div class="row">
                 <div class="col-xs-12 col-md-4">
                   <!-- Date -->
@@ -84,11 +104,18 @@
                   <br/><br/>
                 </div>
               </div>
-                <div>
-                  <button type="submit" class="btn btn-success btn-block">Create Event</button>
-                </div>
+              <div>
+                {% if form.instance.pk is None %}
+                <button type="submit" class="btn btn-success btn-block">Create Event</button>
+                {% else %}
+                  {% if form.instance.host == user %}
+                    <button type="submit" action="" class="btn btn-success btn-block" value="Update">Update Event</button>
+                  {% endif %}
+                {% endif %}
+              </div>
+              {% if not form.instance.host == user %}</fieldset>{% endif %}
             </div>
-        </form>
+        {% if form.instance.host == user %}</form>{% endif %}
     </div>
 </div>
 {% endblock %}
