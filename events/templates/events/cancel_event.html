@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
+{% endblock %}
+
+{% block title %} Cancel Event | {{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Cancellation for "{{ event.name }}"</h2>
+        <div class="card-subtitle mb-2 text-muted">To cancel the event, please confirm the following.</div>
+        <form method="post">{% csrf_token %}
+             <p>Are you sure you want to cancel this event?</p>
+             <p>Cancelling this event will prevent further players from joining.</p>
+            <input type="submit" value="Continue" class="btn btn-success btn-lg">
+        </form>
+    </div>
+</div>
+{% endblock %}

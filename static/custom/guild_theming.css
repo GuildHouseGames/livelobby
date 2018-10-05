@@ -1,0 +1,94 @@
+/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr */
+hr {
+    border: none;
+    border-top: 3px double #333;
+    color: #333;
+    overflow: visible;
+    text-align: center;
+    height: 5px;
+}
+
+hr:after {
+    background: #fff;
+    content: 'OR';
+    padding: 0 4px;
+    position: relative;
+    top: -13px;
+}
+
+/* https://materializecss.com/text-inputs.html */
+/* label color */
+.input-field label {
+  color: #000 !important;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: #2196F3 !important;
+}
+
+/* Normal Text fields */
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #2196F3 !important;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #2196F3 !important;
+  box-shadow: 0 1px 0 0 #2196F3 !important;
+}
+/* valid color */
+.input-field input[type=text].valid {
+  border-bottom: 1px solid #2196F3 ;
+  box-shadow: 0 1px 0 0 #2196F3;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+  border-bottom: 1px solid #2196F3;
+  box-shadow: 0 1px 0 0 #2196F3;
+}
+
+
+/* Password Fields */
+
+/* label focus color */
+.input-field input[type=password]:focus + label {
+  color: #2196F3 !important;
+}
+/* label underline focus color */
+.input-field input[type=password]:focus {
+  border-bottom: 1px solid #2196F3 !important;
+  box-shadow: 0 1px 0 0 #2196F3 !important;
+}
+/* valid color */
+.input-field input[type=password].valid {
+  border-bottom: 1px solid #2196F3 ;
+  box-shadow: 0 1px 0 0 #2196F3;
+}
+/* invalid color */
+.input-field input[type=password].invalid {
+  border-bottom: 1px solid #2196F3;
+  box-shadow: 0 1px 0 0 #2196F3;
+}
+
+/* Email Fields */
+
+/* label focus color */
+.input-field input[type=email]:focus + label {
+  color: #2196F3 !important;
+}
+/* label underline focus color */
+.input-field input[type=email]:focus {
+  border-bottom: 1px solid #2196F3 !important;
+  box-shadow: 0 1px 0 0 #2196F3 !important;
+}
+/* valid color */
+.input-field input[type=email].valid {
+  border-bottom: 1px solid #2196F3 ;
+  box-shadow: 0 1px 0 0 #2196F3;
+}
+/* invalid color */
+.input-field input[type=email].invalid {
+  border-bottom: 1px solid #2196F3;
+  box-shadow: 0 1px 0 0 #2196F3;
+}
