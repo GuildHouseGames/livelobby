@@ -4,81 +4,150 @@
 
 {% block title %}Guild's LiveLobby{% endblock %}
 
-{% block navbar_links %}
-    <li class="nav-item active">
-        <a class="nav-link" href="
-            {% if user.is_authenticated %} 
-                {% url 'create_event_view' %}
-            {% else %}
-                {% url 'login' %}
-            {% endif %}
-        ">
-            <button type="button" class="btn btn-primary btn-lg">
-                Create Event
-            </button>
-        </a>
+{% block navbar_buttons %}
+  <li class="hide-on-med-and-down">
+    <a class="waves-effect waves-light blue btn" href="
+      {% if user.is_authenticated %} 
+          {% url 'create_event_view' %}
+      {% else %}
+          {% url 'login' %}
+      {% endif %}">
+      {% if user.is_authenticated %} 
+          Create Event
+      {% else %}
+          Login
+      {% endif %}
+    </a>
+  </li>
+{% endblock %}
+
+{% block side_menu_button %}
+  <a href="#" data-target="mobile-nav" class="right sidenav-trigger show-on-large">
+      <i class="material-icons">menu</i>
+  </a>
+{% endblock %}
+
+{% block side_menu_content %}
+  {% if user.is_authenticated %}
+    <!--Show login details-->
+    <li>
+      <div class="user-view">
+        <div class="background">
+          <img style="opacity: 0.3;" src="{% static 'events/pizza.jpg' %}">
+        </div>
+        <!-- Default user image https://goo.gl/images/fdsMBc -->
+        <img class="circle" src="{% static 'events/default_user.png' %}">
+        <span class="text name">{{ user.display_name }}</span>
+        <span class="text email">{{ user.email }}</span>
+      </div>
     </li>
+
+    <!--Menu items (for logged in users)-->
+    <li>
+      <a href="
+        {% if user.is_authenticated %} 
+            {% url 'create_event_view' %}
+        {% endif %}">
+        Create Event <i class="material-icons">add</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        Logout <i class="material-icons">exit_to_app</i>
+      </a>
+    </li>
+  {% else %}
+    <!--Show login links-->
+    <li>
+      <a href="{% url 'login' %}">
+        Login with Social Media <i class="material-icons">account_box</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'login' %}">
+        Login with LiveLobby <i class="material-icons">account_box</i>
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
+
+{% block js_scripts %}
+  <!--Activates sidenav-->
+  <script>
+      $(document).ready(function(){
+          $('.sidenav').sidenav({'edge': 'right'});
+      });
+  </script>
 {% endblock %}
 
 {% block content %}
+  <!--Old cards, but keep the floating button at the bottom-->
   <head>
     <!--Only makes use of events-container and event styles-->
     <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
   </head>
 
-    <!--Events Container Card-->
-    <div class="events-container bg-secondary">
-      {% for event in events %}
-       <div class="event">
-         <div class="card-group">
-           <!--Date/time card-->
-           <div class="card border-left-0 border-top-0 border-bottom-0">
-             <div class="card-block">
-               <h1 class="card-text">{{ event.date.day }}</h1>
-               <h3 class="card-text">{{ event.date.month|month_abbr|upper }}</h3>
-               <p class="card-text">{{ event.time }}</p>
-             </div>
-           </div>
-           <!--Event name, owner, description etc.-->
-           <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
-             <div class="card-block">
-               <h2 class="card-title">{{ event.name|upper }}</h2>
-               <p class="card-text"> {{ event.type }} - {{event.host.display_name }}
-               </p>
-               <p class="card-text">{{ event.description }}</p>
-             </div>
-           </div>
-           <!--Current/max # of players and join/full button-->
-           <div class="card border-0">
-             <div class="card-block">
-               <h3 class="card-text">{{ event|reserved_places }}/{{ event.max_size }}</h3>
-               <p class="card-text">Players</p>
-                 {% if user.is_authenticated %}
-                    {% if event.host == user%}
-                        <a class="btn btn-lg btn-danger"  href="{% url 'cancel_view' pk=event.pk %}">Cancel</a>
-                    {% elif event|is_joined:user%}
-                        <a class="btn btn-lg btn-primary"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
-                    {% else %}
-                        {% if event|reserved_places < event.max_size %}
-                            <a class="btn btn-lg btn-primary" href="{% url 'join_view' event_id=event.id %}">Join</a>
-                        {% else %}
-                            <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
-                        {% endif %}
-                    {% endif %}
-                {% else %}
-                    {% if event|reserved_places < event.max_size %}
-                        <a class="btn btn-lg btn-primary" href="{% url 'login' %}">Join</a>
-                    {% else %}
-                        <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
-                    {% endif %}
-                {% endif %}
-             </div>
-           </div>
-         </div>
-       </div>
-       {% empty %}
-        <!--Shouldn't be seen but just in case, better to show something than not-->
-        <div class="alert alert-info mx-auto" role="alert">There are no current events... why not make your own?</div>
-       {% endfor %}
-     </div>
+  <!--Events Container Card-->
+  <div class="events-container bg-secondary">
+    {% for event in events %}
+      <div class="event">
+        <div class="card-group">
+          <!--Date/time card-->
+          <div class="card border-left-0 border-top-0 border-bottom-0">
+            <div class="card-block">
+              <h1 class="card-text">{{ event.date.day }}</h1>
+              <h3 class="card-text">{{ event.date.month|month_abbr|upper }}</h3>
+              <p class="card-text">{{ event.time }}</p>
+            </div>
+          </div>
+          <!--Event name, owner, description etc.-->
+          <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
+            <div class="card-block">
+              <h2 class="card-title">{{ event.name|upper }}</h2>
+              <p class="card-text"> {{ event.type }} - {{event.host.display_name }}
+              </p>
+              <p class="card-text">{{ event.description }}</p>
+            </div>
+          </div>
+          <!--Current/max # of players and join/full button-->
+          <div class="card border-0">
+            <div class="card-block">
+              <h3 class="card-text">{{ event|reserved_places }}/{{ event.max_size }}</h3>
+              <p class="card-text">Players</p>
+              {% if event|reserved_places == event.max_size %}
+              <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
+              {% else %}
+              <a href=
+              {% if user.is_authenticated %}
+                  {% url 'join_view' event_id=event.id %}
+              {% else %}
+                  {% url 'login' %}
+              {% endif %}
+              >
+                <button type="button" class="btn btn-lg btn-primary">Join</button>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+        <div class="card-panel blue white-text center-align">
+          There are no current events... why not make your own?
+        </div>
+      {% endfor %}
+    </div>
+
+
+
+
+    <!-- Floating button -->
+    {% if user.is_authenticated %}
+      <div class="fixed-action-btn">
+          <a class="btn-floating btn-large blue" href="{% url 'create_event_view' %}">
+            <i class="large material-icons">add</i>
+          </a>
+      </div>
+    {% endif %}
+
 {% endblock %}

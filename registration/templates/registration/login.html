@@ -4,80 +4,89 @@
 
 {% block title %}Guild's LiveLobby - Login{% endblock %}
 
-{% block navbar_links %}
-    <li class="nav-item active">
-        <a class="nav-link" href="/">
-            <button type="button" class="btn btn-danger btn-lg">
-                Cancel
-            </button>
-        </a>
-    </li>
-{% endblock %}
-
-{% block login_menu %}
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
 {% endblock %}
 
 {% block content %}
-<div class="container mt-2">
-  <div class="row justify-content-center">
-    <div class="card bg-light w-75">
-      <div class="card-body">
-        <h1 class="display-4 text-center">Login to LiveLobby</h1>
+  <div class="container">
+    <div class="container center">
+      <div class="row"></div>
+      <div class="row">
+
+        <!-- Social login buttons -->
+        <div class="row">
+          <div class="col s6 m4 offset-m2">
+            <a class="waves-effect waves-light blue btn" href="#">
+              Test Social 1
+            </a>
+          </div>
+          <div class="col s6 m4">
+            <a class="waves-effect waves-light red btn" href="#">
+              Test Social 2
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6 m4 offset-m2">
+            <a class="waves-effect waves-light blue btn" href="#">
+              Test Social 3
+            </a>
+          </div>
+          <div class="col s6 m4">
+            <a class="waves-effect waves-light red btn" href="#">
+              Test Social 4
+            </a>
+          </div>
+        </div>
+        
+        <!-- hr divider (OR line) -->
+        <div class="col s12 m8 offset-m2">
+          <hr>
+        </div>
+    
+        <!-- LiveLobby login form -->
+      
         {% if form.errors %}
           {% for field, errors in form.errors.items %}
-          <div class="alert alert-danger" role="alert">
-            {{ errors }}
-          </div>
+            <div class="col s12 m8 offset-m2">
+              <div class="red-text left-align">{{ errors }}</div>
+            </div>
           {% endfor %}
         {% endif %}
-        <div class="row my-4">
-          <div class="col">
-            <div class="card-block border-right">
-                <form method="post">
-                  {% csrf_token %}
-                  <div class="text-center">
-                    {% for field in form %}
-                      <div class="fieldWrapper">
-                          {% for error in field.errors %}
-                            <div class="alert alert-danger" role="alert">
-                              {{ error }}
-                            </div>
-                          {% endfor %}
 
-                          <label for="{{ field.html_name }}" class="lead" style="display: inline-block; width: 90px; text-align: right;">
-                            {{ field.label }}
-                          </label>
-
-                          {{ field }}
-                          {% if field.help_text %}
-                            <p class="help">{{ field.help_text|safe }}</p>
-                          {% endif %}
-                      </div>
-                    {% endfor %}
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                  </div>
-                </form>
-            </div>
-          </div>
-          <div class="col">
-            <div class="container">
-              <div class="row justify-content-center align-items-center">
-                <div class="col-6">
-                  <button type="button" class="btn btn-primary">Login with Test</button>
-                </div>
+        <div class="col s12 m8 offset-m2">
+          <form method="post">
+            {% csrf_token %} 
+            {% for field in form %}
+              <div class="input-field">
+                {{ field }}                
+                <label for="{{ field.html_name }}">{{ field.label }}</label>
+                {% if field.help_text %}
+                  <span class="helper-text" data-error="
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}">
+                    {{ field.help_text|safe }}
+                  </span>
+                {% endif %}
               </div>
+            {% endfor %}
+            <div class="center-align">
+              <button class="btn blue waves-effect waves-light" type="submit" name="action">             
+                Login <i class="material-icons right">account_box</i>
+              </button>
             </div>
-          </div>
-        </div>  
-      <div class="card-footer text-center">
-        <a href="{% url 'signup' %}" class="alert-link">
-          <button type="button" class="btn btn-info">Signup</button>
-        </a>
+          </form>
+        </div>
+      </div>
+
+      <div class="center-align" style="text-align: center">
+        Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
       </div>
     </div>
   </div>
-</div>  
 
 {% endblock %}
