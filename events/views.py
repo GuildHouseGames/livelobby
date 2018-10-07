@@ -37,7 +37,7 @@ class EventListView(ListView):
     # Converts the event date into the display string
     @register.filter
     def date_string(date):
-        return date.strftime("%d %b")
+        return date.strftime("%A %B %y")
 
     # Converts the event time into the display string
     @register.filter

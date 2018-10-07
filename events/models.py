@@ -25,6 +25,7 @@ class Event(models.Model):
     )
 
     name = models.CharField(max_length=75, default='Event')
+    game = models.CharField(max_length=75, default='Monopoly')
     date = models.DateField(db_index=True, null=True)
     time = models.TimeField(db_index=True, null=True)
     location = models.CharField(max_length=75, default='Guild')

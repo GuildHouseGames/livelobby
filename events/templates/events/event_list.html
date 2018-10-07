@@ -91,66 +91,44 @@
   <div class="events-container bg-secondary">
     {% for event in events %}
       <div class="card">
-        <div class="card-content" >
-          <div class="row center-align">
-              <div class="col s3 card-title grey-text text-darken-4">
-                  {{ event.time | time_string }}
-              </div>
-              <div class="col s6 card-title grey-text text-darken-4">
-                {{ event.name }}
-                  {% if event.is_booked%}
-                    <i class="material-icons green-text">verified_user</i>
-                  {% endif %}
-              </div>
-              <div class="col s3 card-title grey-text text-darken-4">
-                  {% if event.get_engagement_type == 'COMPETITIVE'%}
-                    <span class="red-text">{{ event.get_engagement_type_display }}</span>
-                  {% else %}
-                    <span class="blue-text">{{ event.get_engagement_type_display }}</span>
-                  {% endif %}
-              </div>
-          </div>
-          <div class="row center-align">
-              <div class="col s3 card-title grey-text text-darken-4">
-                  {{ event.date | date_string}}
-              </div>
-              <div class="col s6 card-title grey-text text-darken-6">
-                  {{ event.host.display_name}}
-              </div>
-              <div class="col s3 card-title grey-text text-darken-4">
-                  Players: {{ event|reserved_places }}/{{ event.max_size }}
-              </div>
-          </div>
-            <div class="row center-align">
-              <div class="col s3 card-title grey-text text-darken-6">
-                  {{event.date.year}}
-              </div>
-              <div class="col s6">
-                {{ event.description }}
-              </div>
-                <div class="col s3 card-title grey-text text-darken-4">
-                    {% if user.is_authenticated %}
-                        {% if event.host == user%}
-                            <a class="waves-effect waves-light btn red"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
-                        {% elif event|is_joined:user%}
-                            <a class="waves-effect waves-light btn blue"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
-                        {% else %}
-                            {% if event|reserved_places < event.max_size %}
-                                <a class="waves-effect waves-light btn blue" href="{% url 'join_view' event_id=event.id %}">Join</a>
-                            {% else %}
-                                <button type="button" class="btn red disabled">FULL</button>
-                            {% endif %}
-                        {% endif %}
+        <div class="card-content">
+            <p class="card-title activator grey-text text-darken-4">{{event.name}}</p>
+            <p class="activator grey-text text-darken-6"> {{ event.game }} - {{event.host.display_name}}</p>
+            <br>
+            <p class="grey-text text-darken-4">{{event.description}}</p>
+            <br>
+            <ul class="collection">
+              <li class="collection-item"><span> <i class="material-icons blue-text left">alarm</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+              <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+              <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+            </ul>
+        </div>
+        <div class="card-reveal">
+          <span class="card-title grey-text text-darken-2">Event Details<i class="material-icons right">close</i></span>
+          <p>{{event.description}}</p>
+        </div>
+          <div class="card-action">
+              {% if user.is_authenticated %}
+                    {% if event.host == user%}
+                        <a class="waves-effect waves-light btn red event-btn"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
+                    {% elif event|is_joined:user%}
+                        <a class="waves-effect waves-light btn blue event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
                     {% else %}
                         {% if event|reserved_places < event.max_size %}
-                            <a class="waves-effect waves-light btn blue" href="{% url 'login' %}">Join</a>
+                            <a class="waves-effect waves-light btn blue event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
                         {% else %}
-                            <button type="button" class="btn red disabled">FULL</button>
+                            <button type="button" class="btn red disabled event-btn">FULL</button>
                         {% endif %}
                     {% endif %}
-              </div>
+              {% else %}
+                    {% if event|reserved_places < event.max_size %}
+                        <a class="waves-effect waves-light btn blue event-btn" href="{% url 'login' %}">Join</a>
+                    {% else %}
+                        <button type="button" class="btn red disabled event-btn">FULL</button>
+                    {% endif %}
+              {% endif %}
+
           </div>
-        </div>
       </div>
       {% empty %}
         <div class="card-panel blue white-text center-align">
