@@ -13,6 +13,11 @@ class Event(models.Model):
         ("GAME", "Game"),
     )
 
+    ENGAGEMENT_TYPE = (
+        ("COMPETITIVE", "Competitive"),
+        ("CASUAL", "Casual"),
+    )
+
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
@@ -33,7 +38,15 @@ class Event(models.Model):
         default="GAME"
     )
 
+    engagement_type = models.CharField(
+        max_length=25,
+        choices=ENGAGEMENT_TYPE,
+        default="CASUAL"
+    )
+
     is_cancelled = models.BooleanField(default=False)
+
+    is_booked = models.BooleanField(default=False)
 
     def clean(self):
         # size validation
