@@ -9,7 +9,6 @@ from events.forms import CreateEventForm, JoinForm
 from django.views.generic import CreateView, DetailView, \
     ListView, DeleteView, TemplateView
 from django.template.defaulttags import register
-import calendar
 from django.utils import timezone
 
 from events.settings import BOOKING_TOMORROW
@@ -43,7 +42,6 @@ class EventListView(ListView):
     @register.filter
     def time_string(time):
         return time.strftime("%H:%M")
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

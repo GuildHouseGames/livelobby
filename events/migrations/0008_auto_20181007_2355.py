@@ -13,16 +13,26 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='engagement_type',
-            field=models.CharField(choices=[('COMPETITIVE', 'Competitive'), ('CASUAL', 'Casual')], default='CASUAL', max_length=25),
+            field=models.CharField(
+                choices=[
+                    ('COMPETITIVE',
+                     'Competitive'),
+                    ('CASUAL',
+                     'Casual')],
+                default='CASUAL',
+                max_length=25),
         ),
         migrations.AddField(
             model_name='event',
             name='game',
-            field=models.CharField(default='Monopoly', max_length=75),
+            field=models.CharField(
+                default='Monopoly',
+                max_length=75),
         ),
         migrations.AddField(
             model_name='event',
             name='is_booked',
-            field=models.BooleanField(default=False),
+            field=models.BooleanField(
+                default=False),
         ),
     ]
