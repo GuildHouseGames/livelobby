@@ -57,6 +57,16 @@ class JoinView(CreateView, LoginRequiredMixin):
     model = Reservation
     form_class = JoinForm
 
+    # Converts the event date into the display string
+    @register.filter
+    def date_string(date):
+        return date.strftime("%A %B %y")
+
+    # Converts the event time into the display string
+    @register.filter
+    def time_string(time):
+        return time.strftime("%H:%M")
+
     def get_context_data(self, **kwargs):
         context = super(JoinView, self).get_context_data(**kwargs)
         context['event'] = self.get_event()
