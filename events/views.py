@@ -9,7 +9,6 @@ from events.forms import CreateEventForm, JoinForm
 from django.views.generic import CreateView, DetailView, \
     ListView, DeleteView, TemplateView
 from django.template.defaulttags import register
-import calendar
 from django.utils import timezone
 
 from events.settings import BOOKING_TOMORROW
@@ -34,10 +33,15 @@ class EventListView(ListView):
     def get_reservation_pk(event, user):
         return get_object_or_404(Reservation, event=event, user=user).pk
 
-    # Converts a given month number to an abbreviation (eg. 8 = Aug)
+    # Converts the event date into the display string
     @register.filter
-    def month_abbr(month_num):
-        return calendar.month_abbr[int(month_num)]
+    def date_string(date):
+        return date.strftime("%A %B %y")
+
+    # Converts the event time into the display string
+    @register.filter
+    def time_string(time):
+        return time.strftime("%H:%M")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
