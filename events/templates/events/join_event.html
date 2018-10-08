@@ -9,22 +9,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title">Registration for "{{ event.name }}"</h2>
-        <div class="card-subtitle mb-2 text-muted"> To join the event, please enter your details below.</div>
-        </br>
-        {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
+<div class="container">
+  <div class="card">
+    <div class="card-content">
+        <span class="card-title">Registration for "{{ event.name }}"</span>
+        <div class="grey-text text-darken-5">To join the event, please enter your details below.</div>
         <form method="post" novalidate>
             {% csrf_token %}
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                        <br>
+                    <div class="red-text left-align">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+            <br>
             <label>{{ form.places.label }}</label>
-            <!-- For loop used to render both the field name and the required hidden input used to store the event-->
+            <!-- For loop used to render both the field name-->
             {% for field in form %}
                 <div class="form-group">
                     <div class="fieldWrapper">
@@ -34,11 +34,14 @@
             {% endfor %}
             {% if form.places.errors %}
                 {% for error in form.places.errors %}
-                    <p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>
+                    <div class="red-text left-align">{{ error }}</div>
                 {% endfor %}
             {% endif %}
-            <button type="submit" class="btn btn-success">Join Event</button>
+            <br>
+            <button type="submit" class="btn waves-effect waves-light blue">Join Event</button>
         </form>
     </div>
+  </div>
 </div>
+
 {% endblock %}
