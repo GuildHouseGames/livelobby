@@ -110,7 +110,8 @@ class CancelView(UserPassesTestMixin, SingleObjectMixin, TemplateView):
         return HttpResponseRedirect('/events')
 
     def test_func(self):
-        if self.request.user.is_authenticated and not self.get_object().is_cancelled:
+        if self.request.user.is_authenticated and \
+                not self.get_object().is_cancelled:
             return self.request.user.pk == self.get_object().host.pk
         return False
 
