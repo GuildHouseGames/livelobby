@@ -98,9 +98,13 @@
             <p class="grey-text text-darken-4">{{event.description}}</p>
             <br>
             <ul class="collection">
-              <li class="collection-item"><span> <i class="material-icons blue-text left">alarm</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
-              <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
-              <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+
             </ul>
         </div>
         <div class="card-reveal">
