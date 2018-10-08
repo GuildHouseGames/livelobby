@@ -18,38 +18,31 @@
       <div class="row">
 
         <!-- Social login buttons -->
-        <div class="row">
-          <div class="col s6 m4 offset-m2">
-            <a class="waves-effect wa ves-light blue btn" href="{% provider_login_url 'google' %}">
-              Gmail
+        <!-- https://terrymooreii.github.io/materialize-social/ -->
+        <div class="col s12 m6 offset-m3 all">
+          <div class="row usage google">
+            <a class="waves-effect waves-light col s12 btn social google" href="{% provider_login_url 'google' %}">
+              <i class="fa fa-fw fa-google"></i> Sign in with google
             </a>
           </div>
-          <div class="col s6 m4">
-            <a class="waves-effect waves-light red btn" href="#">
-              Test Social 2
+          <div class="row usage facebook">
+            <a class="waves-effect waves-light col s12 btn social facebook" href="{% provider_login_url 'facebook' %}">
+              <i class="fa fa-fw fa-facebook"></i> Sign in with facebook 
             </a>
           </div>
-        </div>
-        <div class="row">
-          <div class="col s6 m4 offset-m2">
-            <a class="waves-effect waves-light blue btn" href="#">
-              Test Social 3
-            </a>
-          </div>
-          <div class="col s6 m4">
-            <a class="waves-effect waves-light red btn" href="#">
-              Test Social 4
+          <div class="row usage twitter">
+            <a class="waves-effect waves-light col s12 btn social twitter">
+              <i class="fa fa-fw fa-twitter"></i> Sign in with twitter
             </a>
           </div>
         </div>
-        
+          
         <!-- hr divider (OR line) -->
         <div class="col s12 m8 offset-m2">
           <hr>
         </div>
     
         <!-- LiveLobby login form -->
-      
         {% if form.errors %}
           {% for field, errors in form.errors.items %}
             <div class="col s12 m8 offset-m2">
