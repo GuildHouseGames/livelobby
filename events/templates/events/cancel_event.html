@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+
+{% load static %}
+
+
 {% block back_button %}
     <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
         <i class="large material-icons">arrow_back</i> 
@@ -9,15 +13,25 @@
 {% block title %} Cancel Event | {{ event.name }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title">Cancellation for "{{ event.name }}"</h2>
-        <div class="card-subtitle mb-2 text-muted">To cancel the event, please confirm the following.</div>
-        <form method="post">{% csrf_token %}
-             <p>Are you sure you want to cancel this event?</p>
-             <p>Cancelling this event will prevent further players from joining.</p>
-            <input type="submit" value="Continue" class="btn btn-success btn-lg">
-        </form>
+  <head>
+    <!--Only makes use of events-container and event styles-->
+    <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
+  </head>
+    <div class="container">
+      <form method="post" id="cancel-form">{% csrf_token %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Cancel "{{event.name}}"?</span>
+              <div class="divider"></div>
+              <br>
+              <p class="card-text">Completing this action will permanently delete this event event, removing it from the LiveLobby home page and preventing more players from joining.</p>
+
+          </div>
+          <div class="card-action">
+            <a class="blue-text" href="{% url 'event_list_view' %}" >Keep</a>
+            <a href="#" onclick="document.getElementById('cancel-form').submit();" class="red-text">Delete</a>
+          </div>
+        </div>
+      </form>
     </div>
-</div>
 {% endblock %}
