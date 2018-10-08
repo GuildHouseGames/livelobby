@@ -52,7 +52,7 @@ class EventView(DetailView):
     model = Event
 
 
-class JoinView(CreateView, LoginRequiredMixin):
+class JoinView(LoginRequiredMixin, CreateView):
     template_name = 'events/join_event.html'
     model = Reservation
     form_class = JoinForm
