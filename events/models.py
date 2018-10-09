@@ -82,6 +82,10 @@ class Event(models.Model):
             Reservation.objects.create(
                 user=self.host, event=self, places=self.initial_size)
 
+    def player_list(self):
+        players = Reservation.objects.filter(event=self)
+        return players
+
     def reserved_places(self):
         reservations = Reservation.objects.filter(event=self)
         return reservations.aggregate(

@@ -55,6 +55,21 @@ class EventView(DetailView):
     template_name = 'events/event.html'
     model = Event
 
+    # Returns number of spots filled for an event
+    @register.filter
+    def reserved_places(event):
+        return event.reserved_places()
+
+    # Checks if an event has been joined by the user
+    @register.filter
+    def has_joined(event, user):
+        return event.is_joined(user)
+
+    # Converts the event date into the display string
+    @register.filter
+    def detail_date_string(date):
+        return date.strftime("%A %B %y %Y")
+
 
 class JoinView(LoginRequiredMixin, CreateView):
     template_name = 'events/join_event.html'
