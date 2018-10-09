@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %} Create Event {% endblock title %}
+{% block title %}Create Event{% endblock title %}
+
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
+{% endblock %}
 
 {% block content %}
 <div class="card">
@@ -53,9 +59,9 @@
                   <br/><br/>
 
                   <!-- Host -->
-                  <label class="font-weight-bold">{{ form.host.label }}</label>
-                  {% if form.host.errors %}{% for error in form.host.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
-                  {{ form.host }}<br/>{{ form.host.help_text|safe }}
+                  <label class="font-weight-bold">{{ form.host_name.label }}</label>
+                  {% if form.host_name.errors %}{% for error in form.host_name.errors %}<p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>{% endfor %}{% endif %}</br>
+                  {{ form.host_name }}<br/>{{ form.host_name.help_text|safe }}
 
                   <!-- Description -->
                   <label class="font-weight-bold">{{ form.description.label }}</label>

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Guild's LiveLobby - Signup{% endblock %}
+
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="{% url 'login' %}">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="container center">
+      <h3>LiveLobby Signup</h3>
+      <div class="row">
+        {% if form.errors %}
+          {% for field, errors in form.errors.items %}
+            <div class="col s12 m8 offset-m2">
+              <div class="red-text left-align">{{ errors }}</div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="col s12 m8 offset-m2">
+          <form method="post">
+            {% csrf_token %} 
+            {% for field in form %}
+              <div class="input-field">
+                {{ field }}                
+                <label for="{{ field.html_name }}">{{ field.label }}</label>
+                {% if field.help_text %}
+                  <span class="helper-text" data-error="
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}">
+                    {{ field.help_text|safe }}
+                  </span>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <div class="center-align">
+              <button class="btn blue waves-effect waves-light" type="submit" name="action">             
+                Signup <i class="material-icons right">edit</i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

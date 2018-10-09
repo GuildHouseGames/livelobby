@@ -1,52 +1,61 @@
 {% load static %}
 <html>
     <head>
-            <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-            <title>{% block title %}{% endblock %}</title>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}"  media="screen,projection"/>
+
+        <!--Import home-rolled CSS-->
+        <link type="text/css" rel="stylesheet" href="{% static 'custom/guild_theming.css' %}"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title>{% block title %}{% endblock %}</title>
     </head>
-    <body class="{% block body_class %}bg-secondary{% endblock %}">
-        
-        <!--
-            Header Card
-
-            Content in the header has sticky_top enabled, so it will remain
-            at the top of the screen as you scroll down the page.
-        -->
-        <header class="container-fluid text-white bg-dark border-0 rounded-0 h-18 mh-18 px-1 sticky-top">
-            
-            <!-- Guild LiveLobby Banner -->
-            <div class="row no-gutters justify-content-center">
-                <div class="col-1 mr-1 align-self-center">
-                    <a href="http://guild.house">
-                        <img class="float-right" style="height: 40px; width: 120px;" src="{% static 'events/guild_white.png' %}" alt="Guild Logo">
+    <body>
+        <div class="navbar">
+            <nav class="nav black">
+                <div class="nav-wrapper">
+                    <!-- LiveLobby Banner -->
+                    <a class="brand-logo center show-on-medium-and-up" style="display: inline-block; height: 100%;" href="/">
+                        <img style="height: 60%; margin: 12px 0px 6px 0px" src="{% static 'events/GuildLiveLobby.png' %}" alt="Guild Logo">
                     </a>
-                </div>
-                <div class="col-1 ml-1">
-                    <p class="text-left" style="font-size: 30px; transform: translateY(15%)">LiveLobby</p>
-                </div>
-            </div>
-        
-            <!--
-                Header Extension (optional)
-                
-                Add any header extensions in this block
-                e.g. subtitles, extra navigation etc.
-
-                Empty div tags are automatically hidden,
-                so this will be completely hidden if not implemented.
-
-                Use header_extension_contained to use the provided div tag
-                or header_extension to freely extend.
-            -->
-            {% block header_extension %}
-                <div class="row no-gutters justify-content-center">
-                    {% block header_extension_contained %}
+    
+                    <!-- Side Menu button (hamburger) -->
+                    {% block side_menu_button %}
                     {% endblock %}
+
+                    <!-- Back button -->
+                    {% block back_button %}
+                    {% endblock %}
+
+                    <!-- Banner Buttons (right) -->
+                    <ul class="right">
+                        {% block navbar_buttons %}
+                        {% endblock %}
+                    </ul>
                 </div>
+            </nav>
+        </div>
+
+        <!-- Side Menu -->
+        <ul class="sidenav" id="mobile-nav">
+            {% block side_menu_content %}
             {% endblock %}
-        </header>
+        </ul>
 
         {% block content %}
         {% endblock %}
+
+        <!-- Javascript imports -->
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+        <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
+        
+        {% block js_scripts %}
+        {% endblock %}
+
     </body>
 </html>
