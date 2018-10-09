@@ -67,8 +67,8 @@ class EventView(DetailView):
 
     # Converts the event date into the display string
     @register.filter
-    def date_string(date):
-        return date.strftime("%A %B %y")
+    def detail_date_string(date):
+        return date.strftime("%A %B %y %Y")
 
 
 class JoinView(LoginRequiredMixin, CreateView):
