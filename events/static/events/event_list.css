@@ -5,3 +5,8 @@
 body{
     background-color: #e0e0e0;
 }
+
+ul.collection, li.collection-item {
+  border: 0!important;
+  box-shadow: none!important;
+}
