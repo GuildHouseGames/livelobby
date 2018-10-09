@@ -47,7 +47,7 @@
                         {% endfor %}
                     {% endif %}
                     <br>
-                    <label>{{ form.places.label }}</label>
+                    <label for="places"> Group Size (Including {{user.display_name}})</label>
                     <!-- For loop used to render both the field name-->
                     {% for field in form %}
                         <div class="form-group">
