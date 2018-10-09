@@ -8,6 +8,9 @@ class JoinForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ('places',)
+        labels = {
+            'places': 'Group size (Including yourself)',
+        }
         widgets = {
             'places': forms.NumberInput(
                 attrs={
