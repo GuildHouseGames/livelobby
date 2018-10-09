@@ -87,8 +87,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -160,8 +158,14 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = "email" # Defaults to username_email
+ACCOUNT_USERNAME_REQUIRED = False       # Defaults to True
+ACCOUNT_EMAIL_REQUIRED = True           # Defaults to False
+# SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
+# SOCIALACCOUNT_AUTO_SIGNUP = True
+# SOCIALACCOUNT_EMAIL_REQUIRED = False
+# ACCOUNT_ADAPTER = "myproject.adapter.MyLoginAccountAdapter"
+# SOCIALACCOUNT_ADAPTER = 'users.adapter.MySocialAccountAdapter'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'

@@ -1,5 +1,5 @@
 {% load static %}
-{% load socialaccount %}
+{% load account socialaccount %}
 {% load fontawesome %}
 
 <html>
@@ -49,6 +49,7 @@
             }(document, 'script', 'facebook-jssdk'));
         </script>
         
+        <!-- Top bar -->
         <div class="navbar">
             <nav class="nav black">
                 <div class="nav-wrapper">
@@ -84,7 +85,9 @@
         {% endblock %}
 
         <!-- Javascript imports -->
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script> 
+ 
         <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
         
         {% block js_scripts %}

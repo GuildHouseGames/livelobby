@@ -21,5 +21,6 @@ class MyCustomSocialSignupForm(SignupForm):
 
         # Add your own processing here.
 
+
         # You must return the original result.
         return user
