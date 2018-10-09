@@ -106,8 +106,7 @@
   <div class="col s12 blue">
       <div class="col-content white-text" align="center">
         <h2> {% if event.host == user%}
-          <img src="{% static 'events/Edit_icon.png' %}"
-          style="height: 40px; width: 40px; margin-top:10px" align="top">
+          <i class="material-icons" style="font-size:40px;">mode_edit</i>
           {% endif %}
           {{ event.game|upper }}</h2>
         <h4> {{ event.name|upper }} </h4>
@@ -125,9 +124,8 @@
 
 <div class="row" style="display: flex; flex-wrap: wrap; padding:0px">
   <div class="col m4 s12" style="border-right:3px solid #e0e0e0;">
-      <div class="col-content" style="align:left; padding:5%;">
-        <p><img src="{% static 'events/Location_icon.png' %}"
-          style="height: 50px; width: 50px;" align="left"></p>
+      <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
+        <i class="material-icons blue-text left" style="font-size:60px; margin-top:10px;">location_on</i>
           <h6 style="padding-left:55px;"><b>Guild</b>
           {% if event.is_booked%}
           <span style="color: green; margin-left:10px;"><b>BOOKED
@@ -140,33 +138,32 @@
   </div>
 
   <div class="col m4 s12" style="border-right:3px solid #e0e0e0; padding-bottom:10px;">
-      <div class="col-content" style="align:left; padding:5%;">
-        <p><img src="{% static 'events/Calendar_icon.png' %}" style="height: 50px; width: 50px;" align="left"></p>
-        <h6 style="padding-left:65px;"> {{event.date | date_string}} </h6>
-        <h6 style="padding-left:65px;"> {{ event.time|date:"P"|capfirst }}</h6>
+      <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
+        <i class="material-icons blue-text left" style="font-size:60px; margin-top:10px;">calendar_today</i>
+        <h6 style="padding-left:65px; margin-top:15px;"> {{event.date | date_string}} </h6>
+        <h6 style="padding-left:65px;"> {{ event.time|time:"g:iA"|lower }}</h6>
       </div>
   </div>
 
   <div class="col m4 s12" style="padding-bottom:20px;">
-      <div class="col-content" style="align:left; padding:5%;">
-        <p><img src="{% static 'events/Person_icon.png' %}"
-          style="height: 50px; width: 50px;" align="left"></p>
-        <h5 style="padding-top:10px; margin:0; display: inline-block;"> {{ event|reserved_places }}/{{ event.max_size }}</h5>
+      <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
+        <i class="material-icons blue-text left" style="font-size:60px; margin-top:5px;">accessibility_new</i>
+        <h5 style="padding-top:10px; margin-top:12px; display: inline-block;"> {{ event|reserved_places }}/{{ event.max_size }}</h5>
         {% if event.host == user%}
-          <a class="waves-effect waves-light red btn-large" style="float:right; width:50%;"
+          <a class="waves-effect waves-light red btn-large" style="float:right; margin-top:12px; width:50%;"
           href="{% url 'cancel_view' pk=event.pk %}">
             Cancel Event<i class="material-icons right">delete</i></a>
         {% elif event|has_joined:user%}
-          <a class="waves-effect waves-light red btn-large" style="float:right; width:50%;"
+          <a class="waves-effect waves-light red btn-large" style="float:right; margin-top:12px; width:50%;"
           href="{% url 'leave_view' pk=event.pk %}">
             Leave Event<i class="material-icons right">cancel</i></a>
         {% else %}
           {% if event|reserved_places < event.max_size %}
-            <a class="waves-effect waves-light blue btn-large" style="float:right; width:50%;"
+            <a class="waves-effect waves-light blue btn-large" style="float:right; margin-top:12px; width:50%;"
             href="{% url 'join_view' event_id=event.id %}">
               Join Event<i class="material-icons right">person_add</i></a>
           {% else %}
-            <a class="waves-effect waves-light btn-large disabled" style="float:right; width:50%;">
+            <a class="waves-effect waves-light btn-large disabled" style="float:right; margin-top:12px; width:50%;">
               EVENT FULL<i class="material-icons right">event_busy</i></a>
           {% endif %}
         {% endif %}
