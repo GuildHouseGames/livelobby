@@ -7,12 +7,12 @@
 {% block navbar_buttons %}
   <li class="hide-on-med-and-down">
     <a class="waves-effect waves-light blue btn" href="
-      {% if user.is_authenticated %} 
+      {% if user.is_authenticated %}
           {% url 'create_event_view' %}
       {% else %}
           {% url 'login' %}
       {% endif %}">
-      {% if user.is_authenticated %} 
+      {% if user.is_authenticated %}
           Create Event
       {% else %}
           Login
@@ -45,7 +45,7 @@
     <!--Menu items (for logged in users)-->
     <li>
       <a href="
-        {% if user.is_authenticated %} 
+        {% if user.is_authenticated %}
             {% url 'create_event_view' %}
         {% endif %}">
         Create Event <i class="material-icons">add</i>
@@ -128,6 +128,8 @@
                     {% endif %}
               {% endif %}
 
+              <a class="btn btn-lg btn-primary" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              
           </div>
       </div>
       {% empty %}
