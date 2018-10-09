@@ -108,8 +108,8 @@
         <h2> {% if event.host == user%}
           <i class="material-icons" style="font-size:40px;">mode_edit</i>
           {% endif %}
-          {{ event.game|upper }}</h2>
-        <h4> {{ event.name|upper }} </h4>
+          {{ event.name|upper }}</h2>
+        <h4> {{ event.game|upper }} </h4>
         <h5> {{ event.description }} </h5>
         {% if event.engagement_type == CASUAL%}
         <img src="{% static 'events/CASUAL.png' %}"
@@ -140,7 +140,7 @@
   <div class="col m4 s12" style="border-right:3px solid #e0e0e0; padding-bottom:10px;">
       <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
         <i class="material-icons blue-text left" style="font-size:60px; margin-top:10px;">calendar_today</i>
-        <h6 style="padding-left:65px; margin-top:15px;"> {{event.date | date_string}} </h6>
+        <h6 style="padding-left:65px; margin-top:15px;"> {{event.date | detail_date_string}} </h6>
         <h6 style="padding-left:65px;"> {{ event.time|time:"g:iA"|lower }}</h6>
       </div>
   </div>
