@@ -4,14 +4,15 @@ from django.views import generic
 
 from users.forms import LiveLobbyUserCreationForm
 
+<<<<<<< HEAD
 from allauth.socialaccount.forms import SignupForm
-
+=======
+>>>>>>> materialize
 
 class SignUpView(generic.CreateView):
     form_class = LiveLobbyUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'users/signup.html'
-
 
 class MyCustomSocialSignupForm(SignupForm):
 

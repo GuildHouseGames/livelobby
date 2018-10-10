@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load account socialaccount %}
+
+<!-- Get list of social accounts used -->
+{% get_social_accounts user as accounts %}
 
 {% block title %}Guild's LiveLobby{% endblock %}
 
@@ -22,8 +26,18 @@
 {% endblock %}
 
 {% block side_menu_button %}
-  <a href="#" data-target="mobile-nav" class="right sidenav-trigger show-on-large">
-      <i class="material-icons">menu</i>
+
+  <!-- if accounts 
+   user.socialaccount_set.all.0.get_avatar_url  -->
+
+  <!-- Default user image https://goo.gl/images/fdsMBc -->
+  <a href="#" data-target="mobile-nav" style="display: inline-block; height: 100%;" class="right sidenav-trigger show-on-large">
+    <img class="circle" style="height: 60%; margin: 12px 0px 6px 0px" src="
+      {% if user.is_authenticated and user.profile_picture != '' %}
+        {{ user.profile_picture }}
+      {% else %}
+        {% static 'events/default_user.png' %}
+      {% endif %}">
   </a>
 {% endblock %}
 
@@ -35,9 +49,17 @@
         <div class="background">
           <img style="opacity: 0.3;" src="{% static 'events/pizza.jpg' %}">
         </div>
-        <!-- Default user image https://goo.gl/images/fdsMBc -->
-        <img class="circle" src="{% static 'events/default_user.png' %}">
+
+        <!-- https://stackoverflow.com/questions/29082098/django-allauth-retrieve-avatar-profile-pictures -->
+        <img class="circle" src="
+          {% if user.is_authenticated and user.profile_picture != '' %}
+            {{ user.profile_picture }}
+          {% else %}
+            {% static 'events/default_user.png' %}
+          {% endif %}">
+        <!-- <img class="circle" src="{{ user.socialaccount_set.all.0.get_avatar_url }}"> -->
         <span class="text name">{{ user.display_name }}</span>
+        <!-- <span class="text name">{{ user.socialaccount_set.all.0.extra_data.name }}</span> -->
         <span class="text email">{{ user.email }}</span>
       </div>
     </li>
@@ -45,8 +67,8 @@
     <!--Menu items (for logged in users)-->
     <li>
       <a href="
-        {% if user.is_authenticated %}
-            {% url 'create_event_view' %}
+        {% if user.is_authenticated %} 
+          {% url 'create_event_view' %}
         {% endif %}">
         Create Event <i class="material-icons">add</i>
       </a>

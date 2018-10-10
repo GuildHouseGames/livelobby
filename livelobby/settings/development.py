@@ -10,3 +10,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, '../../db.sqlite3'),  # NOQA
     }
 }
+
+INSTALLED_APPS += (
+    'sslserver',
+)
+
+SECURE_SSL_REDIRECT = False
