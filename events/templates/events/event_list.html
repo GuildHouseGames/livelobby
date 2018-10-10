@@ -11,12 +11,12 @@
 {% block navbar_buttons %}
   <li class="hide-on-med-and-down">
     <a class="waves-effect waves-light blue btn" href="
-      {% if user.is_authenticated %} 
+      {% if user.is_authenticated %}
           {% url 'create_event_view' %}
       {% else %}
           {% url 'login' %}
       {% endif %}">
-      {% if user.is_authenticated %} 
+      {% if user.is_authenticated %}
           Create Event
       {% else %}
           Login
@@ -110,48 +110,49 @@
   </head>
 
   <!--Events Container Card-->
-  <div class="events-container bg-secondary">
+  <div class="container">
     {% for event in events %}
-      <div class="event">
-        <div class="card-group">
-          <!--Date/time card-->
-          <div class="card border-left-0 border-top-0 border-bottom-0">
-            <div class="card-block">
-              <h1 class="card-text">{{ event.date.day }}</h1>
-              <h3 class="card-text">{{ event.date.month|month_abbr|upper }}</h3>
-              <p class="card-text">{{ event.time }}</p>
-            </div>
-          </div>
-          <!--Event name, owner, description etc.-->
-          <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
-            <div class="card-block">
-              <h2 class="card-title">{{ event.name|upper }}</h2>
-              <p class="card-text"> {{ event.type }} - {{event.host.display_name }}
-              </p>
-              <p class="card-text">{{ event.description }}</p>
-            </div>
-          </div>
-          <!--Current/max # of players and join/full button-->
-          <div class="card border-0">
-            <div class="card-block">
-              <h3 class="card-text">{{ event|reserved_places }}/{{ event.max_size }}</h3>
-              <p class="card-text">Players</p>
-              {% if event|reserved_places == event.max_size %}
-              <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
-              {% else %}
-              <a href=
-              {% if user.is_authenticated %}
-                  {% url 'join_view' event_id=event.id %}
-              {% else %}
-                  {% url 'login' %}
-              {% endif %}
-              >
-                <button type="button" class="btn btn-lg btn-primary">Join</button>
-              </a>
-              {% endif %}
-            </div>
-          </div>
+      <div class="card">
+        <div class="card-content">
+            <p class="card-title grey-text text-darken-4">{{event.name}}</p>
+            <p class="activator grey-text text-darken-6"> {{ event.game }} - {{event.host.display_name}}</p>
+            <br>
+            <p class="grey-text text-darken-4">{{event.description}}</p>
+            <br>
+            <ul class="collection">
+                <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+
+            </ul>
         </div>
+          <div class="card-action">
+              {% if user.is_authenticated %}
+                    {% if event.host == user%}
+                        <a class="waves-effect waves-light btn red event-btn"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
+                    {% elif event|is_joined:user%}
+                        <a class="waves-effect waves-light btn blue event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% else %}
+                        {% if event|reserved_places < event.max_size %}
+                            <a class="waves-effect waves-light btn blue event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                        {% else %}
+                            <button type="button" class="btn red disabled event-btn">FULL</button>
+                        {% endif %}
+                    {% endif %}
+              {% else %}
+                    {% if event|reserved_places < event.max_size %}
+                        <a class="waves-effect waves-light btn blue event-btn" href="{% url 'login' %}">Join</a>
+                    {% else %}
+                        <button type="button" class="btn red disabled event-btn">FULL</button>
+                    {% endif %}
+              {% endif %}
+
+              <a class="btn btn-lg btn-primary" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              
+          </div>
       </div>
       {% empty %}
         <div class="card-panel blue white-text center-align">
@@ -159,10 +160,6 @@
         </div>
       {% endfor %}
     </div>
-
-
-
-
     <!-- Floating button -->
     {% if user.is_authenticated %}
       <div class="fixed-action-btn">

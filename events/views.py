@@ -9,35 +9,45 @@ from events.forms import CreateEventForm, JoinForm
 from django.views.generic import CreateView, DetailView, \
     ListView, DeleteView, TemplateView
 from django.template.defaulttags import register
-import calendar
 from django.utils import timezone
 
 from events.settings import BOOKING_TOMORROW
 
 
+# Returns number of spots filled for an event
+@register.filter
+def reserved_places(event):
+    return event.reserved_places()
+
+
+# Checks if an event has been joined by the user
+@register.filter
+def is_joined(event, user):
+    return event.is_joined(user)
+
+# Return the reservation for an event
+@register.filter
+def get_reservation_pk(event, user):
+    return get_object_or_404(Reservation, event=event, user=user).pk
+
+# Converts the event date into the display string
+@register.filter
+def date_string(date):
+    return date.strftime("%A, %-d %B %y")
+
+# Converts the event time into the display string
+@register.filter
+def time_string(time):
+    return time.strftime("%H:%M")
+
+# Converts the event date into the display string
+@register.filter
+def detail_date_string(date):
+    return date.strftime("%A %d %B %Y")
+
 class EventListView(ListView):
     template_name = 'events/event_list.html'
     model = Event
-
-    # Returns number of spots filled for an event
-    @register.filter
-    def reserved_places(event):
-        return event.reserved_places()
-
-    # Checks if an event has been joined by the user
-    @register.filter
-    def is_joined(event, user):
-        return event.is_joined(user)
-
-    # Return the reservation for an event
-    @register.filter
-    def get_reservation_pk(event, user):
-        return get_object_or_404(Reservation, event=event, user=user).pk
-
-    # Converts a given month number to an abbreviation (eg. 8 = Aug)
-    @register.filter
-    def month_abbr(month_num):
-        return calendar.month_abbr[int(month_num)]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,10 +62,20 @@ class EventView(DetailView):
     model = Event
 
 
-class JoinView(CreateView, LoginRequiredMixin):
+class JoinView(LoginRequiredMixin, CreateView):
     template_name = 'events/join_event.html'
     model = Reservation
     form_class = JoinForm
+
+    # Converts the event date into the display string
+    @register.filter
+    def date_string(date):
+        return date.strftime("%A, %-d %B %y")
+
+    # Converts the event time into the display string
+    @register.filter
+    def time_string(time):
+        return time.strftime("%H:%M")
 
     def get_context_data(self, **kwargs):
         context = super(JoinView, self).get_context_data(**kwargs)
@@ -106,7 +126,8 @@ class CancelView(UserPassesTestMixin, SingleObjectMixin, TemplateView):
         return HttpResponseRedirect('/events')
 
     def test_func(self):
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and \
+                not self.get_object().is_cancelled:
             return self.request.user.pk == self.get_object().host.pk
         return False
 

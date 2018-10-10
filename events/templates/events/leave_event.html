@@ -1,23 +1,36 @@
 {% extends 'base.html' %}
 
+
+{% load static %}
+
+
 {% block back_button %}
     <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
-        <i class="large material-icons">arrow_back</i> 
+        <i class="large material-icons">arrow_back</i>
     </a>
 {% endblock %}
 
-{% block title %} Leave Event | {{ event.name }}{% endblock %}
+{% block title %}Leave Event | {{ event.name }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title">Leave "{{ event.name }}"</h2>
-        <div class="card-subtitle mb-2 text-muted">To leave the event, please confirm the following.</div>
-        <form method="post">{% csrf_token %}
-             <p>Are you sure you want to leave this event?</p>
-             <p>Leaving this event will remove all reservations placed by your account.</p>
-            <input type="submit" value="Leave" class="btn btn-success btn-lg">
-        </form>
+  <head>
+    <!--Only makes use of events-container and event styles-->
+    <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
+  </head>
+    <div class="container">
+      <form method="post" id="leave-form">{% csrf_token %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Leave "{{event.name}}"?</span>
+              <div class="divider"></div>
+              <br>
+                <p>Are you sure you want to leave this event? Leaving this event will remove all reservations placed by your account.</p>
+          </div>
+          <div class="card-action">
+            <a class="blue-text" href="{% url 'event_list_view' %}" >Stay</a>
+            <a href="#" onclick="document.getElementById('leave-form').submit();" class="blue-text">Leave</a>
+          </div>
+        </div>
+      </form>
     </div>
-</div>
 {% endblock %}
