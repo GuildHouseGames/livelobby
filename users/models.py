@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.templatetags.static import static
 
+
 class LiveLobbyUserManager(UserManager):
     pass
 
@@ -16,6 +17,7 @@ class LiveLobbyUser(AbstractUser):
 
     objects = LiveLobbyUserManager()
 
+
 def save_profile(sender, instance, **kwargs):
     print(instance)
     instance.user.display_name = instance.extra_data['name']
@@ -23,5 +25,5 @@ def save_profile(sender, instance, **kwargs):
     instance.user.profile_picture = instance.get_avatar_url()
     instance.user.save()
 
-post_save.connect(save_profile, sender=SocialAccount)
 
+post_save.connect(save_profile, sender=SocialAccount)

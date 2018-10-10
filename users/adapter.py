@@ -7,11 +7,13 @@ from django.shortcuts import redirect
 from django.conf import settings
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
+
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     '''
-    Overrides allauth.socialaccount.adapter.DefaultSocialAccountAdapter.pre_social_login to 
+    Overrides allauth.socialaccount.adapter.DefaultSocialAccountAdapter.pre_social_login to
     perform some actions right after successful login
     '''
+
     def pre_social_login(self, request, sociallogin):
         pass
 
