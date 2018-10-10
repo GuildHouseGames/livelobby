@@ -22,57 +22,42 @@ class JoinForm(forms.ModelForm):
 
 
 class CreateEventForm(forms.ModelForm):
-    time = forms.ChoiceField(
-        choices=BOOKING_TIMES_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-control'}), required=True,
-        help_text="The time this event will take place"
-    )
-
-    date = forms.DateField(
-        widget=forms.SelectDateWidget(
-            attrs={
-                'class': 'form-control snps-inline-select'}),
-        help_text="The date your event will take place")
-
-    max_size = forms.ChoiceField(
-        choices=MAX_SIZE_CHOICES,
-        help_text="The maximum number of players for this event",
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-
-    initial_size = forms.ChoiceField(
-        choices=INITIAL_SIZE_CHOICES,
-        help_text="The initial number of players for this event (Including"
-                  " the host, must be below the maximum number of players)",
-        widget=forms.Select(
-            attrs={
-                'class': 'form-control'}))
-
     class Meta:
         model = Event
         fields = (
             'name',
+            'game',
             'description',
             'date',
             'time',
             'max_size',
             'initial_size',
-            'type')
+            'engagement_type',
+            'is_booked')
         widgets = {
             'name': forms.TextInput(
                 attrs={'class': 'form-control',
-                       'placeholder': 'Event name...'}),
-            'description': forms.Textarea(
+                       'placeholder': 'Event Name'}),
+            'game': forms.TextInput(
+               attrs={'class': 'form-control',
+                      'placeholder': 'Game Name'}),
+            'description': forms.TextInput(
                 attrs={'class': 'form-control',
                        'rows': '5',
-                       'placeholder': 'Event description...'}),
-            'type': forms.Select(attrs={'class': 'form-control'}),
+                       'placeholder': 'Event Description'}),
+            'date': forms.DateInput(attrs={'class':'datepicker'}),
+            'time': forms.Select(attrs={'class': 'select'}, choices=BOOKING_TIMES_CHOICES),
+            'initial_size': forms.Select(attrs={'class': 'select'}, choices=INITIAL_SIZE_CHOICES),
+            'max_size': forms.Select(attrs={'class': 'select'}, choices=MAX_SIZE_CHOICES),
+            'engagement_type': forms.Select(attrs={'class': 'select'}, choices=Event.ENGAGEMENT_TYPE),
         }
         help_texts = {
-            'name': 'To help other players find the event they'
-                    '\'re looking for',
-            'description': 'Additional information to describe your event '
-                           '(how long it might take, where you are in '
-                           'the room etc...)',
-            'type': 'The type of event (i.e Game)',
+            'is_booked': "I have booked at Guild",
+        }
+        labels = {
+            'name': 'Event Name',
+            'game': 'Game Name',
+            'initial_size': 'Starting Players',
+            'max_size': 'Maximum Players',
+            'engagement_type': 'Game Type',
         }

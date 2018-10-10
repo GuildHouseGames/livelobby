@@ -102,30 +102,41 @@
   </style>
 </head>
 
-<div class="row">
-  <div class="col s12 blue">
-      <div class="col-content white-text" align="center">
-        <h2> {% if event.host == user%}
-          <i class="material-icons" style="font-size:40px;">mode_edit</i>
+<div class="row" style="text-align:right">
+
+  <div class="col s12
+    {% if event.engagement_type == 'CASUAL' %}
+    blue
+    {% else %}
+    orange
+    {% endif %}
+  ">
+    {% if event.host == user%}
+      <a href="{% url 'edit_view' pk=event.id %}"><i class="material-icons" style="color:white; font-size:30px; padding-top:5px">mode_edit</i></a>
+      {% endif %}
+      <div class="col-content white-text" style="padding-top:0px" align="center">
+        <h2 style="padding-left:30px; padding-right:30px; margin-top:0px; margin-bottom:5px"> {% if event.host == user%}
+
           {% endif %}
           {{ event.name|upper }}</h2>
-        <h4> {{ event.game|upper }} </h4>
-        <h5> {{ event.description }} </h5>
-        {% if event.engagement_type == CASUAL%}
+        <h6 style="margin-top:0px; padding-top:0px"> {{ event.game|upper }} </h6>
+
+        {% if event.engagement_type == 'CASUAL' %}
         <img src="{% static 'events/CASUAL.png' %}"
-        style="height: 40px; width: 160px; margin:10px 0px 10px 0px;">
+        style="height: 40px; width: 160px; margin:10px 0px 20px 0px;">
         {% else %}
         <img src="{% static 'events/COMPETITIVE.png' %}"
-        style="height: 40px; width: 160px; margin:10px 0px 10px 0px;">
+        style="height: 40px; width: 160px; margin:10px 0px 20px 0px;">
         {% endif %}
       </div>
   </div>
 </div>
 
-<div class="row" style="display: flex; flex-wrap: wrap; padding:0px">
-  <div class="col m4 s12" style="border-right:3px solid #e0e0e0;">
-      <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
-        <i class="material-icons blue-text left" style="font-size:60px; margin-top:10px;">location_on</i>
+<div class="row" style="padding:0px; margin-top:0px; margin-bottom:0px;">
+
+  <div class="col m4 s12 center valign-wrapper" style="border-right:3px solid #e0e0e0;">
+      <div class="col-content" style="align:left; padding:0% 5% 0% 0;">
+        <i class="material-icons blue-text left" style="font-size:60px; margin-top:20px;">location_on</i>
           <h6 style="padding-left:55px;"><b>Guild</b>
           {% if event.is_booked%}
           <span style="color: green; margin-left:10px;"><b>BOOKED
@@ -133,20 +144,26 @@
           <span style="color: orange; margin-left:10px;"><b>NOT YET BOOKED
           {% endif %}
         </b></span></h6>
-        <h6 style="padding-left:55px; margin-top:20px">LG Baileys Corner, 150 London Circuit, Canberra ACT 2601</h6>
+        <h6 style="padding-left:55px;">LG Baileys Corner, 150 London Circuit, Canberra ACT 2601</h6>
       </div>
   </div>
 
-  <div class="col m4 s12" style="border-right:3px solid #e0e0e0; padding-bottom:10px;">
-      <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
-        <i class="material-icons blue-text left" style="font-size:60px; margin-top:10px;">calendar_today</i>
-        <h6 style="padding-left:65px; margin-top:15px;"> {{event.date | detail_date_string}} </h6>
-        <h6 style="padding-left:65px;"> {{ event.time|time:"g:iA"|lower }}</h6>
+  <div class="col m4 s12 center valign-wrapper" style="padding-bottom:0px;">
+    <div class="col m4 s2 center valign-wrapper" style="">
+      <div class="" style="">
+        <i class="material-icons blue-text left" style="font-size:60px;">calendar_today</i>
       </div>
+    </div>
+    <div class="col m4 s10 valign-wrapper" style="">
+      <div class="" style="align:left; padding:0% 0% 0% 0;">
+        <h6 style=""> {{event.date | detail_date_string}} </h6>
+        <h6 style=""> {{ event.time|time:"g:iA"|lower }}</h6>
+      </div>
+    </div>
   </div>
 
-  <div class="col m4 s12" style="padding-bottom:20px;">
-      <div class="col-content" style="align:left; padding:5% 5% 5% 0;">
+  <div class="col m4 s12 valign-wrapper" style="padding-bottom:0px;">
+      <div class="col-content" style="align:left; padding:0% 5% 0% 0;">
         <i class="material-icons blue-text left" style="font-size:60px; margin-top:5px;">accessibility_new</i>
         <h5 style="padding-top:10px; margin-top:12px; display: inline-block;"> {{ event|reserved_places }}/{{ event.max_size }}</h5>
         {% if event.host == user%}
@@ -170,18 +187,19 @@
       </div>
   </div>
 </div>
-
+<h5 class="black-text grey lighten-4 center" style="font-size:16px; padding-left:50px; padding-right:50px; padding-top: 10px; padding-bottom: 10px"> {{ event.description }} </h5>
 <div class="row" style="display: flex; flex-wrap: wrap;">
-  <div class="col m6 s6 grey lighten-2">
+
+  <div class="col m6 s6 grey lighten-3">
       <div class="col-content" align="center">
-        <h4>Host</h4>
+        <h4 style="font-weight: bold">Host</h4>
         <p> {{ event.host.display_name }} </p>
     </div>
   </div>
 
-  <div class="col m6 s6 grey lighten-2" style="border-left:3px solid white;">
+  <div class="col m6 s6 grey lighten-3" style="border-left:3px solid white;">
       <div class="col-content" align="center">
-        <h4> Players </h4>
+        <h4 style="font-weight: bold"> Players </h4>
         {% for player in event.player_list %}
           {% if player.places > 1%}
           <p class="card-text"> {{ player.user.display_name }} + {{ player.places|add:"-1" }}</p>

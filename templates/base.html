@@ -3,7 +3,7 @@
     <head>
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        
+
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}"  media="screen,projection"/>
 
@@ -23,7 +23,7 @@
                     <a class="brand-logo center show-on-medium-and-up" style="display: inline-block; height: 100%;" href="/">
                         <img style="height: 60%; margin: 12px 0px 6px 0px" src="{% static 'events/GuildLiveLobby.png' %}" alt="Guild Logo">
                     </a>
-    
+
                     <!-- Side Menu button (hamburger) -->
                     {% block side_menu_button %}
                     {% endblock %}
@@ -51,9 +51,21 @@
         {% endblock %}
 
         <!-- Javascript imports -->
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
-        
+
+        <!-- Datepicker -->
+        <script>
+          $(function() {
+            $( ".datepicker" ).datepicker({
+              format: 'yyyy-mm-dd',
+            });
+          });
+          $(document).ready(function(){
+            $('select').formSelect();
+          });
+        </script>
+
         {% block js_scripts %}
         {% endblock %}
 

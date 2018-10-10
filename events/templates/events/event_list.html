@@ -91,13 +91,19 @@
   <div class="container">
     {% for event in events %}
       <div class="card">
-        <div class="card-content">
-            <p class="card-title grey-text text-darken-4">{{event.name}}</p>
-            <p class="activator grey-text text-darken-6"> {{ event.game }} - {{event.host.display_name}}</p>
-            <br>
+        <div class="card-action
+          {% if event.engagement_type == 'CASUAL' %}
+          blue
+          {% else %}
+          orange
+          {% endif %}
+        " style="padding-top: 2px; padding-bottom: 2px; margin-bottom: 0px">
+          <p class="card-title white-text bold-text text-darken-4"><strong>{{event.name}}<strong></p>
+        </div>
+        <div class="card-content" style="padding-bottom:0px;">
+            <p class="activator grey-text text-darken-6" style="font-size: 16px; margin-bottom:2px; padding-top:0px; margin-top:0px"> {{ event.game }} - {{event.host.display_name}}</p>
             <p class="grey-text text-darken-4">{{event.description}}</p>
-            <br>
-            <ul class="collection">
+            <ul class="collection" style="margin-top:10px">
                 <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
                 <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
                 <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
@@ -128,8 +134,8 @@
                     {% endif %}
               {% endif %}
 
-              <a class="btn btn-lg btn-primary" href="{% url 'event_view' pk=event.pk %}">Details</a>
-              
+              <a class="btn-flat blue-text" href="{% url 'event_view' pk=event.pk %}">Details</a>
+
           </div>
       </div>
       {% empty %}

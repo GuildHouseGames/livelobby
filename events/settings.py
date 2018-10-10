@@ -2,8 +2,8 @@
 import datetime
 from datetime import time, timedelta
 
-MAX_SIZE_CHOICES = ((x, str(x)) for x in range(1, 16))
-INITIAL_SIZE_CHOICES = ((x, str(x)) for x in range(1, 16))
+MAX_SIZE_CHOICES = ((x, str(x)) for x in range(1, 41))
+INITIAL_SIZE_CHOICES = ((x, str(x)) for x in range(1, 41))
 BOOKING_TOMORROW = datetime.date.today() + datetime.timedelta(days=1)
 
 # The below was copied from the guild.house Booking app:

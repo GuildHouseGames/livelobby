@@ -176,8 +176,14 @@ class CreateEventView(LoginRequiredMixin, CreateView):
         kwargs['instance'].host = self.request.user
         return kwargs
 
-class EditView(LoginRequiredMixin, UpdateView):
-    template_name = 'events/create_event.html'
+class EditView(UserPassesTestMixin, UpdateView):
+    template_name = 'events/edit_event.html'
     model = Event
     form_class = CreateEventForm
     success_url = '/events'
+
+    def test_func(self):
+        if self.request.user.is_authenticated and \
+                not self.get_object().is_cancelled:
+            return self.request.user.pk == self.get_object().host.pk
+        return False

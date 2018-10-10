@@ -53,12 +53,12 @@ class Event(models.Model):
         # size validation
         if self.initial_size > self.max_size:
             raise ValidationError(
-                "The initial group size cannot be bigger"
-                " than the max group size")
+                "The starting players size cannot be larger"
+                " than the maximum players size")
         if not self.max_size >= self.initial_size:
             raise ValidationError(
-                "The max group size must be larger than"
-                " the initial group size")
+                "The maximum players size must be larger than"
+                " the starting players size")
 
         # date and time validation
         TIME_ZONE = getattr(settings, "TIME_ZONE", "UTC")
@@ -83,7 +83,7 @@ class Event(models.Model):
                 if (self.initial_size <= reservation.places):
                     raise ValidationError("Cannot reduce the size of the event as reservations have already filled the event.")
                 else:
-                    raise ValidationError("Cannot increase the number of initial players as reservations have already filled the event.")
+                    raise ValidationError("Cannot increase the number of starting players as reservations have already filled the event.")
 
     def save(self, *args, **kwargs):
         self.clean()
