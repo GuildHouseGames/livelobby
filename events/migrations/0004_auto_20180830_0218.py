@@ -11,11 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='event',
-            name='type',
-            field=models.CharField(choices=[('GAME', 'game')], default='GAME', max_length=25),
-        ),
-        migrations.DeleteModel(
-            name='EventType',
-        ),
-    ]
+            model_name='event', name='type', field=models.CharField(
+                choices=[
+                    ('GAME', 'game')], default='GAME', max_length=25), ), migrations.DeleteModel(
+            name='EventType', ), ]

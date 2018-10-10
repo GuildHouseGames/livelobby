@@ -1,4 +1,7 @@
 {% load static %}
+{% load account socialaccount %}
+{% load fontawesome %}
+
 <html>
     <head>
         <!--Import Google Icon Font-->
@@ -6,6 +9,12 @@
 
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}"  media="screen,projection"/>
+
+        <!-- Font/icons for social logins -->
+        <!-- https://terrymooreii.github.io/materialize-social/ -->
+        <!-- https://pypi.org/project/django-fontawesome/ -->
+        <link type="text/css" rel="stylesheet" href="{% static 'materialize-social/materialize-social.css' %}"/>
+        {% fontawesome_stylesheet %}
 
         <!--Import home-rolled CSS-->
         <link type="text/css" rel="stylesheet" href="{% static 'custom/guild_theming.css' %}"/>
@@ -16,12 +25,37 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
+        
+        <!-- Facebook Analytics for FB login -->
+        <script>
+            window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '{your-app-id}',
+                cookie     : true,
+                xfbml      : true,
+                version    : '{api-version}'
+            });
+                
+            FB.AppEvents.logPageView();   
+                
+            };
+        
+            (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+        
+        <!-- Top bar -->
         <div class="navbar">
             <nav class="nav black">
                 <div class="nav-wrapper">
                     <!-- LiveLobby Banner -->
                     <a class="brand-logo center show-on-medium-and-up" style="display: inline-block; height: 100%;" href="/">
-                        <img style="height: 60%; margin: 12px 0px 6px 0px" src="{% static 'events/GuildLiveLobby.png' %}" alt="Guild Logo">
+                        <img style="width: auto; max-height: 60%; margin: 12px 0px 6px 0px" src="{% static 'events/GuildLiveLobby.png' %}" alt="Guild Logo">
                     </a>
 
                     <!-- Side Menu button (hamburger) -->
@@ -52,6 +86,11 @@
 
         <!-- Javascript imports -->
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<<<<<<< HEAD
+=======
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script> 
+ 
+>>>>>>> develop
         <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
 
         <!-- Datepicker -->

@@ -19,7 +19,7 @@ hr:after {
 /* https://materializecss.com/text-inputs.html */
 /* label color */
 .input-field label {
-  color: #000 !important;
+  color: #9b9b9b !important;
 }
 /* icon prefix focus color */
 .input-field .prefix.active {
