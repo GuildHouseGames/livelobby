@@ -10,8 +10,8 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     '''
-    Overrides allauth.socialaccount.adapter.DefaultSocialAccountAdapter.pre_social_login to
-    perform some actions right after successful login
+    Overrides allauth.socialaccount.adapter.DefaultSocialAccountAdapter
+    .pre_social_login to perform some actions right after successful login
     '''
 
     def pre_social_login(self, request, sociallogin):
@@ -24,7 +24,8 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
 #     if users:
 #         # users[0].profile_picture = sociallogin.account.extra_data
 #         perform_login(request, users[0], email_verification='None')
-#         raise ImmediateHttpResponse(redirect(settings.LOGIN_REDIRECT_URL.format(id=request.user.id)))
+#         raise ImmediateHttpResponse(redirect( /
+#           settings.LOGIN_REDIRECT_URL.format(id=request.user.id)))
 
 # @receiver(pre_social_login)
 # def update_profile_picture(sender, request, sociallogin, **kwargs):
