@@ -176,7 +176,7 @@
         <a class="waves-effect waves-light red btn"
         href="{% url 'cancel_view' pk=event.pk %}" style="width: 100%">
           Cancel Event<i class="material-icons right">delete</i></a>
-      {% elif event|has_joined:user %}
+      {% elif event|is_joined:user %}
         <a class="waves-effect waves-light red btn"
         href="{% url 'leave_view' pk=event.pk %}" style="width: 100%">
           Leave Event<i class="material-icons right">cancel</i></a>
