@@ -24,13 +24,21 @@
             <p class="grey-text text-darken-4">{{event.description}}</p>
             <br>
             <ul class="collection">
+              {% if event.engagement_type == 'CASUAL' %}
                 <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
                 <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
                 <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
                 {%if event.is_booked%}
-                <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
+                  <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
                 {%endif%}
-
+              {% else %}
+                <li class="collection-item"><span> <i class="material-icons orange-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                  <li class="collection-item"><span> <i class="material-icons orange-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+              {% endif %}
             </ul>
         </div>
         </div>
@@ -62,7 +70,11 @@
                         {% endfor %}
                     {% endif %}
                     <br>
-                    <button type="submit" class="btn waves-effect waves-light blue">Join</button>
+                    {% if event.engagement_type == 'CASUAL' %}
+                      <button type="submit" class="btn waves-effect waves-light blue">Join</button>
+                    {% else %}
+                      <button type="submit" class="btn waves-effect waves-light orange">Join</button>
+                    {% endif %}
                 </form>
             </div>
         </div>

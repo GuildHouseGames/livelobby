@@ -27,7 +27,7 @@
 
 {% block side_menu_button %}
 
-  <!-- if accounts 
+  <!-- if accounts
    user.socialaccount_set.all.0.get_avatar_url  -->
 
   <!-- Default user image https://goo.gl/images/fdsMBc -->
@@ -67,7 +67,7 @@
     <!--Menu items (for logged in users)-->
     <li>
       <a href="
-        {% if user.is_authenticated %} 
+        {% if user.is_authenticated %}
           {% url 'create_event_view' %}
         {% endif %}">
         Create Event <i class="material-icons">add</i>
@@ -148,7 +148,11 @@
                   {% if event.host == user%}
                       <a class="waves-effect waves-light btn red event-btn"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
                   {% elif event|is_joined:user%}
+                    {% if event.engagement_type == 'CASUAL' %}
                       <a class="waves-effect waves-light btn blue event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% else %}
+                      <a class="waves-effect waves-light btn orange event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% endif %}
                   {% else %}
                       {% if event|reserved_places < event.max_size %}
                           {% if event.engagement_type == 'CASUAL' %}
