@@ -32,8 +32,14 @@ hr:after {
 .input-field input[type=text]:focus + label {
   color: #2196F3 !important;
 }
+
+/* label focus color */
+.input-field input:focus + label {
+  color: #000;
+}
+
 /* label underline focus color */
-.input-field input[type=text]:focus {
+.input-field input:focus {
   border-bottom: 1px solid #2196F3 !important;
   box-shadow: 0 1px 0 0 #2196F3 !important;
 }
