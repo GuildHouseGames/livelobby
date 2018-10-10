@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d080b6d9899e3404ba479047c020c9ff9c3098480f5035f8800bfccfcf027494"
+            "sha256": "28f3698cef5a92d38256b71a709fa6635dd64d302294c2a68631f99ad552286f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -92,6 +92,14 @@
             ],
             "index": "pypi",
             "version": "==3.5.0"
+        },
+        "fontawesome": {
+            "hashes": [
+                "sha256:0ea1a65f0b94ad25bf8eee12cc0272357a6e00a6ea1fc1ad202aa6e962915ef2",
+                "sha256:a6f45f3c80853d19041f51c80957430a2cfd67d082f990056e9ba0801e2719f0"
+            ],
+            "index": "pypi",
+            "version": "==5.3.1.post1"
         },
         "gunicorn": {
             "hashes": [
