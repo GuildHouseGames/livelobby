@@ -10,15 +10,9 @@
 {% load static %}
 
 {% block content %}
-<head>
-  <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
-</head>
-
-<div class="container">
-  <div class="card">
-      <div class="card-content">
-          <p class="card-title grey-text text-darken-4">Create Event</p>
-          <div class="grey-text text-darken-5">To create an event, please enter the details below:</div>
+<div class="container" style="padding-left:0px">
+  <div class="container center">
+          <h3 class="blue-text">Create Event</h3>
           <div class="row">
             {% if form.errors %}
               {% for field, errors in form.errors.items %}
@@ -29,11 +23,11 @@
             {% endif %}
           </div>
           <div class="row">
+            <div class="col s12 m8 offset-m2">
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
-                  <div class="form-group">
-                      <div class="fieldWrapper input-field">
+                      <div class="input-field">
                         <!-- Need to add a <label> tag around just is_booked-->
                         {% if field.name == 'is_booked' %}
                           <label>
@@ -48,8 +42,8 @@
                             {% endif %}
                           </label>
                         {% else %}
-                          {{ field.label }}
                           {{ field }}
+                          <label for="{{ field.html_name }}">{{ field.label }}</label>
                           {% if field.help_text %}
                             <span class="helper-text" data-error="
                               {% for error in field.errors %}
@@ -60,7 +54,7 @@
                           {% endif %}
                         {% endif %}
                       </div>
-                  </div>
+                  <br>
                 {% endfor %}
                 {% if form.places.errors %}
                     {% for error in form.places.errors %}
@@ -73,7 +67,7 @@
                 </button>
             </form>
           </div>
-      </div>
-  </div>
+          </div>
+        </div>
 </div>
 {% endblock %}

@@ -6,7 +6,7 @@
 
 {% block back_button %}
     <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="{% url 'login' %}">
-        <i class="large material-icons">arrow_back</i> 
+        <i class="large material-icons">arrow_back</i>
     </a>
 {% endblock %}
 
@@ -26,10 +26,10 @@
 
         <div class="col s12 m8 offset-m2">
           <form method="post">
-            {% csrf_token %} 
+            {% csrf_token %}
             {% for field in form %}
               <div class="input-field">
-                {{ field }}                
+                {{ field }}
                 <label for="{{ field.html_name }}">{{ field.label }}</label>
                 {% if field.help_text %}
                   <span class="helper-text" data-error="
@@ -42,7 +42,7 @@
               </div>
             {% endfor %}
             <div class="center-align">
-              <button class="btn blue waves-effect waves-light" type="submit" name="action">             
+              <button class="btn blue waves-effect waves-light" type="submit" name="action">
                 Signup <i class="material-icons right">edit</i>
               </button>
             </div>

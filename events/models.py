@@ -24,8 +24,8 @@ class Event(models.Model):
         on_delete=models.CASCADE
     )
 
-    name = models.CharField(max_length=75, default='Event')
-    game = models.CharField(max_length=75, default='Monopoly')
+    name = models.CharField(max_length=75)
+    game = models.CharField(max_length=75)
     date = models.DateField(db_index=True, null=True)
     time = models.TimeField(db_index=True, null=True)
     location = models.CharField(max_length=75, default='Guild')

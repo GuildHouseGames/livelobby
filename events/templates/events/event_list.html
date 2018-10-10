@@ -104,37 +104,52 @@
             <p class="activator grey-text text-darken-6" style="font-size: 16px; margin-bottom:2px; padding-top:0px; margin-top:0px"> {{ event.game }} - {{event.host.display_name}}</p>
             <p class="grey-text text-darken-4">{{event.description}}</p>
             <ul class="collection" style="margin-top:10px">
+              {% if event.engagement_type == 'CASUAL' %}
                 <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
                 <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
                 <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
                 {%if event.is_booked%}
-                <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
+                  <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
                 {%endif%}
-
+              {% else %}
+                <li class="collection-item"><span> <i class="material-icons orange-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                  <li class="collection-item"><span> <i class="material-icons orange-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+              {% endif %}
             </ul>
         </div>
           <div class="card-action">
               {% if user.is_authenticated %}
-                    {% if event.host == user%}
-                        <a class="waves-effect waves-light btn red event-btn"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
-                    {% elif event|is_joined:user%}
-                        <a class="waves-effect waves-light btn blue event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
-                    {% else %}
-                        {% if event|reserved_places < event.max_size %}
+                  {% if event.host == user%}
+                      <a class="waves-effect waves-light btn red event-btn"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
+                  {% elif event|is_joined:user%}
+                      <a class="waves-effect waves-light btn blue event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                  {% else %}
+                      {% if event|reserved_places < event.max_size %}
+                          {% if event.engagement_type == 'CASUAL' %}
                             <a class="waves-effect waves-light btn blue event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
-                        {% else %}
-                            <button type="button" class="btn red disabled event-btn">FULL</button>
-                        {% endif %}
-                    {% endif %}
+                          {% else %}
+                            <a class="waves-effect waves-light btn orange event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                          {% endif %}
+                      {% else %}
+                          <button type="button" class="btn red disabled event-btn">FULL</button>
+                      {% endif %}
+                  {% endif %}
               {% else %}
-                    {% if event|reserved_places < event.max_size %}
-                        <a class="waves-effect waves-light btn blue event-btn" href="{% url 'login' %}">Join</a>
-                    {% else %}
-                        <button type="button" class="btn red disabled event-btn">FULL</button>
-                    {% endif %}
+                  {% if event|reserved_places < event.max_size %}
+                      <a class="waves-effect waves-light btn blue event-btn" href="{% url 'login' %}">Join</a>
+                  {% else %}
+                      <button type="button" class="btn red disabled event-btn">FULL</button>
+                  {% endif %}
               {% endif %}
-
-              <a class="btn-flat blue-text" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              {% if event.engagement_type == 'CASUAL' %}
+                <a class="btn-flat blue-text" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              {% else %}
+                <a class="btn-flat orange-text" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              {% endif %}
 
           </div>
       </div>

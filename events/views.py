@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 
 from events.models import Event, Reservation
-from events.forms import CreateEventForm, JoinForm
+from events.forms import CreateEventForm, JoinForm, EditEventForm
 from django.views.generic import CreateView, DetailView, \
     ListView, DeleteView, TemplateView, UpdateView
 from django.template.defaulttags import register
@@ -179,7 +179,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 class EditView(UserPassesTestMixin, UpdateView):
     template_name = 'events/edit_event.html'
     model = Event
-    form_class = CreateEventForm
+    form_class = EditEventForm
     success_url = '/events'
 
     def test_func(self):

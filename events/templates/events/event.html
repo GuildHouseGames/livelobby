@@ -88,6 +88,7 @@
 
 {% block content %}
 
+<!--
 <head>
   <style>
 @media (max-width:600px) {
@@ -101,6 +102,7 @@
       }
   </style>
 </head>
+-->
 
 <div class="row" style="text-align:right">
 
@@ -113,12 +115,14 @@
   ">
     {% if event.host == user%}
       <a href="{% url 'edit_view' pk=event.id %}"><i class="material-icons" style="color:white; font-size:30px; padding-top:5px">mode_edit</i></a>
+      {% else %}
+      <br/>
       {% endif %}
       <div class="col-content white-text" style="padding-top:0px" align="center">
-        <h2 style="padding-left:30px; padding-right:30px; margin-top:0px; margin-bottom:5px"> {% if event.host == user%}
+        <h2 style="padding-left:30px; padding-right:30px; margin-top:0px; margin-bottom:5px; font-size:36px"> {% if event.host == user%}
 
           {% endif %}
-          {{ event.name|upper }}</h2>
+          {{ event.name }}</h2>
         <h6 style="margin-top:0px; padding-top:0px"> {{ event.game|upper }} </h6>
 
         {% if event.engagement_type == 'CASUAL' %}
@@ -132,81 +136,101 @@
   </div>
 </div>
 
-<div class="row" style="padding:0px; margin-top:0px; margin-bottom:0px;">
-
-  <div class="col m4 s12 center valign-wrapper" style="border-right:3px solid #e0e0e0;">
-      <div class="col-content" style="align:left; padding:0% 5% 0% 0;">
-        <i class="material-icons blue-text left" style="font-size:60px; margin-top:20px;">location_on</i>
-          <h6 style="padding-left:55px;"><b>Guild</b>
-          {% if event.is_booked%}
-          <span style="color: green; margin-left:10px;"><b>BOOKED
-          {% else %}
-          <span style="color: orange; margin-left:10px;"><b>NOT YET BOOKED
-          {% endif %}
-        </b></span></h6>
-        <h6 style="padding-left:55px;">LG Baileys Corner, 150 London Circuit, Canberra ACT 2601</h6>
-      </div>
+<div class="row" style="padding:0px; margin-top:0px; margin-bottom:0px; display: flex; flex-wrap: wrap;">
+<div class="col m4 s12" style="padding-bottom:10px; padding-top:10px; display: flex; flex-wrap: wrap; padding-right: 0px; padding-left: 0px; border-right:1px solid #e0e0e0 !important;  border-left:1px solid #e0e0e0 !important;">
+  <div class="col m4 s2 center-align valign-wrapper">
+    {% if event.engagement_type == 'CASUAL' %}
+      <i class="material-icons blue-text" style="font-size:60px;">location_on</i>
+    {% else %}
+      <i class="material-icons orange-text" style="font-size:60px;">location_on</i>
+    {% endif %}
   </div>
-
-  <div class="col m4 s12 center valign-wrapper" style="padding-bottom:0px;">
-    <div class="col m4 s2 center valign-wrapper" style="">
-      <div class="" style="">
-        <i class="material-icons blue-text left" style="font-size:60px;">calendar_today</i>
-      </div>
-    </div>
-    <div class="col m4 s10 valign-wrapper" style="">
-      <div class="" style="align:left; padding:0% 0% 0% 0;">
-        <h6 style=""> {{event.date | detail_date_string}} </h6>
-        <h6 style=""> {{ event.time|time:"g:iA"|lower }}</h6>
-      </div>
-    </div>
-  </div>
-
-  <div class="col m4 s12 valign-wrapper" style="padding-bottom:0px;">
-      <div class="col-content" style="align:left; padding:0% 5% 0% 0;">
-        <i class="material-icons blue-text left" style="font-size:60px; margin-top:5px;">accessibility_new</i>
-        <h5 style="padding-top:10px; margin-top:12px; display: inline-block;"> {{ event|reserved_places }}/{{ event.max_size }}</h5>
-        {% if event.host == user%}
-          <a class="waves-effect waves-light red btn-large" style="float:right; margin-top:12px; width:50%;"
-          href="{% url 'cancel_view' pk=event.pk %}">
-            Cancel Event<i class="material-icons right">delete</i></a>
-        {% elif event|has_joined:user%}
-          <a class="waves-effect waves-light red btn-large" style="float:right; margin-top:12px; width:50%;"
-          href="{% url 'leave_view' pk=event.pk %}">
-            Leave Event<i class="material-icons right">cancel</i></a>
-        {% else %}
-          {% if event|reserved_places < event.max_size %}
-            <a class="waves-effect waves-light blue btn-large" style="float:right; margin-top:12px; width:50%;"
-            href="{% url 'join_view' event_id=event.id %}">
-              Join Event<i class="material-icons right">person_add</i></a>
-          {% else %}
-            <a class="waves-effect waves-light btn-large disabled" style="float:right; margin-top:12px; width:50%;">
-              EVENT FULL<i class="material-icons right">event_busy</i></a>
-          {% endif %}
-        {% endif %}
-      </div>
+  <div class="col m8 s10">
+    <div style="font-size:16px"><b>Guild</b>
+      {% if event.is_booked%}
+      <span style="color: green; font-size:12px"><b>BOOKED
+      {% else %}
+      <span style="color: orange; font-size:12px"><b>NOT BOOKED
+      {% endif %}
+    </b></span></div>
+    <div style="font-size:14px">LG Baileys Corner, 150 London Circuit, Canberra ACT 2601</div>
   </div>
 </div>
-<h5 class="black-text grey lighten-4 center" style="font-size:16px; padding-left:50px; padding-right:50px; padding-top: 10px; padding-bottom: 10px"> {{ event.description }} </h5>
-<div class="row" style="display: flex; flex-wrap: wrap;">
 
-  <div class="col m6 s6 grey lighten-3">
-      <div class="col-content" align="center">
-        <h4 style="font-weight: bold">Host</h4>
-        <p> {{ event.host.display_name }} </p>
+  <div class="col m4 s12 " style="padding-bottom:10px; padding-top:10px; display: flex; flex-wrap: wrap; padding-right: 0px; padding-left: 0px; border-right:1px solid #e0e0e0 !important; border-left:1px solid #e0e0e0 !important;">
+    <div class="col m4 s2 center-align valign-wrapper">
+      {% if event.engagement_type == 'CASUAL' %}
+        <i class="material-icons blue-text" style="font-size:60px;">calendar_today</i>
+      {% else %}
+        <i class="material-icons orange-text" style="font-size:60px;">calendar_today</i>
+      {% endif %}
+    </div>
+    <div class="col m8 s10 valign-wrapper" style="padding-left: 0px">
+        <div class="col m12 s12" style=""> {{ event.time|time:"g:iA"|lower }}, {{ event.date | detail_date_string}}</div>
     </div>
   </div>
 
-  <div class="col m6 s6 grey lighten-3" style="border-left:3px solid white;">
-      <div class="col-content" align="center">
-        <h4 style="font-weight: bold"> Players </h4>
-        {% for player in event.player_list %}
-          {% if player.places > 1%}
-          <p class="card-text"> {{ player.user.display_name }} + {{ player.places|add:"-1" }}</p>
+  <div class="col m4 s12" style="padding-bottom:10px; padding-top:10px; display: flex; flex-wrap: wrap; padding-right: 0px; padding-left: 0px; border-right:1px solid #e0e0e0 !important;  border-left:1px solid #e0e0e0 !important;">
+    <div class="col m12 s6 offset-s3 center-align valign-wrapper">
+      {% if event.host == user %}
+        <a class="waves-effect waves-light red btn"
+        href="{% url 'cancel_view' pk=event.pk %}" style="width: 100%">
+          Cancel Event<i class="material-icons right">delete</i></a>
+      {% elif event|has_joined:user %}
+        <a class="waves-effect waves-light red btn"
+        href="{% url 'leave_view' pk=event.pk %}" style="width: 100%">
+          Leave Event<i class="material-icons right">cancel</i></a>
+      {% else %}
+        {% if event|reserved_places < event.max_size %}
+          {% if event.engagement_type == 'CASUAL' %}
+            <a class="waves-effect waves-light blue btn" href="{% url 'join_view' event_id=event.id %}" style="width: 100%">
           {% else %}
-          <p> {{ player.user.display_name }} </p>
+            <a class="waves-effect waves-light orange btn" href="{% url 'join_view' event_id=event.id %}" style="width: 100%">
           {% endif %}
+            Join Event<i class="material-icons right">person_add</i></a>
+        {% else %}
+          <a class="waves-effect waves-light btn disabled" style="width: 100%">
+            EVENT FULL<i class="material-icons right">event_busy</i></a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<h5 class="black-text center" style="font-size:16px; padding-left:50px; padding-right:50px; padding-top: 10px; padding-bottom: 10px; margin-bottom: 3px; margin-top: 2px"> {{ event.description }} </h5>
+<div class="row" style="display: flex; flex-wrap: wrap">
+
+  {% if event.engagement_type == 'CASUAL' %}
+    <div class="col m12 s12" style="border-left:3px solid white; background-color:#BBDBFB; padding-bottom:18px; padding-top:0px">
+  {% else %}
+    <div class="col m12 s12" style="border-left:3px solid white; background-color:#FFCC80; padding-bottom:18px; padding-top:0px">
+  {% endif %}
+    <div class="col-content" align="center" style="display: flex; flex-wrap: wrap; padding-top: 5px;">
+      <div class="col m2 s2 valign-wrapper" style="margin-left: 0px; padding-top: 5px; padding-left: 0px">
+        <i class="material-icons
+        {% if event.engagement_type == 'CASUAL' %}
+        blue-text
+        {% else %}
+        orange-text
+        {% endif %}
+        left" style="font-size:60px; padding-right: 0px; margin-left: 0px">accessibility_new</i>
+      </div>
+      <div class="col m8 s8 valign-wrapper; center-align" style="margin-left: 0px">
+        <h4 style="font-weight: bold; margin-top:18px"> Players {{ event|reserved_places }}/{{ event.max_size }}</h4>
+      </div>
+    </div>
+    <div class="col-content" align="center">
+      <div class="col m12 s12">
+        {% for reservation in event.player_list %}
+          {% if event.host == reservation.user %}<strong>Host - </strong> {% endif %}
+          {% if reservation.places > 1%}
+          {{ reservation.user.display_name }} + {{ reservation.places|add:"-1" }}
+          {% else %}
+          {{ reservation.user.display_name }}
+          {% endif %}
+        <br>
         {% endfor %}
+      </div>
     </div>
   </div>
 </div>
