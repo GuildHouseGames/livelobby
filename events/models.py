@@ -117,8 +117,10 @@ class Event(models.Model):
             Sum('places'))["places__sum"] if reservations else 0
 
     def is_joined(self, user):
-        reservations = Reservation.objects.filter(event=self, user=user)
-        return reservations is not None and reservations.count() > 0
+        if user and not user.is_anonymous:
+            reservations = Reservation.objects.filter(event=self, user=user)
+            return reservations is not None and reservations.count() > 0
+        return False
 
     def __str__(self):
         return self.name
