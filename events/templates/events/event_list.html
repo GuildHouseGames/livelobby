@@ -167,9 +167,9 @@
               {% else %}
                   {% if event|reserved_places < event.max_size %}
                         {% if event.engagement_type == 'CASUAL' %}
-                            <a class="waves-effect waves-light btn blue event-btn" href="{% url 'login' %}">Join</a>
+                            <a class="waves-effect waves-light btn blue event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
                         {% else %}
-                            <a class="waves-effect waves-light btn orange event-btn" href="{% url 'login' %}">Join</a>
+                            <a class="waves-effect waves-light btn orange event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
                         {% endif %}
                   {% else %}
                       <button type="button" class="btn red disabled event-btn">FULL</button>
