@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 
@@ -175,6 +175,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
             kwargs['instance'] = Event()
         kwargs['instance'].host = self.request.user
         return kwargs
+
 
 class EditView(UserPassesTestMixin, UpdateView):
     template_name = 'events/edit_event.html'

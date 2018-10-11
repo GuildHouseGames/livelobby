@@ -77,26 +77,34 @@ class Event(models.Model):
         # If we are updating the event, we cannot modify the initial/max size
         # if that modification would fill the event based on already made
         # reservations.
-        reservation = Reservation.objects.filter(event=self, user=self.host).first()
+        reservation = Reservation.objects.filter(
+            event=self, user=self.host).first()
         if reservation:
-            if (self.reserved_places() - reservation.places + self.initial_size > self.max_size):
+            if (self.reserved_places() - reservation.places +
+                    self.initial_size > self.max_size):
                 if (self.initial_size <= reservation.places):
-                    raise ValidationError("Cannot reduce the size of the event as reservations have already filled the event.")
+                    raise ValidationError(
+                        "Cannot reduce the size of the event as "
+                        "reservations have already filled the event.")
                 else:
-                    raise ValidationError("Cannot increase the number of starting players as reservations have already filled the event.")
+                    raise ValidationError(
+                        "Cannot increase the number of starting players "
+                        "as reservations have already filled the event.")
 
     def save(self, *args, **kwargs):
         self.clean()
         super(Event, self).save(*args, **kwargs)
         # Create the event with an initial reservation for the host
         if self.initial_size > 0:
-            reservation = Reservation.objects.filter(user=self.host, event=self).first()
-            # If this event already has a reservation just update it, if not create one
+            reservation = Reservation.objects.filter(
+                user=self.host, event=self).first()
+            # If this event already has a reservation just update it, if not
+            # create one
             if not reservation:
                 Reservation.objects.create(
                     user=self.host, event=self, places=self.initial_size)
             else:
-                reservation.places=self.initial_size
+                reservation.places = self.initial_size
                 reservation.save()
 
     def player_list(self):
@@ -139,7 +147,8 @@ class Reservation(models.Model):
 
         # Validation for join only
         if not self.event.host == self.user:
-            if (self.event.reserved_places() + self.places > self.event.max_size):
+            if (self.event.reserved_places() +
+                    self.places > self.event.max_size):
                 raise ValidationError(
                     "The specified number of places exceeds the "
                     "number of places available")
