@@ -98,3 +98,8 @@ hr:after {
   border-bottom: 1px solid #2196F3;
   box-shadow: 0 1px 0 0 #2196F3;
 }
+
+/* Event Date */
+.datepicker-date-display{
+  background-color: #2196F3;
+}
