@@ -5,9 +5,9 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectMixin
 
 from events.models import Event, Reservation
-from events.forms import CreateEventForm, JoinForm
+from events.forms import CreateEventForm, JoinForm, EditEventForm
 from django.views.generic import CreateView, DetailView, \
-    ListView, DeleteView, TemplateView
+    ListView, DeleteView, TemplateView, UpdateView
 from django.template.defaulttags import register
 from django.utils import timezone
 
@@ -175,3 +175,16 @@ class CreateEventView(LoginRequiredMixin, CreateView):
             kwargs['instance'] = Event()
         kwargs['instance'].host = self.request.user
         return kwargs
+
+
+class EditView(UserPassesTestMixin, UpdateView):
+    template_name = 'events/edit_event.html'
+    model = Event
+    form_class = EditEventForm
+    success_url = '/events'
+
+    def test_func(self):
+        if self.request.user.is_authenticated and \
+                not self.get_object().is_cancelled:
+            return self.request.user.pk == self.get_object().host.pk
+        return False
