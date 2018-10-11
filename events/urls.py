@@ -1,6 +1,7 @@
 from django.urls import path
 from events.views import EventListView, EventView, \
-    JoinView, JoinConfirmationView, CreateEventView, LeaveView, CancelView
+    JoinView, JoinConfirmationView, CreateEventView, LeaveView, CancelView, \
+    EditView
 
 urlpatterns = [
     path(
@@ -31,4 +32,8 @@ urlpatterns = [
         '<int:pk>/cancel/',
         CancelView.as_view(),
         name='cancel_view'),
+    path(
+        '<int:pk>/edit/',
+        EditView.as_view(),
+        name='edit_view'),
 ]
