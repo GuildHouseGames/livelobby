@@ -1,10 +1,10 @@
-from allauth.socialaccount.signals import pre_social_login
-from django.dispatch import receiver
-from allauth.account.utils import perform_login
-from allauth.exceptions import ImmediateHttpResponse
-from users.models import LiveLobbyUser
-from django.shortcuts import redirect
-from django.conf import settings
+# from allauth.socialaccount.signals import pre_social_login
+# from django.dispatch import receiver
+# from allauth.account.utils import perform_login
+# from allauth.exceptions import ImmediateHttpResponse
+# from users.models import LiveLobbyUser
+# from django.shortcuts import redirect
+# from django.conf import settings
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
 

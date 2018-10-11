@@ -26,24 +26,33 @@ def is_joined(event, user):
     return event.is_joined(user)
 
 # Return the reservation for an event
+
+
 @register.filter
 def get_reservation_pk(event, user):
     return get_object_or_404(Reservation, event=event, user=user).pk
 
 # Converts the event date into the display string
+
+
 @register.filter
 def date_string(date):
     return date.strftime("%A, %d %B %y")
 
 # Converts the event time into the display string
+
+
 @register.filter
 def time_string(time):
     return time.strftime("%H:%M")
 
 # Converts the event date into the display string
+
+
 @register.filter
 def detail_date_string(date):
     return date.strftime("%A %d %B %Y")
+
 
 class EventListView(ListView):
     template_name = 'events/event_list.html'
