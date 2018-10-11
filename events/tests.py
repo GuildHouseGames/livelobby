@@ -120,7 +120,8 @@ class EventTest(TestCase):
 
         self.assertEqual(
             e.exception.message,
-            'The starting players size cannot be larger than the maximum players size')
+            'The starting players size cannot be larger than '
+            'the maximum players size')
 
     def test_valid_initial_and_max_size(self):
         size = 1
