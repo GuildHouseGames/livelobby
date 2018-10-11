@@ -17,11 +17,9 @@ gunicorn = "==19.9.0"
 pytz = "==2018.5"
 social-auth-app-django = "==2.1.0"
 whitenoise = "==3.3.1"
+django-sslserver = "*"
 
 [dev-packages]
-
-
-django-sslserver = "*"
 
 [requires]
 
