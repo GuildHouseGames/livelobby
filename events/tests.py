@@ -52,7 +52,7 @@ class ReservationTest(TestCase):
                 host=self.host
             )
 
-            Reservation.objects.create(event=event, places=3, user=self.host)
+            Reservation.objects.create(event=event, places=3, user=self.user)
 
         self.assertEqual(
             e.exception.messages[0],
@@ -63,11 +63,12 @@ class ReservationTest(TestCase):
         with self.assertRaises(ValidationError) as e:
             event = Event.objects.create(
                 initial_size=1,
-                max_size=2,
+                max_size=3,
                 time=self.time.time(),
                 date=self.time.date(),
                 host=self.host)
-            Reservation.objects.create(event=event, places=1, user=self.host)
+            Reservation.objects.create(event=event, places=1, user=self.user)
+            Reservation.objects.create(event=event, places=1, user=self.user)
         self.assertEqual(
             e.exception.messages[0],
             'This event has already been joined')
@@ -119,7 +120,7 @@ class EventTest(TestCase):
 
         self.assertEqual(
             e.exception.message,
-            'The initial group size cannot be bigger than the max group size')
+            'The starting players size cannot be larger than the maximum players size')
 
     def test_valid_initial_and_max_size(self):
         size = 1
@@ -213,10 +214,11 @@ class JoinFormTest(TestCase):
     def test_already_joined(self):
         event = Event.objects.create(
             initial_size=1,
-            max_size=2,
+            max_size=3,
             time=self.time.time(),
             date=self.time.date(),
             host=self.host)
-        instance = Reservation(event=event, user=self.host)
+        Reservation.objects.create(event=event, user=self.user)
+        instance = Reservation(event=event, user=self.user)
         form = JoinForm(instance=instance, data=self.data)
         self.assertFalse(form.is_valid())
