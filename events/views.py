@@ -101,7 +101,7 @@ class JoinView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            'join_confirmation_view', kwargs={
+            'event_view', kwargs={
                 'pk': self.get_event().pk})
 
     def get_event(self):
