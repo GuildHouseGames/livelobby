@@ -21,6 +21,7 @@ whitenoise = "==3.3.1"
 [dev-packages]
 
 
+django-sslserver = "*"
 
 [requires]
 
