@@ -156,7 +156,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 1
+SITE_ID = 2
 
 # ACCOUNT_AUTHENTICATION_METHOD = "email" # Defaults to username_email
 ACCOUNT_USERNAME_REQUIRED = False       # Defaults to True

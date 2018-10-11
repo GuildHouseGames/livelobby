@@ -10,29 +10,6 @@
     </a>
 {% endblock %}
 
-{% block navbar_buttons %}
-  <li class="hide-on-med-and-down">
-    <a class="waves-effect waves-light blue btn" href="
-      {% if user.is_authenticated %}
-          {% url 'create_event_view' %}
-      {% else %}
-          {% url 'login' %}
-      {% endif %}">
-      {% if user.is_authenticated %}
-          Create Event
-      {% else %}
-          Login
-      {% endif %}
-    </a>
-  </li>
-{% endblock %}
-
-{% block side_menu_button %}
-  <a href="#" data-target="mobile-nav" class="right sidenav-trigger show-on-large">
-      <i class="material-icons">menu</i>
-  </a>
-{% endblock %}
-
 {% block side_menu_content %}
   {% if user.is_authenticated %}
     <!--Show login details-->
