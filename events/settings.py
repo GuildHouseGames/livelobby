@@ -3,10 +3,11 @@ import datetime
 from datetime import time, timedelta
 
 # There is a seperate one for create and edit
-MAX_SIZE_CHOICES = ((x, str(x)) for x in range(1, 41))
-MAX_SIZE_CHOICES_EDIT = ((x, str(x)) for x in range(1, 41))
-INITIAL_SIZE_CHOICES = ((x, str(x)) for x in range(1, 41))
-INITIAL_SIZE_CHOICES_EDIT = ((x, str(x)) for x in range(1, 41))
+MAX_CHOICE = 41
+MAX_SIZE_CHOICES = ((x, str(x)) for x in range(1, MAX_CHOICE))
+MAX_SIZE_CHOICES_EDIT = ((x, str(x)) for x in range(1, MAX_CHOICE))
+INITIAL_SIZE_CHOICES = ((x, str(x)) for x in range(1, MAX_CHOICE))
+INITIAL_SIZE_CHOICES_EDIT = ((x, str(x)) for x in range(1, MAX_CHOICE))
 BOOKING_TOMORROW = datetime.date.today() + datetime.timedelta(days=1)
 
 # The below was copied from the guild.house Booking app:
