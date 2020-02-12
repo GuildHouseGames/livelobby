@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Guild's LiveLobby{% endblock %}
+
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i>
+    </a>
+{% endblock %}
+
+{% block side_menu_content %}
+  {% if user.is_authenticated %}
+    <!--Show login details-->
+    <li>
+      <div class="user-view">
+        <div class="background">
+          <img style="opacity: 0.3;" src="{% static 'events/pizza.jpg' %}">
+        </div>
+        <!-- Default user image https://goo.gl/images/fdsMBc -->
+        <img class="circle" src="{% static 'events/default_user.png' %}">
+        <span class="text name">{{ user.display_name }}</span>
+        <span class="text email">{{ user.email }}</span>
+      </div>
+    </li>
+
+    <!--Menu items (for logged in users)-->
+    <li>
+      <a href="
+        {% if user.is_authenticated %}
+            {% url 'create_event_view' %}
+        {% endif %}">
+        Create Event <i class="material-icons">add</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        Logout <i class="material-icons">exit_to_app</i>
+      </a>
+    </li>
+  {% else %}
+    <!--Show login links-->
+    <li>
+      <a href="{% url 'login' %}">
+        Login with Social Media <i class="material-icons">account_box</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'login' %}">
+        Login with LiveLobby <i class="material-icons">account_box</i>
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
+
+{% block js_scripts %}
+  <!--Activates sidenav-->
+  <script>
+      $(document).ready(function(){
+          $('.sidenav').sidenav({'edge': 'right'});
+      });
+  </script>
+{% endblock %}
+
+{% block content %}
+
+<!--
+<head>
+  <style>
+@media (max-width:600px) {
+      .col
+      {border-right:0px solid !important;
+      border-top:3px solid #e0e0e0 !important;
+      border-bottom:3px solid #e0e0e0 !important;
+      }
+      .row{
+        margin:0px !important;}
+      }
+  </style>
+</head>
+-->
+
+<div class="row" style="text-align:right">
+
+  <div class="col s12
+    {% if event.engagement_type == 'CASUAL' %}
+    blue
+    {% else %}
+    orange
+    {% endif %}
+  ">
+    {% if event.host == user%}
+      <a href="{% url 'edit_view' pk=event.id %}"><i class="material-icons" style="color:white; font-size:30px; padding-top:5px">mode_edit</i></a>
+      {% else %}
+      <br/>
+      {% endif %}
+      <div class="col-content white-text" style="padding-top:0px" align="center">
+        <h2 style="padding-left:30px; padding-right:30px; margin-top:0px; margin-bottom:5px; font-size:36px"> {% if event.host == user%}
+
+          {% endif %}
+          {{ event.name }}</h2>
+        <h6 style="margin-top:0px; padding-top:0px"> {{ event.game|upper }} </h6>
+
+        {% if event.engagement_type == 'CASUAL' %}
+        <img src="{% static 'events/CASUAL.png' %}"
+        style="height: 40px; width: 160px; margin:10px 0px 20px 0px;">
+        {% else %}
+        <img src="{% static 'events/COMPETITIVE.png' %}"
+        style="height: 40px; width: 160px; margin:10px 0px 20px 0px;">
+        {% endif %}
+      </div>
+  </div>
+</div>
+
+<div class="row" style="padding:0px; margin-top:0px; margin-bottom:0px; display: flex; flex-wrap: wrap;">
+<div class="col m4 s12" style="padding-bottom:10px; padding-top:10px; display: flex; flex-wrap: wrap; padding-right: 0px; padding-left: 0px; border-right:1px solid #e0e0e0 !important;  border-left:1px solid #e0e0e0 !important;">
+  <div class="col m4 s2 center-align valign-wrapper">
+    {% if event.engagement_type == 'CASUAL' %}
+      <i class="material-icons blue-text" style="font-size:60px;">location_on</i>
+    {% else %}
+      <i class="material-icons orange-text" style="font-size:60px;">location_on</i>
+    {% endif %}
+  </div>
+  <div class="col m8 s10">
+    <div style="font-size:16px"><b>Guild</b>
+      {% if event.is_booked%}
+      <span style="color: green; font-size:12px"><b>BOOKED
+      {% else %}
+      <span style="font-size:12px" class="red-text"><b>NOT BOOKED
+      {% endif %}
+    </b></span></div>
+    <div style="font-size:14px">LG Baileys Corner, 150 London Circuit, Canberra ACT 2601</div>
+  </div>
+</div>
+
+  <div class="col m4 s12 " style="padding-bottom:10px; padding-top:10px; display: flex; flex-wrap: wrap; padding-right: 0px; padding-left: 0px; border-right:1px solid #e0e0e0 !important; border-left:1px solid #e0e0e0 !important;">
+    <div class="col m4 s2 center-align valign-wrapper">
+      {% if event.engagement_type == 'CASUAL' %}
+        <i class="material-icons blue-text" style="font-size:60px;">calendar_today</i>
+      {% else %}
+        <i class="material-icons orange-text" style="font-size:60px;">calendar_today</i>
+      {% endif %}
+    </div>
+    <div class="col m8 s10 valign-wrapper" style="padding-left: 0px">
+        <div class="col m12 s12" style=""> {{ event.time|time:"g:iA"|lower }}, {{ event.date | detail_date_string}}</div>
+    </div>
+  </div>
+
+  <div class="col m4 s12" style="padding-bottom:10px; padding-top:10px; display: flex; flex-wrap: wrap; padding-right: 0px; padding-left: 0px; border-right:1px solid #e0e0e0 !important;  border-left:1px solid #e0e0e0 !important;">
+    <div class="col m12 s6 offset-s3 center-align valign-wrapper">
+      {% if event.host == user %}
+        <a class="waves-effect waves-light red btn"
+        href="{% url 'cancel_view' pk=event.pk %}" style="width: 100%">
+          Cancel Event<i class="material-icons right">delete</i></a>
+      {% elif event|is_joined:user %}
+        <a class="waves-effect waves-light red btn"
+        href="{% url 'leave_view' pk=event.pk %}" style="width: 100%">
+          Leave Event<i class="material-icons right">cancel</i></a>
+      {% else %}
+        {% if event|reserved_places < event.max_size %}
+          {% if event.engagement_type == 'CASUAL' %}
+            <a class="waves-effect waves-light blue btn" href="{% url 'join_view' event_id=event.id %}" style="width: 100%">
+          {% else %}
+            <a class="waves-effect waves-light orange btn" href="{% url 'join_view' event_id=event.id %}" style="width: 100%">
+          {% endif %}
+            Join Event<i class="material-icons right">person_add</i></a>
+        {% else %}
+          <a class="waves-effect waves-light btn disabled" style="width: 100%">
+            EVENT FULL<i class="material-icons right">event_busy</i></a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<h5 class="black-text center" style="font-size:16px; padding-left:50px; padding-right:50px; padding-top: 10px; padding-bottom: 10px; margin-bottom: 3px; margin-top: 2px"> {{ event.description }} </h5>
+<div class="row" style="display: flex; flex-wrap: wrap">
+
+  {% if event.engagement_type == 'CASUAL' %}
+    <div class="col m12 s12" style="border-left:3px solid white; background-color:#BBDBFB; padding-bottom:18px; padding-top:0px">
+  {% else %}
+    <div class="col m12 s12" style="border-left:3px solid white; background-color:#FFCC80; padding-bottom:18px; padding-top:0px">
+  {% endif %}
+    <div class="col-content" align="center" style="display: flex; flex-wrap: wrap; padding-top: 5px;">
+      <div class="col m2 s2 valign-wrapper" style="margin-left: 0px; padding-top: 5px; padding-left: 0px">
+        <i class="material-icons
+        {% if event.engagement_type == 'CASUAL' %}
+        blue-text
+        {% else %}
+        orange-text
+        {% endif %}
+        left" style="font-size:60px; padding-right: 0px; margin-left: 0px">accessibility_new</i>
+      </div>
+      <div class="col m8 s8 valign-wrapper; center-align" style="margin-left: 0px">
+        <h4 style="font-weight: bold; margin-top:18px"> Players {{ event|reserved_places }}/{{ event.max_size }}</h4>
+      </div>
+    </div>
+    <div class="col-content" align="center">
+      <div class="col m12 s12">
+        {% for reservation in event.player_list %}
+          {% if event.host == reservation.user %}<strong>Host - </strong> {% endif %}
+          {% if reservation.places > 1%}
+          {{ reservation.user.display_name }} + {{ reservation.places|add:"-1" }}
+          {% else %}
+          {{ reservation.user.display_name }}
+          {% endif %}
+        <br>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

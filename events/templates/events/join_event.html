@@ -2,37 +2,85 @@
 
 {% block title %} Join Event | {{ event.name }}{% endblock %}
 
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i>
+    </a>
+{% endblock %}
+
+{% load static %}
+
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title">Registration for "{{ event.name }}"</h2>
-        <div class="card-subtitle mb-2 text-muted"> To join the event, please enter your details below.</div>
-        </br>
-        {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
-        <form method="post" novalidate>
-            {% csrf_token %}
-            <label for="{{ form.name.id_for_label }}">Player name</label>
-            <!-- For loop used to render both the field name and the required hidden input used to store the event-->
-            {% for field in form %}
-                <div class="form-group">
-                    <div class="fieldWrapper">
-                        {{ field }}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
+</head>
+
+<div class="container">
+      <div class="card">
+        <div class="card-action
+          {% if event.engagement_type == 'CASUAL' %}
+          blue
+          {% else %}
+          orange
+          {% endif %}
+        " style="padding-top: 2px; padding-bottom: 2px; margin-bottom: 0px">
+          <p class="card-title white-text bold-text text-darken-4"><strong>Join Event<strong></p>
+        </div>
+        <div class="card-content">
+            <p class="card-title grey-text text-darken-4">{{event.name}}</p>
+            <p class="activator grey-text text-darken-6"> {{ event.game }} - {{event.host.display_name}}</p>
+            <br>
+            <p class="grey-text text-darken-4">{{event.description}}</p>
+            <br>
+            <ul class="collection">
+              {% if event.engagement_type == 'CASUAL' %}
+                <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                  <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+              {% else %}
+                <li class="collection-item"><span> <i class="material-icons orange-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                  <li class="collection-item"><span> <i class="material-icons orange-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+              {% endif %}
+            </ul>
+            <div class="grey-text text-darken-5">To join the event, please enter your joining group size.</div>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                            <br>
+                        <div class="red-text left-align">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                <label for="places"> Group Size (Including {{user.display_name}})</label>
+                <!-- For loop used to render both the field name-->
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="fieldWrapper input-field">
+                            {{ field }}
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-            {% if form.name.errors %}
-                {% for error in form.name.errors %}
-                    <p class="font-italic text-danger"><strong>{{ error|escape }}</strong></p>
                 {% endfor %}
-            {% endif %}
-            <button type="submit" class="btn btn-success">Join Event</button>
-        </form>
+                {% if form.places.errors %}
+                    {% for error in form.places.errors %}
+                        <div class="red-text left-align">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                {% if event.engagement_type == 'CASUAL' %}
+                  <button type="submit" class="btn waves-effect waves-light blue">Join</button>
+                {% else %}
+                  <button type="submit" class="btn waves-effect waves-light orange">Join</button>
+                {% endif %}
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

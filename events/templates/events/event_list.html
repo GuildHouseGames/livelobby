@@ -1,68 +1,201 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load account socialaccount %}
+
+<!-- Get list of social accounts used -->
+{% get_social_accounts user as accounts %}
 
 {% block title %}Guild's LiveLobby{% endblock %}
 
-{% block header_extension %}
-    <a href="/events/create">
-        <button type="button" class="btn btn-primary btn-lg btn-block rounded-0 mx-auto">+ Create Event</button>
+{% block navbar_buttons %}
+  <li class="hide-on-med-and-down">
+    <a class="waves-effect waves-light blue btn" href="
+      {% if user.is_authenticated %}
+          {% url 'create_event_view' %}
+      {% else %}
+          {% url 'login' %}
+      {% endif %}">
+      {% if user.is_authenticated %}
+          Create Event
+      {% else %}
+          Login
+      {% endif %}
     </a>
+  </li>
+{% endblock %}
+
+{% block side_menu_button %}
+
+  <!-- if accounts
+   user.socialaccount_set.all.0.get_avatar_url  -->
+
+  <!-- Default user image https://goo.gl/images/fdsMBc -->
+  <a href="#" data-target="mobile-nav" style="display: inline-block; height: 100%;" class="right sidenav-trigger show-on-large">
+    <img class="circle" style="height: 60%; margin: 12px 0px 6px 0px" src="
+      {% if user.is_authenticated and user.profile_picture != '' %}
+        {{ user.profile_picture }}
+      {% else %}
+        {% static 'events/default_user.png' %}
+      {% endif %}">
+  </a>
+{% endblock %}
+
+{% block side_menu_content %}
+  {% if user.is_authenticated %}
+    <!--Show login details-->
+    <li>
+      <div class="user-view">
+        <div class="background">
+          <img style="opacity: 0.3;" src="{% static 'events/pizza.jpg' %}">
+        </div>
+
+        <!-- https://stackoverflow.com/questions/29082098/django-allauth-retrieve-avatar-profile-pictures -->
+        <img class="circle" src="
+          {% if user.is_authenticated and user.profile_picture != '' %}
+            {{ user.profile_picture }}
+          {% else %}
+            {% static 'events/default_user.png' %}
+          {% endif %}">
+        <!-- <img class="circle" src="{{ user.socialaccount_set.all.0.get_avatar_url }}"> -->
+        <span class="text name">{{ user.display_name }}</span>
+        <!-- <span class="text name">{{ user.socialaccount_set.all.0.extra_data.name }}</span> -->
+        <span class="text email">{{ user.email }}</span>
+      </div>
+    </li>
+
+    <!--Menu items (for logged in users)-->
+    <li>
+      <a href="
+        {% if user.is_authenticated %}
+          {% url 'create_event_view' %}
+        {% endif %}">
+        Create Event <i class="material-icons">add</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        Logout <i class="material-icons">exit_to_app</i>
+      </a>
+    </li>
+  {% else %}
+    <!--Show login links-->
+    <li>
+      <a href="{% url 'login' %}">
+        Login with Social Media <i class="material-icons">account_box</i>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'login' %}">
+        Login with LiveLobby <i class="material-icons">account_box</i>
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
+
+{% block js_scripts %}
+  <!--Activates sidenav-->
+  <script>
+      $(document).ready(function(){
+          $('.sidenav').sidenav({'edge': 'right'});
+      });
+  </script>
 {% endblock %}
 
 {% block content %}
+  <!--Old cards, but keep the floating button at the bottom-->
   <head>
     <!--Only makes use of events-container and event styles-->
     <link rel="stylesheet" type="text/css" href="{% static 'events/event_list.css' %}">
   </head>
 
-    <!--Events Container Card-->
-    <div class="events-container bg-secondary">
-      {% for event in events %}
-       <div class="event">
-         <div class="card-group">
-           <!--Date/time card-->
-           <div class="card border-left-0 border-top-0 border-bottom-0">
-             <div class="card-block">
-               <h1 class="card-text">{{ event.date.day }}</h1>
-               <h3 class="card-text">{{ event.date.month|month_abbr|upper }}</h3>
-               <p class="card-text">{{ event.time }}</p>
-             </div>
-           </div>
-           <!--Event name, owner, description etc.-->
-           <div class="card border-top-0 border-bottom-0" style="flex-grow: 5">
-             <div class="card-block">
-               <h2 class="card-title">{{ event.name|upper }}</h2>
-               <p class="card-text"> {{ event.type }} -
-                 <!--Finds the event host in the list of participants-->
-                 {% for person in participants %}
-                  {% if person.type == "HOST" and person.event == event %}
-                   {{person.name}}
+  <!--Events Container Card-->
+  <div class="container">
+    {% for event in events %}
+      <div class="card">
+        <div class="card-action
+          {% if event.engagement_type == 'CASUAL' %}
+          blue
+          {% else %}
+          orange
+          {% endif %}
+        " style="padding-top: 2px; padding-bottom: 2px; margin-bottom: 0px">
+          <p class="card-title white-text bold-text text-darken-4"><strong>{{event.name}}<strong></p>
+        </div>
+        <div class="card-content" style="padding-bottom:0px;">
+            <p class="activator grey-text text-darken-6" style="font-size: 16px; margin-bottom:2px; padding-top:0px; margin-top:0px"> {{ event.game }} - {{event.host.display_name}}</p>
+            <p class="grey-text text-darken-4">{{event.description}}</p>
+            <ul class="collection" style="margin-top:10px">
+              {% if event.engagement_type == 'CASUAL' %}
+                <li class="collection-item"><span> <i class="material-icons blue-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons blue-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                  <li class="collection-item"><span> <i class="material-icons blue-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+              {% else %}
+                <li class="collection-item"><span> <i class="material-icons orange-text left">calendar_today</i>{{event.date | date_string}} at {{ event.time | time_string}}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">accessibility_new</i>Players {{ event|reserved_places }}/{{ event.max_size }}</span></li>
+                <li class="collection-item"><span> <i class="material-icons orange-text left">grade</i>{{event.get_engagement_type_display}}</span></li>
+                {%if event.is_booked%}
+                  <li class="collection-item"><span> <i class="material-icons orange-text left">bookmark</i>Booked at Guild</span></li>
+                {%endif%}
+              {% endif %}
+            </ul>
+        </div>
+          <div class="card-action">
+              {% if user.is_authenticated %}
+                  {% if event.host == user%}
+                      <a class="waves-effect waves-light btn red event-btn"  href="{% url 'cancel_view' pk=event.pk %}">Cancel Event</a>
+                  {% elif event|is_joined:user%}
+                    {% if event.engagement_type == 'CASUAL' %}
+                      <a class="waves-effect waves-light btn blue event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% else %}
+                      <a class="waves-effect waves-light btn orange event-btn"  href="{% url 'leave_view' pk=event.pk %}">Leave</a>
+                    {% endif %}
+                  {% else %}
+                      {% if event|reserved_places < event.max_size %}
+                          {% if event.engagement_type == 'CASUAL' %}
+                            <a class="waves-effect waves-light btn blue event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                          {% else %}
+                            <a class="waves-effect waves-light btn orange event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                          {% endif %}
+                      {% else %}
+                          <button type="button" class="btn red disabled event-btn">FULL</button>
+                      {% endif %}
                   {% endif %}
-                 {% endfor %}
-               </p>
-               <p class="card-text">{{ event.description }}</p>
-             </div>
-           </div>
-           <!--Current/max # of players and join/full button-->
-           <div class="card border-0">
-             <div class="card-block">
-               <h3 class="card-text">{{ groups|get_item:event }}/{{ event.max_size }}</h3>
-               <p class="card-text">Players</p>
-               {% if groups|get_item:event == event.max_size %}
-                <button type="button" class="btn btn-lg disabled btn-danger">FULL</button>
-               {% else %}
-               <a href={% url 'join_view' event_id=event.id %}>
-                 <button type="button" class="btn btn-lg btn-primary">Join</button>
-               </a>
-               {% endif %}
-             </div>
-           </div>
-         </div>
-       </div>
-       {% empty %}
-        <!--Shouldn't be seen but just in case, better to show something than not-->
-        <div class="alert alert-info mx-auto" role="alert">There are no events yet... why not make your own?</div>
-       {% endfor %}
-     </div>
+              {% else %}
+                  {% if event|reserved_places < event.max_size %}
+                        {% if event.engagement_type == 'CASUAL' %}
+                            <a class="waves-effect waves-light btn blue event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                        {% else %}
+                            <a class="waves-effect waves-light btn orange event-btn" href="{% url 'join_view' event_id=event.id %}">Join</a>
+                        {% endif %}
+                  {% else %}
+                      <button type="button" class="btn red disabled event-btn">FULL</button>
+                  {% endif %}
+              {% endif %}
+              {% if event.engagement_type == 'CASUAL' %}
+                <a class="btn-flat blue-text" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              {% else %}
+                <a class="btn-flat orange-text" href="{% url 'event_view' pk=event.pk %}">Details</a>
+              {% endif %}
+
+          </div>
+      </div>
+      {% empty %}
+        <div class="card-panel blue white-text center-align">
+          There are no current events... why not make your own?
+        </div>
+      {% endfor %}
+    </div>
+    <!-- Floating button -->
+    {% if user.is_authenticated %}
+      <div class="fixed-action-btn">
+          <a class="btn-floating btn-large blue" href="{% url 'create_event_view' %}">
+            <i class="large material-icons">add</i>
+          </a>
+      </div>
+    {% endif %}
+
 {% endblock %}

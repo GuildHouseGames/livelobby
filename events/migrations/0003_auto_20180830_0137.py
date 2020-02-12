@@ -13,16 +13,27 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='date',
-            field=models.DateField(db_index=True, null=True),
+            field=models.DateField(
+                db_index=True,
+                null=True),
         ),
         migrations.AddField(
             model_name='participant',
             name='type',
-            field=models.CharField(choices=[('ATTENDEE', 'Attendee'), ('HOST', 'Host')], default='ATTENDEE', max_length=8),
+            field=models.CharField(
+                choices=[
+                    ('ATTENDEE',
+                     'Attendee'),
+                    ('HOST',
+                     'Host')],
+                default='ATTENDEE',
+                max_length=8),
         ),
         migrations.AlterField(
             model_name='event',
             name='time',
-            field=models.TimeField(db_index=True, null=True),
+            field=models.TimeField(
+                db_index=True,
+                null=True),
         ),
     ]

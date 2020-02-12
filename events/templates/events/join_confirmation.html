@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
+{% endblock %}
+
+{% block title %} Event Confirmation | {{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title blue-text">Event Confirmation</h2>
+        <div class="card-subtitle mb-2 text-muted"> The event has been joined successfully.</div>
+        <p>Name: {{event.name}}</p>
+        <p>Date: {{event.date}}</p>
+        <p>Time: {{event.time}}</p>
+        <p>Location: {{event.location}}</p>
+        <p>Description: {{event.description}}</p>
+    </div>
+</div>
+{% endblock %}

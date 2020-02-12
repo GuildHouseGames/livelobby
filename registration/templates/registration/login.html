@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load socialaccount %}
+
+{% block title %}Guild's LiveLobby - Login{% endblock %}
+
+{% block back_button %}
+    <a class="left show-on-large" style="margin: 0px 0px 0px 10px" href="/">
+        <i class="large material-icons">arrow_back</i> 
+    </a>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="container center">
+      <div class="row"></div>
+      <div class="row">
+
+        <h3 class="blue-text">Login to LiveLobby</h3><br>
+
+        <!-- Social login buttons -->
+        <!-- https://terrymooreii.github.io/materialize-social/ -->
+        <div class="col s12 m6 offset-m3 all">
+          <div class="row usage google">
+            <a class="waves-effect waves-light col s12 btn social google" href="{% provider_login_url 'google' %}">
+              <i class="fa fa-fw fa-google"></i> Sign in with google
+            </a>
+          </div>
+          <div class="row usage facebook">
+            <a class="waves-effect waves-light col s12 btn social facebook" href="{% provider_login_url 'facebook' %}">
+              <i class="fa fa-fw fa-facebook"></i> Sign in with facebook 
+            </a>
+          </div>
+        </div>
+          
+        <!-- hr divider (OR line) -->
+        <div class="col s12 m8 offset-m2">
+          <hr>
+        </div>
+    
+        <!-- LiveLobby login form -->
+        {% if form.errors %}
+          {% for field, errors in form.errors.items %}
+            <div class="col s12 m8 offset-m2">
+              <div class="red-text left-align">{{ errors }}</div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="col s12 m8 offset-m2">
+          <form method="post">
+            {% csrf_token %} 
+            {% for field in form %}
+              <div class="input-field">
+                {{ field }}                
+                <label for="{{ field.html_name }}">{{ field.label }}</label>
+                {% if field.help_text %}
+                  <span class="helper-text" data-error="
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}">
+                    {{ field.help_text|safe }}
+                  </span>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <div class="center-align">
+              <button class="btn blue waves-effect waves-light" type="submit" name="action">             
+                Login <i class="material-icons right">account_box</i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="center-align" style="text-align: center">
+        Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

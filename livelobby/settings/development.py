@@ -1,4 +1,4 @@
-from livelobby.settings.base import *
+from livelobby.settings.base import *  # NOQA
 DEBUG = True
 
 # Database
@@ -7,6 +7,14 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '../../db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../../db.sqlite3'),  # NOQA
     }
 }
+
+INSTALLED_APPS += (
+    'sslserver',
+)
+
+SECURE_SSL_REDIRECT = False
+
+SITE_ID = 1
